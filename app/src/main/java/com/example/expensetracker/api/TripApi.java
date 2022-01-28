@@ -1,17 +1,28 @@
 package com.example.expensetracker.api;
 
+import android.os.Build;
+
+import androidx.annotation.RequiresApi;
+
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.expensetracker.model.CreateTripRequest;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.utils.BaseApp;
 import com.example.expensetracker.utils.RequestQueueHelper;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -63,19 +74,20 @@ public class TripApi {
         return behaviorSubject;
     }
 
-//    public static BehaviorSubject<Boolean> createHub(Hub hub) {
-//        String url = BaseApp.serverUrl + "/hubs/createHub";
-//
-//        final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
-//
-//        JsonObjectRequest jsonObjectRequest  = new JsonObjectRequest(Request.Method.POST, url, hub.toJson(), new Response.Listener<JSONObject>() {
-//            @RequiresApi(api = Build.VERSION_CODES.N)
-//            @Override
-//            public void onResponse(JSONObject response) {
-//                behaviorSubject.onNext(true);
-//            }
-//        }, (Response.ErrorListener) behaviorSubject::onError) {
-//
+    public static BehaviorSubject<Boolean> createTrip(CreateTripRequest createTripRequest) throws JSONException {
+        String url = BaseApp.serverUrl + "/trips/saveTrip";
+
+        final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
+
+        JsonObjectRequest jsonObjectRequest  = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(new Gson().toJson(createTripRequest, CreateTripRequest.class)), new Response.Listener<JSONObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(JSONObject response) {
+                behaviorSubject.onNext(true);
+            }
+        }, (Response.ErrorListener) behaviorSubject::onError) {
+
 //            @Override
 //            public Map<String, String> getHeaders() throws AuthFailureError {
 //                Map<String, String> params = new HashMap<>();
@@ -84,32 +96,32 @@ public class TripApi {
 //                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
 //                return params;
 //            }
-//
-//            @Override
-//            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-//                try {
-//                    String json = new String(
-//                            response.data,
-//                            "UTF-8"
-//                    );
-//                    if (json.length() == 0) {
-//                        return Response.success(
-//                                null,
-//                                HttpHeaderParser.parseCacheHeaders(response)
-//                        );
-//                    } else {
-//                        return super.parseNetworkResponse(response);
-//                    }
-//                } catch (UnsupportedEncodingException e) {
-//                    return Response.error(new ParseError(e));
-//                }
-//            }
-//        };
-//
-//        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
-//
-//        return behaviorSubject;
-//    }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String json = new String(
+                            response.data,
+                            "UTF-8"
+                    );
+                    if (json.length() == 0) {
+                        return Response.success(
+                                null,
+                                HttpHeaderParser.parseCacheHeaders(response)
+                        );
+                    } else {
+                        return super.parseNetworkResponse(response);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                }
+            }
+        };
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
+
+        return behaviorSubject;
+    }
 
 
 }

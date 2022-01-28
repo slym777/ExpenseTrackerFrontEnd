@@ -1,4 +1,4 @@
-package com.example.expensetracker.ui.trips;
+package com.example.expensetracker.ui.addtrip;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,13 +15,13 @@ import com.example.expensetracker.utils.BaseApp;
 
 import java.util.List;
 
-public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder> {
+public class SelectedUsersAdapter extends RecyclerView.Adapter<SelectedUsersAdapter.TripViewHolder> {
     private List<Trip> mTrips;
-    private OnClickTripListener onClickTripListener;
+    private OnClickTripListener onClickHubListener;
 
-    public TripAdapter(List<Trip> mTrips, OnClickTripListener onClickHubListener) {
+    public SelectedUsersAdapter(List<Trip> mTrips, OnClickTripListener onClickHubListener) {
         this.mTrips = mTrips;
-        this.onClickTripListener = onClickHubListener;
+        this.onClickHubListener = onClickHubListener;
     }
 
     public List<Trip> getTrips() {
@@ -40,7 +40,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
 //        View view = LayoutInflater.from(parent.getContext())
 //                .inflate(R.layout.view_trip, parent, false);
         ViewTripBinding binding = ViewTripBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
-        return new TripViewHolder(binding, onClickTripListener);
+        return new TripViewHolder(binding, onClickHubListener);
     }
 
     @Override
@@ -48,7 +48,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         Trip trip = mTrips.get(position);
         holder.binding.vtTripName.setText(trip.getName());
         holder.binding.vtNrMembers.setText(trip.getGroupSize().toString());
-        if (!"".equals(trip.getAvatarUri())) {
+        if ("".equals(trip.getAvatarUri())) {
             Glide.with(BaseApp.context)
                     .load(trip.getAvatarUri())
                     .centerCrop()
@@ -76,13 +76,13 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         @Override
         public void onClick(View v) {
             Trip trip = mTrips.get(getAdapterPosition());
-            onHubListener.onTripClick(trip.getId(), trip.getName());
+            onHubListener.onHubClick(trip.getId(), trip.getName());
         }
 
     }
 
     public interface OnClickTripListener {
-        void onTripClick(Long hubId, String hubName);
+        void onHubClick(Long hubId, String hubName);
     }
 
 }

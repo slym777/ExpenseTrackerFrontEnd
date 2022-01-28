@@ -2,5 +2,5 @@
     <string name="app_name">ExpenseTracker</string>
     <string name="title_trips">Trips</string>
     <string name="title_dashboard">Dashboard</string>
-    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
 </resources>

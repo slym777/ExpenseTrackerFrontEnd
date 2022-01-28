@@ -27,6 +27,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.addtrip.AddTripActivity"
+            android:theme="@style/Theme.ExpenseTracker.NoActionBar" />
     </application>
 
 </manifest>

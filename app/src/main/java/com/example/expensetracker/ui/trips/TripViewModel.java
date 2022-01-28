@@ -31,17 +31,6 @@ public class TripViewModel extends ViewModel {
         }));
     }
 
-//    public void createHub(String hubName, String hubDescription, String currency){
-//        Hub newHub = new Hub(hubName, hubDescription, currency);
-//        disposableLinkedList.add(HubApi.createHub(newHub).subscribe(bool -> {
-//            loadData();
-//            Timber.d("Hub created successfully");
-//        }, error -> {
-//            Timber.e(error.getMessage());
-//            errorLiveMsg.postValue(error.getLocalizedMessage());
-//        }));
-//    }
-
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCleared() {
