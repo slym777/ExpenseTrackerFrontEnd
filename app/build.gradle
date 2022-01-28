@@ -26,6 +26,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+
+    buildFeatures {
+        viewBinding true
+    }
 }
 
 dependencies {
@@ -56,4 +60,11 @@ dependencies {
     //Glide
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
+    //Levenshtein
+    implementation 'org.apache.commons:commons-lang3:3.7'
+//    //Circle Image View
+//    implementation 'de.hdodenhof:circleimageview:3.1.0'
+
+
+
 }

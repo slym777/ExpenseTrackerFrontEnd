@@ -3,10 +3,10 @@ package com.example.expensetracker.model;
 public class Trip {
 
     private Long id;
-    private String name;
-    private String description;
-    private String avatarUri;
-    private String location;
+    protected String name;
+    protected String description;
+    protected String avatarUri;
+    protected String location;
     private Integer groupSize;
 
     public Trip() {
@@ -19,6 +19,13 @@ public class Trip {
         this.avatarUri = avatarUri;
         this.location = location;
         this.groupSize = groupSize;
+    }
+
+    public Trip(String name, String description, String avatarUri, String location) {
+        this.name = name;
+        this.description = description;
+        this.avatarUri = avatarUri;
+        this.location = location;
     }
 
     public Long getId() {

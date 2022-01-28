@@ -17,6 +17,6 @@ public class BaseApp extends Application {
         Timber.plant(new Timber.DebugTree());
         Timber.d("Application started !");
         context = this;
-        serverUrl = "http://192.168.1.205:9090";
+        serverUrl = "http://192.168.1.205:9091";
     }
 }

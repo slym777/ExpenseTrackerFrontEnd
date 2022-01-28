@@ -4,7 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:theme="@style/Theme.MaterialComponents.Light"
-    android:id="@+id/vh_card_view_hub"
+    android:id="@+id/vh_card_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="4dp"
@@ -17,7 +17,7 @@
         android:background="@color/grey">
 
         <ImageView
-            android:id="@+id/vh_imageView"
+            android:id="@+id/vt_trip_avatar"
             android:layout_width="0dp"
             android:layout_height="0dp"
             android:scaleType="centerCrop"
@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
-            android:id="@+id/vh_nr_part_layout"
+            android:id="@+id/vt_nr_members_layout"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="8dp"
@@ -38,19 +38,19 @@
             android:gravity="center"
             android:orientation="horizontal"
             android:padding="4dp"
-            app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
-            app:layout_constraintEnd_toEndOf="@+id/vh_imageView">
+            app:layout_constraintBottom_toTopOf="@+id/vt_trip_name_layout"
+            app:layout_constraintEnd_toEndOf="@+id/vt_trip_avatar">
 
             <ImageView
-                android:id="@+id/vh_group_icon"
+                android:id="@+id/vt_nr_members_icon"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_group_black_24dp"
-                app:layout_constraintEnd_toStartOf="@id/textView_nrHubParticipants"
+                app:layout_constraintEnd_toStartOf="@id/vt_nr_members"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView_nrHubParticipants"
+                android:id="@+id/vt_nr_members"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="3dp"
@@ -64,7 +64,7 @@
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/vt_trip_name_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="4dp"
@@ -74,14 +74,14 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/vh_imageView">
+            app:layout_constraintTop_toBottomOf="@id/vt_trip_avatar">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
                 <TextView
-                    android:id="@+id/textView_hubName"
+                    android:id="@+id/vt_trip_name"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
