@@ -37,8 +37,6 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     @NonNull
     @Override
     public TripViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-//        View view = LayoutInflater.from(parent.getContext())
-//                .inflate(R.layout.view_trip, parent, false);
         ViewTripBinding binding = ViewTripBinding.inflate(LayoutInflater.from(parent.getContext()), parent, false);
         return new TripViewHolder(binding, onClickTripListener);
     }

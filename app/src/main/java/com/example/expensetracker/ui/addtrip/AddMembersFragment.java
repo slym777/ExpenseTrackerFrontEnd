@@ -102,6 +102,12 @@ public class AddMembersFragment extends Fragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        binding = null;
+    }
+
+    @Override
     public void onResume() {
         super.onResume();
         addTripViewModel.getAllUsers();

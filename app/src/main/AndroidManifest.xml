@@ -31,6 +31,10 @@
         <activity
             android:name=".ui.addtrip.AddTripActivity"
             android:theme="@style/Theme.ExpenseTracker.NoActionBar" />
+
+        <activity
+            android:name=".ui.viewtrip.ViewTripActivity"
+            android:theme="@style/Theme.ExpenseTracker.NoActionBar" />
     </application>
 
 </manifest>

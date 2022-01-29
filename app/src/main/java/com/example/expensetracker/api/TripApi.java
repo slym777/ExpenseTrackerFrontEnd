@@ -123,5 +123,4 @@ public class TripApi {
         return behaviorSubject;
     }
 
-
 }
