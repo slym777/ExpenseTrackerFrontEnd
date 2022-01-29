@@ -3,4 +3,22 @@
     <string name="title_trips">Trips</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
+    <string name="title_activity_authentication">AuthenticationActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_username">Not a valid username</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="shared_preferences">GeneralPreferences</string>
+    <string name="user_id_shared_pref">UserId</string>
+    <string name="email_shared_pref">Email</string>
+    <string name="fullname_shared_pref">Fullname</string>
+    <string name="username_shared_pref">Username</string>
+    <string name="id_token_shared_pref">IdToken</string>
+    <string name="is_auth_remembered_shared_pref">IsAuthRemembered</string>
+    <string name="is_account_enabled_shared_pref">IsAccountEnabled</string>
+
 </resources>
