@@ -8,6 +8,7 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="grey">#E9EAEE</color>
+
     <color name="lightgrey">#EEEEEE</color>
 
     <color name="colorAccent">#FFFFFF</color>
@@ -15,4 +16,10 @@
     <color name="main_text_color">#212121</color>
 
     <color name="secondaryDarkColor">#007ac1</color>
+
+    <color name="anti_color">@color/md_grey_700</color>
+
+    <color name="outline_color">@color/md_grey_200</color>
+
+
 </resources>

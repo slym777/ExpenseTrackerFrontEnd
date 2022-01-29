@@ -14,9 +14,12 @@ import androidx.recyclerview.widget.GridLayoutManager;
 
 import com.example.expensetracker.databinding.FragmentTripsBinding;
 import com.example.expensetracker.ui.addtrip.AddTripActivity;
+import com.example.expensetracker.ui.viewtrip.ViewTripActivity;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+
+import static com.example.expensetracker.utils.ConstantsUtils.TRIP_ID_EXTRA;
 
 public class TripsFragment extends Fragment implements TripAdapter.OnClickTripListener {
 
@@ -74,10 +77,9 @@ public class TripsFragment extends Fragment implements TripAdapter.OnClickTripLi
 
     @Override
     public void onTripClick(Long hubId, String hubName) {
-//        Intent intent = new Intent(getActivity(), HubInfoActivity.class);
-//        intent.putExtra(HUB_ID_EXTRA, hubId);
-//        intent.putExtra(HUB_NAME_EXTRA, hubName);
-//        startActivity(intent);
+        Intent intent = new Intent(getActivity(), ViewTripActivity.class);
+        intent.putExtra(TRIP_ID_EXTRA, hubId);
+        startActivity(intent);
     }
 
     @Override
