@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.viewtrip.personalexpense;
 
+import android.content.BroadcastReceiver;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -34,6 +35,7 @@ public class PersonalExpensesFragment extends Fragment implements OnClickExpense
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         personalExpenseViewModel = new ViewModelProvider(requireActivity()).get(PersonalExpenseViewModel.class);
+        personalExpenseViewModel.tripId = tripId;
         binding = FragmentPersonalExpenseBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -72,12 +74,19 @@ public class PersonalExpensesFragment extends Fragment implements OnClickExpense
     @Override
     public void onResume() {
         super.onResume();
-        personalExpenseViewModel.getPersonalExpenses(tripId);
+        personalExpenseViewModel.getPersonalExpenses();
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        personalExpenseViewModel.getPersonalExpenses();
+    }
 
     @Override
     public void onGroupExpenseClick(Long expenseId) {
 
     }
+
+
 }

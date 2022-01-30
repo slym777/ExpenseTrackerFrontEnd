@@ -17,13 +17,16 @@
 
     <fragment
         android:id="@+id/navigation_expense_view"
-        android:name="com.example.expensetracker.ui.viewtrip.ViewExpenseFragment"
+        android:name="com.example.expensetracker.ui.viewexpense.ViewExpenseFragment"
         android:label="Expense View"
         tools:layout="@layout/fragment_expense_view" >
         <argument
             android:name="expenseId"
             app:argType="long"
             android:defaultValue="-1L" />
+        <action
+            android:id="@+id/action_navigation_expense_view_to_navigation_trip_view"
+            app:destination="@id/navigation_trip_view" />
     </fragment>
 
 

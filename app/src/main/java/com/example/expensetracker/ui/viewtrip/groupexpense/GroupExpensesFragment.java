@@ -15,11 +15,13 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.expensetracker.databinding.FragmentGroupExpenseBinding;
+import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.ui.viewtrip.OnClickExpenseListener;
 import com.example.expensetracker.ui.viewtrip.ViewTripFragmentDirections;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class GroupExpensesFragment extends Fragment implements OnClickExpenseListener {
 
@@ -36,6 +38,7 @@ public class GroupExpensesFragment extends Fragment implements OnClickExpenseLis
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         groupExpenseViewModel = new ViewModelProvider(requireActivity()).get(GroupExpenseViewModel.class);
+        groupExpenseViewModel.tripId = tripId;
         binding = FragmentGroupExpenseBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -74,7 +77,7 @@ public class GroupExpensesFragment extends Fragment implements OnClickExpenseLis
     @Override
     public void onResume() {
         super.onResume();
-        groupExpenseViewModel.getGroupExpenses(tripId);
+        groupExpenseViewModel.getGroupExpenses();
     }
 
 
@@ -86,4 +89,9 @@ public class GroupExpensesFragment extends Fragment implements OnClickExpenseLis
         Navigation.findNavController(getView()).navigate(action);
     }
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        groupExpenseViewModel.getGroupExpenses();
+    }
 }

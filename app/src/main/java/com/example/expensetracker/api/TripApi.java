@@ -123,4 +123,40 @@ public class TripApi {
         return behaviorSubject;
     }
 
+    public static BehaviorSubject<Trip> getTripByTripId(Long tripId) {
+        String url = BaseApp.serverUrl + "/trips/" + tripId;
+
+        final BehaviorSubject<Trip> behaviorSubject = BehaviorSubject.create();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onResponse(JSONObject response) {
+                Gson gson = new Gson();
+                Trip trip = gson.fromJson(response.toString(), Trip.class);
+                behaviorSubject.onNext(trip);
+            }
+        }, new Response.ErrorListener(){
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                behaviorSubject.onError(error);
+            }
+        }) {
+
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                return params;
+//            }
+
+        };
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
+
+        return behaviorSubject;
+    }
+
 }

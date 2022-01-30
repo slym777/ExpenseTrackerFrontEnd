@@ -1,4 +1,4 @@
-package com.example.expensetracker.ui.viewtrip.groupexpense;
+package com.example.expensetracker.ui.viewexpense;
 
 import android.os.Build;
 
@@ -7,24 +7,22 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.expensetracker.api.ExpenseApi;
-import com.example.expensetracker.api.TripApi;
 import com.example.expensetracker.model.Expense;
 
 import java.util.LinkedList;
-import java.util.List;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
-public class GroupExpenseViewModel extends ViewModel {
-    public Long tripId;
-    public MutableLiveData<List<Expense>> expensesLiveList = new MutableLiveData<>();
+public class ExpenseViewModel extends ViewModel {
+    public Long expenseId;
+    public MutableLiveData<Expense> expenseLive = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveMsg = new MutableLiveData<>();
     private final LinkedList<Disposable> disposableLinkedList = new LinkedList<>();
 
-    public void getGroupExpenses(){
-        disposableLinkedList.add(ExpenseApi.getExpensesByTripId(tripId, true).subscribe(list -> {
-            expensesLiveList.postValue(list);
+    public void getExpense(){
+        disposableLinkedList.add(ExpenseApi.getExpenseByExpenseId(expenseId).subscribe(list -> {
+            expenseLive.postValue(list);
         }, error -> {
             Timber.e(error);
             errorLiveMsg.postValue(error.getLocalizedMessage());

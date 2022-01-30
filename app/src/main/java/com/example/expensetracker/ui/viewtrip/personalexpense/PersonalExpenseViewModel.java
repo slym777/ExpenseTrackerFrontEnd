@@ -16,11 +16,12 @@ import io.reactivex.rxjava3.disposables.Disposable;
 import timber.log.Timber;
 
 public class PersonalExpenseViewModel extends ViewModel {
+    public Long tripId;
     public MutableLiveData<List<Expense>> expensesLiveList = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveMsg = new MutableLiveData<>();
     private final LinkedList<Disposable> disposableLinkedList = new LinkedList<>();
 
-    public void getPersonalExpenses(Long tripId){
+    public void getPersonalExpenses(){
         disposableLinkedList.add(ExpenseApi.getExpensesByTripId(tripId, false).subscribe(list -> {
             expensesLiveList.postValue(list);
         }, error -> {
