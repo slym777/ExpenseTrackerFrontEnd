@@ -111,6 +111,18 @@
         app:layout_constraintStart_toEndOf="@+id/fs_signup_avatar_imageView"
         app:layout_constraintTop_toBottomOf="@+id/fs_signup_camera_button" />
 
+    <ProgressBar
+        android:id="@+id/fs_progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@+id/fs_signup_avatar_imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/fs_signup_avatar_imageView"
+        app:layout_constraintTop_toTopOf="@+id/fs_signup_avatar_imageView" />
+
     <Button
         android:id="@+id/fs_continue_button"
         android:layout_width="wrap_content"

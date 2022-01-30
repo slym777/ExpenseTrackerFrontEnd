@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.trips;
 
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,8 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ViewTripBinding;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.utils.BaseApp;
+
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -46,7 +49,7 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
         Trip trip = mTrips.get(position);
         holder.binding.vtTripName.setText(trip.getName());
         holder.binding.vtNrMembers.setText(trip.getGroupSize().toString());
-        if (!"".equals(trip.getAvatarUri())) {
+        if (!TextUtils.isEmpty(trip.getAvatarUri())) {
             Glide.with(BaseApp.context)
                     .load(trip.getAvatarUri())
                     .centerCrop()

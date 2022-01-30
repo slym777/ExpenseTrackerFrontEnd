@@ -1,6 +1,7 @@
 package com.example.expensetracker.ui.addtrip;
 
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -69,12 +70,13 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Us
 
             binding.vsuUserName.setText(user.getFullName());
 
-            if (!"".equals(user.getAvatarUri()))
-            Glide.with(BaseApp.context)
-                    .load(user.getAvatarUri())
-                    .centerCrop()
-                    .placeholder(R.drawable.progress_animation)
-                    .into(binding.vsuUserAvatar);
+            if (!TextUtils.isEmpty(user.getAvatarUri())) {
+                Glide.with(BaseApp.context)
+                        .load(user.getAvatarUri())
+                        .centerCrop()
+                        .placeholder(R.drawable.progress_animation)
+                        .into(binding.vsuUserAvatar);
+            }
 
             binding.vsuUserCard.setOnClickListener(v -> {
                 user.changeSelectedState();
