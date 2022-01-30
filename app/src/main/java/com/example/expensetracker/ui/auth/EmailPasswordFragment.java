@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.expensetracker.databinding.FragmentAddEmailPasswordBinding;
+import com.example.expensetracker.utils.BaseApp;
 
 import timber.log.Timber;
 
@@ -89,9 +91,13 @@ public class EmailPasswordFragment extends Fragment {
 
         signUpViewModel.signUpState.subscribe(bool -> {
             if (bool) {
+                Toast.makeText(BaseApp.context, "User registered successfully", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getContext(), AuthenticationActivity.class);
                 startActivity(intent);
             }
-        }, Timber::e);
+        }, error -> {
+            Toast.makeText(BaseApp.context, "Unable to reach signing service", Toast.LENGTH_SHORT).show();
+            Timber.e(error);
+        });
     }
 }
