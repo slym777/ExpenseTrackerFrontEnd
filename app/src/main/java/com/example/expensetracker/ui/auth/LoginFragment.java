@@ -1,7 +1,6 @@
 package com.example.expensetracker.ui.auth;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,6 @@ import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentLoginBinding;
 import com.example.expensetracker.utils.BaseApp;
-import com.example.expensetracker.utils.SharedPreferencesUtils;
-
-import timber.log.Timber;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
@@ -55,8 +51,12 @@ public class LoginFragment extends Fragment {
 
         loginViewModel.loginState.subscribe(bool -> {
             if (bool) {
+                Toast.makeText(BaseApp.context, "Authentication succeeded", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), MainActivity.class));
             }
+        }, err -> {
+            Toast.makeText(BaseApp.context, err.getMessage(), Toast.LENGTH_SHORT).show();
+
         });
     }
 }

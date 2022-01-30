@@ -22,6 +22,13 @@ public class User {
         this.avatarUri = avatarUri;
     }
 
+    public User(String fullName, String email, String phoneNumber, String avatarUri) {
+        this.fullName = fullName;
+        this.email = email;
+        this.phoneNumber = phoneNumber;
+        this.avatarUri = avatarUri;
+    }
+
     public void changeSelectedState() {
         isSelected = !isSelected;
     }

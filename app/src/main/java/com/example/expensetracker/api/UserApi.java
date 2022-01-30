@@ -1,6 +1,7 @@
 package com.example.expensetracker.api;
 
 import android.os.Build;
+import android.widget.Toast;
 
 import androidx.annotation.RequiresApi;
 
@@ -10,10 +11,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.expensetracker.model.CreateTripRequest;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.utils.BaseApp;
 import com.example.expensetracker.utils.RequestQueueHelper;
 import com.example.expensetracker.utils.SharedPreferencesUtils;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -29,6 +32,26 @@ import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class UserApi {
+
+    public static BehaviorSubject<Boolean> saveUser(User user) throws JSONException {
+        final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
+
+        String url = BaseApp.serverUrl + "/users/saveUser";
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(new Gson().toJson(user, User.class)),
+                (Response.Listener<JSONObject>) response -> {
+                    behaviorSubject.onNext(true);
+                },
+                (Response.ErrorListener) error -> {
+                    behaviorSubject.onError(error);
+                });
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
+        return behaviorSubject;
+    }
+
+
     public static BehaviorSubject<User> getUserByUserEmail(String userEmail, String token) {
         String url = BaseApp.serverUrl + "/users/userEmail=" + userEmail;
         final BehaviorSubject<User> behaviorSubject = BehaviorSubject.create();
@@ -42,9 +65,7 @@ public class UserApi {
                     behaviorSubject.onNext(user);
                     Timber.d("User retrieved successfully");
                 },
-                (Response.ErrorListener) error -> {
-
-                }) {
+                (Response.ErrorListener) behaviorSubject::onError) {
 
             @Override
             public Map<String, String> getHeaders() throws AuthFailureError {
@@ -83,12 +104,7 @@ public class UserApi {
                     ex.printStackTrace();
                 }
             }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                behaviorSubject.onError(error);
-            }
-        }) {
+        }, error -> behaviorSubject.onError(error)) {
 
 //            @Override
 //            public Map<String, String> getHeaders() throws AuthFailureError {
