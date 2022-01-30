@@ -12,6 +12,7 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
+
     <string name="shared_preferences">GeneralPreferences</string>
     <string name="user_id_shared_pref">UserId</string>
     <string name="email_shared_pref">Email</string>
@@ -30,5 +31,9 @@
     <string name="camera_permission_granted">Camera permission was granted. Starting preview.</string>
     <string name="camera_permission_denied">Camera permission request was denied.</string>
     <string name="gallery_permission_denied">Read external storage permission request was denied.</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+
 
 </resources>
