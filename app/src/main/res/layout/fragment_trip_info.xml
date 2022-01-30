@@ -26,7 +26,7 @@
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
 
     <TextView
-        android:id="@+id/fci_about_text"
+        android:id="@+id/desc_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -43,7 +43,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/fci_about_text"
+        app:layout_constraintTop_toBottomOf="@+id/desc_value"
         app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
 
     <TextView
@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView16" />
 
     <TextView
-        android:id="@+id/textView19"
+        android:id="@+id/location_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
@@ -107,7 +107,7 @@
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView19">
+        app:layout_constraintTop_toBottomOf="@+id/location_value">
 
         <ImageView
             android:id="@+id/imageView8"
@@ -118,7 +118,7 @@
             app:srcCompat="@drawable/ic_baseline_group_24" />
 
         <TextView
-            android:id="@+id/textView20"
+            android:id="@+id/nr_contributors"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
