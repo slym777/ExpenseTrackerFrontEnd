@@ -53,10 +53,11 @@ public class LoginFragment extends Fragment {
             if (bool) {
                 Toast.makeText(BaseApp.context, "Authentication succeeded", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(getActivity(), MainActivity.class));
+            } else {
+                Toast.makeText(BaseApp.context, "Authentication failed", Toast.LENGTH_SHORT).show();
             }
         }, err -> {
             Toast.makeText(BaseApp.context, err.getMessage(), Toast.LENGTH_SHORT).show();
-
         });
     }
 }
