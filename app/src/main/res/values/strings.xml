@@ -22,6 +22,8 @@
     <string name="id_token_shared_pref">IdToken</string>
     <string name="is_auth_remembered_shared_pref">IsAuthRemembered</string>
     <string name="is_account_enabled_shared_pref">IsAccountEnabled</string>
+    <string name="notif_token_shared_pref">NotificationToken</string>
+
 
 
     <string name="camera_access_required">Camera access is required to display the camera preview.</string>
