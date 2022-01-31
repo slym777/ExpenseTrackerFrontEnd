@@ -31,7 +31,6 @@ public class AddMembersFragment extends Fragment {
     private FragmentAddMembersBinding binding;
     private AddTripViewModel addTripViewModel;
     private AddMembersAdapter addMembersAdapter;
-    private SelectedUsersAdapter selectedUsersAdapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -51,7 +50,7 @@ public class AddMembersFragment extends Fragment {
         binding.famRecyclerForSelection.setAdapter(addMembersAdapter);
 
         binding.famButtonSubmit.setOnClickListener(v -> {
-            addTripViewModel.addMembers(addMembersAdapter.getSelected());
+            addTripViewModel.addMembers();
             Navigation.findNavController(view).navigate(R.id.action_navigation_add_members_to_navigation_add_trip);
         });
 

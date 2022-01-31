@@ -103,6 +103,21 @@ public class ProfileFragment extends Fragment {
             startActivity(intent);
         });
 
+        binding.addPhotoImageView.setOnClickListener(l -> {
+            String[] items = new String[]{"Camera", "Gallery"};
+
+            new MaterialAlertDialogBuilder(getContext())
+                    .setTitle("Choose your option")
+                    .setItems(items, (dialog, which) -> {
+                        if (which == 0){
+                            showCameraPreview();
+                        } else {
+                            showGalleryPreview();
+                        }
+                    }).show();
+        });
+
+
         binding.profileAvatarImageView.setOnClickListener(l -> {
             String[] items = new String[]{"Camera", "Gallery"};
 
