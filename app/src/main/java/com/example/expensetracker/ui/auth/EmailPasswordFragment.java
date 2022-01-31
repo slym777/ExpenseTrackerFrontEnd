@@ -1,8 +1,10 @@
 package com.example.expensetracker.ui.auth;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,8 +16,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.expensetracker.R;
+import com.example.expensetracker.api.PushNotificationApi;
 import com.example.expensetracker.databinding.FragmentAddEmailPasswordBinding;
 import com.example.expensetracker.utils.BaseApp;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 
 import timber.log.Timber;
 

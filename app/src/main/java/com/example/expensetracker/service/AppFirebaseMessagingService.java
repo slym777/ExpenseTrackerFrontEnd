@@ -18,7 +18,9 @@ import androidx.work.WorkManager;
 
 import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
+import com.example.expensetracker.api.PushNotificationApi;
 import com.example.expensetracker.utils.BaseApp;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class AppFirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
@@ -92,8 +94,8 @@ public class AppFirebaseMessagingService extends com.google.firebase.messaging.F
         // If you want to send messages to this application instance or
         // manage this apps subscriptions on the server side, send the
         // Instance ID token to your app server.
-        // TODO
-//        NotificationApi.updateNotificationToken(token);
+
+        PushNotificationApi.updateNotificationToken(token, SharedPreferencesUtils.getUserId());
     }
     // [END on_new_token]
 

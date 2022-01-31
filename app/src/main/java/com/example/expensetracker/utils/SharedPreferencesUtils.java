@@ -42,6 +42,10 @@ public class SharedPreferencesUtils {
         return sharedPref.getBoolean(context.getResources().getString(R.string.is_account_enabled_shared_pref), false);
     }
 
+    public static String getNotifToken() {
+        return sharedPref.getString(context.getString(R.string.notif_token_shared_pref), "");
+    }
+
     public static Boolean getIsAuthRemembered() {
         return sharedPref.getBoolean(context.getResources().getString(R.string.is_auth_remembered_shared_pref), false);
     }
@@ -62,6 +66,13 @@ public class SharedPreferencesUtils {
 
         Timber.d("Token has been written to shared preferences");
     }
+
+    public static void setNotificationToken(String token) {
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putString(context.getString(R.string.notif_token_shared_pref), token);
+        editor.apply();
+    }
+
 
     public static void setProfileDetails(Long userId, String fullName, String email, String phoneNumber, String avatarUri, String idToken) {
         SharedPreferences.Editor editor = sharedPref.edit();

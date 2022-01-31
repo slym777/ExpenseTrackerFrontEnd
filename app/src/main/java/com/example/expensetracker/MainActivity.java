@@ -11,7 +11,9 @@ import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.expensetracker.api.PushNotificationApi;
 import com.example.expensetracker.databinding.ActivityMainBinding;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -48,12 +50,15 @@ public class MainActivity extends AppCompatActivity {
 
                     // Get new Instance ID token
                     String token = task.getResult();
-                    //TODO
-//                    NotificationApi.updateNotificationToken(token);
+                    PushNotificationApi.updateNotificationToken(token, SharedPreferencesUtils.getUserId());
+
+                    if (!SharedPreferencesUtils.getNotifToken().equals(token)) {
+                        SharedPreferencesUtils.setNotificationToken(token);
+                    }
 
                     // Log and toast
                     String msg = getString(R.string.msg_token_fmt, token);
-                    Log.d("FCM_TOKEN", msg);
+                    Log.d("FCM_TOKEN updated", msg);
 //                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
                 });
 
