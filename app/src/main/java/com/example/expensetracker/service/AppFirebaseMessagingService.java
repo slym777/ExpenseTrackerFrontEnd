@@ -17,14 +17,13 @@ import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 
 import com.example.expensetracker.MainActivity;
-
 import com.example.expensetracker.R;
 import com.example.expensetracker.utils.BaseApp;
 import com.google.firebase.messaging.RemoteMessage;
 
 public class AppFirebaseMessagingService extends com.google.firebase.messaging.FirebaseMessagingService {
 
-    private static final String TAG = "MyFirebaseMsgService";
+    private static final String TAG = "AppFirebaseMessagingService";
     private static final String CHANNEL_ID = BaseApp.context.getString(R.string.default_notification_channel_id);
 
     /**

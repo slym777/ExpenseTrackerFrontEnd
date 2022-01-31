@@ -20,20 +20,21 @@ public class LoginViewModel extends ViewModel {
     public BehaviorSubject<Boolean> loginState = BehaviorSubject.create();
 
     public void login(String email, String password) {
-        AuthenticationFirebase.loginRequest(email, password).subscribe( s -> {
-            if (TextUtils.equals(s, "error")) {
+        AuthenticationFirebase.loginRequest(email, password).subscribe( token -> {
+            if (TextUtils.equals(token, "error")) {
                 loginState.onNext(false);
             } else {
-
-                UserApi.getUserByUserEmail(email, s).subscribe( user -> {
+                UserApi.getUserByUserEmail(email, token).subscribe( user -> {
                     SharedPreferencesUtils.setProfileDetails(
                             user.getId(),
                             user.getFullName(),
                             user.getEmail(),
-                            user.getAvatarUri()
+                            user.getPhoneNumber(),
+                            user.getAvatarUri(),
+                            SharedPreferencesUtils.getIdToken()
                     );
 
-                    SharedPreferencesUtils.setToken(s, true);
+                    SharedPreferencesUtils.setToken(token, true);
                     loginState.onNext(true);
                 }, err -> loginState.onError(new Throwable("Unable to reach login service")));
             }

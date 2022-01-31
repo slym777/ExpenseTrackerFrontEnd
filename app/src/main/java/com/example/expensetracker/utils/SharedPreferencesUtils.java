@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.example.expensetracker.R;
+import com.example.expensetracker.model.User;
 import com.google.firebase.auth.FirebaseUser;
 
 import timber.log.Timber;
@@ -12,6 +13,10 @@ public class SharedPreferencesUtils {
     private final static Context context = BaseApp.context;
     private final static android.content.SharedPreferences sharedPref =
             context.getSharedPreferences(context.getString(R.string.shared_preferences), Context.MODE_PRIVATE);
+
+    public static Long getUserId() {
+        return sharedPref.getLong(context.getString(R.string.user_id_shared_pref), -1L);
+    }
 
     public static String getIdToken(){
         return sharedPref.getString(context.getResources().getString(R.string.id_token_shared_pref), "No token");
@@ -23,6 +28,10 @@ public class SharedPreferencesUtils {
 
     public static String getUsername(){
         return sharedPref.getString(context.getResources().getString(R.string.username_shared_pref), "");
+    }
+
+    public static String getPhoneNumber(){
+        return sharedPref.getString(context.getResources().getString(R.string.phonenumber_shared_pref), "");
     }
 
     public static String getEmail(){
@@ -54,15 +63,29 @@ public class SharedPreferencesUtils {
         Timber.d("Token has been written to shared preferences");
     }
 
-    public static void setProfileDetails(Long userId, String fullName, String email, String idToken) {
+    public static void setProfileDetails(Long userId, String fullName, String email, String phoneNumber, String avatarUri, String idToken) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(context.getString(R.string.user_id_shared_pref), userId);
         editor.putString(context.getString(R.string.email_shared_pref), email);
         editor.putString(context.getString(R.string.fullname_shared_pref), fullName);
+        editor.putString(context.getString(R.string.phonenumber_shared_pref), phoneNumber);
         editor.putString(context.getString(R.string.id_token_shared_pref), idToken);
+        editor.putString(context.getString(R.string.avatar_uri_shared_pref), avatarUri);
 
         editor.apply();
         Timber.d("Profile details has been written to shared preferences");
+    }
+
+    public static User getProfileDetails() {
+        User user = new User();
+        user.setId(sharedPref.getLong(context.getString(R.string.user_id_shared_pref), -1L));
+        user.setEmail(sharedPref.getString(context.getString(R.string.email_shared_pref), ""));
+        user.setFullName(sharedPref.getString(context.getString(R.string.fullname_shared_pref), ""));
+        user.setPhoneNumber(sharedPref.getString(context.getString(R.string.phonenumber_shared_pref), ""));
+        user.setAvatarUri(sharedPref.getString(context.getString(R.string.avatar_uri_shared_pref), ""));
+
+        Timber.d("Profile details have been retrieved.");
+        return user;
     }
 
     public static void clearProfileDetails() {

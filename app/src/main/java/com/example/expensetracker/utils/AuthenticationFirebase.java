@@ -2,17 +2,14 @@ package com.example.expensetracker.utils;
 
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.expensetracker.model.User;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
+import com.google.firebase.auth.EmailAuthCredential;
+import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GetTokenResult;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
@@ -34,11 +31,11 @@ public class AuthenticationFirebase {
                                 String token = task1.getResult().getToken();
                                 behaviorSubject.onNext(token);
                             } else {
-                                behaviorSubject.onError(task.getException());
+                                behaviorSubject.onNext("error");
                             }
                         });
                     } else {
-                        behaviorSubject.onError(task.getException());
+                        behaviorSubject.onNext("error");
                     }
                 });
 
@@ -86,6 +83,47 @@ public class AuthenticationFirebase {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         user.delete().addOnCompleteListener( task -> {
+            if (task.isSuccessful()) {
+                behaviorSubject.onNext(true);
+            } else {
+                Toast.makeText(BaseApp.context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                behaviorSubject.onNext(false);
+            }
+        });
+
+        return behaviorSubject;
+    }
+
+    public static BehaviorSubject<Boolean> updatePassword(String currentPassword, String newPassword) {
+        final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        AuthCredential credential = EmailAuthProvider.getCredential(user.getEmail(), currentPassword);
+        user.reauthenticate(credential)
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
+                        user.updatePassword(newPassword).addOnCompleteListener(task1 -> {
+                            if (task1.isSuccessful()) {
+                                behaviorSubject.onNext(true);
+                            } else {
+                                Toast.makeText(BaseApp.context, task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                behaviorSubject.onNext(false);
+                            }
+                        });
+                    } else {
+                        Toast.makeText(BaseApp.context, task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                        behaviorSubject.onNext(false);
+                    }
+                });
+
+        return behaviorSubject;
+    }
+
+    public static BehaviorSubject<Boolean> updateEmail(String email) {
+        final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
+        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.updateEmail(email).addOnCompleteListener(task -> {
             if (task.isSuccessful()) {
                 behaviorSubject.onNext(true);
             } else {

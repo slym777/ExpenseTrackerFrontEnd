@@ -45,7 +45,45 @@ public class UserApi {
                 },
                 (Response.ErrorListener) error -> {
                     behaviorSubject.onError(error);
-                });
+                }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                return params;
+//            }
+        };
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
+        return behaviorSubject;
+    }
+
+    public static BehaviorSubject<User> updateUser(User user) throws JSONException {
+        final BehaviorSubject<User> behaviorSubject = BehaviorSubject.create();
+
+        String url = BaseApp.serverUrl + "/users/edit/userId=" + user.getId();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url,
+                new JSONObject(new Gson().toJson(user, User.class)),
+                (Response.Listener<JSONObject>) response -> {
+                    Gson gson = new Gson();
+                    User updatedUser = gson.fromJson(response.toString(), User.class);
+                    behaviorSubject.onNext(updatedUser);
+                },
+                (Response.ErrorListener) error -> {
+                    behaviorSubject.onError(error);
+                }) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                return params;
+//            }
+        };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
         return behaviorSubject;
@@ -67,14 +105,14 @@ public class UserApi {
                 },
                 (Response.ErrorListener) behaviorSubject::onError) {
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String, String> params = new HashMap<>();
-                params.put("Content-Type", "application/json; charset=UTF-8");
-                params.put("Authorization", "Bearer " + token);
-                Timber.d("retrieved token is " + token);
-                return params;
-            }
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + token);
+//                Timber.d("retrieved token is " + token);
+//                return params;
+//            }
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
@@ -117,7 +155,6 @@ public class UserApi {
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonArrayRequest);
-
         return behaviorSubject;
     }
 }

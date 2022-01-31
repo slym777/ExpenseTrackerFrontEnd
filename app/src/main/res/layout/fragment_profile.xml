@@ -4,304 +4,248 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/profile_avatar_imageView"
+        android:layout_width="200dp"
+        android:layout_height="200dp"
+        android:layout_marginTop="24dp"
+        android:src="@drawable/default_user_avatar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+    <ProgressBar
+        android:id="@+id/loading_progressBar"
+        style="@style/Widget.AppCompat.ProgressBar"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:indeterminate="true"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@+id/profile_avatar_imageView"
+        app:layout_constraintTop_toTopOf="@+id/profile_avatar_imageView"
+        app:layout_constraintBottom_toBottomOf="@+id/profile_avatar_imageView"
+        app:layout_constraintEnd_toEndOf="@+id/profile_avatar_imageView" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/first_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/profile_avatar_imageView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/firstName_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/calibri"
+            android:hint="First name"
+            android:enabled="false"
+            android:maxLines="1"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/last_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="40dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/first_name"
+        app:layout_constraintTop_toBottomOf="@+id/profile_avatar_imageView">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/lastName_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/calibri"
+            android:hint="Last name"
+            android:enabled="false"
+            android:maxLines="1"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/email"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/first_name">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/email_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/calibri"
+            android:hint="Email address"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/phonenumber"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginEnd="40dp"
+        android:layout_marginTop="10dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/email">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phonenumber_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/calibri"
+            android:hint="Phone number"
+            android:inputType="phone"
+            android:digits="0123456789+"
+            android:maxLines="1"
+            android:textSize="16sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <View
+        android:id="@+id/settings_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="36dp"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phonenumber" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/settings_change_password_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginEnd="40dp"
+        android:background="@drawable/circular_button_blue"
+        android:padding="4dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_line">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_marginStart="24dp"
+            android:src="@drawable/password_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <TextView
+            android:id="@+id/settings_change_password_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="48dp"
+            android:text="Change password"
+            android:textSize="18sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/imageView4"
+            app:layout_constraintTop_toTopOf="@+id/settings_change_password_button" />
+
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_marginEnd="16dp"
+            android:src="@drawable/right_arrow_icon"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--        android:id="@+id/new_password"-->
+<!--        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginStart="40dp"-->
+<!--        android:layout_marginEnd="40dp"-->
+<!--        android:layout_marginTop="10dp"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@+id/phonenumber">-->
+
+<!--        <com.google.android.material.textfield.TextInputEditText-->
+<!--            android:id="@+id/new_password_editText"-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:fontFamily="@font/calibri"-->
+<!--            android:hint="New password"-->
+<!--            android:inputType="textPassword"-->
+<!--            android:maxLines="1"-->
+<!--            android:textSize="16sp" />-->
+<!--    </com.google.android.material.textfield.TextInputLayout>-->
+
+<!--    <com.google.android.material.textfield.TextInputLayout-->
+<!--    android:id="@+id/new_confirm_password"-->
+<!--    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="wrap_content"-->
+<!--    android:layout_marginStart="40dp"-->
+<!--    android:layout_marginEnd="40dp"-->
+<!--    android:layout_marginTop="10dp"-->
+<!--    app:layout_constraintStart_toStartOf="parent"-->
+<!--    app:layout_constraintEnd_toEndOf="parent"-->
+<!--    app:layout_constraintTop_toBottomOf="@+id/new_password">-->
+
+<!--    <com.google.android.material.textfield.TextInputEditText-->
+<!--        android:id="@+id/new_confirm_password_editText"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:fontFamily="@font/calibri"-->
+<!--        android:hint="Confirm new password"-->
+<!--        android:inputType="textPassword"-->
+<!--        android:maxLines="1"-->
+<!--        android:textSize="16sp" />-->
+<!--</com.google.android.material.textfield.TextInputLayout>-->
+
+    <Button
+        android:id="@+id/fp_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="48dp"
+        android:text="Save changes"
+        android:enabled="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_change_password_button" />
 
     <Button
         android:id="@+id/fp_signout_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="48dp"
-        android:layout_marginBottom="48dp"
         android:text="Sign Out"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/settings_change_password_button" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
-
-<!--    <ScrollView-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="match_parent"-->
-<!--        tools:layout_editor_absoluteX="0dp"-->
-<!--        tools:layout_editor_absoluteY="-127dp">-->
-
-<!--        <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--            android:layout_width="match_parent"-->
-<!--            android:layout_height="match_parent"-->
-<!--            tools:context=".ui.profile.ProfileFragment">-->
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:id="@+id/cardView3"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="150dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="24dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:gravity="center"-->
-<!--                app:cardBackgroundColor="@color/lightgrey"-->
-<!--                app:cardCornerRadius="6dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toTopOf="parent">-->
-
-<!--                <androidx.constraintlayout.widget.ConstraintLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="match_parent">-->
-
-<!--                    <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                        android:id="@+id/initialsCircleImageView"-->
-<!--                        android:layout_width="120dp"-->
-<!--                        android:layout_height="120dp"-->
-<!--                        android:layout_marginStart="32dp"-->
-<!--                        app:civ_circle_background_color="@color/colorAccent"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintStart_toStartOf="parent"-->
-<!--                        app:layout_constraintTop_toTopOf="parent"-->
-<!--                        android:src="@drawable/default_user_avatar"-->
-<!--                        app:textFont="@font/montserrat_bold"-->
-<!--                        app:textSize="30sp" />-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/accEmail"-->
-<!--                        style="@style/default_text"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_marginStart="48dp"-->
-<!--                        android:text="Darii Dan"-->
-<!--                        android:textSize="24sp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintHorizontal_bias="0.29"-->
-<!--                        app:layout_constraintStart_toEndOf="@+id/initialsCircleImageView"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--            </androidx.cardview.widget.CardView>&ndash;&gt;-->
-
-<!--            <View-->
-<!--                android:id="@+id/settings_line_2"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:background="@android:color/darker_gray"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/cardView3" />-->
-
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:id="@+id/cardView4"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                app:cardBackgroundColor="@color/lightgrey"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/settings_line_2">-->
-
-<!--                <LinearLayout-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="wrap_content"-->
-<!--                    android:layout_marginStart="10dp"-->
-<!--                    android:orientation="vertical"-->
-<!--                    app:cardCornerRadius="6dp"-->
-<!--                    app:layout_constraintEnd_toEndOf="parent"-->
-<!--                    app:layout_constraintStart_toStartOf="parent"-->
-<!--                    app:layout_constraintTop_toBottomOf="@+id/cardView3">-->
-
-<!--                    <TextView-->
-<!--                        android:id="@+id/achievements"-->
-<!--                        style="@style/default_text"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:text="Achievements"-->
-<!--                        android:textSize="24sp"-->
-<!--                        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--                        app:layout_constraintEnd_toEndOf="parent"-->
-<!--                        app:layout_constraintStart_toEndOf="@+id/initialsCircleImageView"-->
-<!--                        app:layout_constraintTop_toTopOf="parent" />-->
-
-<!--                    <HorizontalScrollView-->
-<!--                        android:layout_width="fill_parent"-->
-<!--                        android:layout_height="wrap_content"-->
-<!--                        android:layout_alignParentTop="true"-->
-<!--                        android:fillViewport="true"-->
-<!--                        android:measureAllChildren="false"-->
-<!--                        android:scrollbars="none">-->
-
-<!--                        <LinearLayout-->
-<!--                            android:id="@+id/innerLay"-->
-<!--                            android:layout_width="match_parent"-->
-<!--                            android:layout_height="match_parent"-->
-<!--                            android:gravity="center_vertical"-->
-<!--                            android:orientation="horizontal"-->
-<!--                            android:padding="8dp">-->
-
-<!--                            <LinearLayout-->
-<!--                                android:id="@+id/achievement_1"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:gravity="center"-->
-<!--                                android:orientation="vertical"-->
-<!--                                android:paddingRight="24dp">-->
-
-<!--                                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                    android:layout_width="60dp"-->
-<!--                                    android:layout_height="60dp"-->
-<!--                                    android:src="@drawable/medal" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:layout_alignParentBottom="true"-->
-<!--                                    android:text="Regular User"-->
-<!--                                    android:textSize="12sp" />-->
-
-<!--                            </LinearLayout>-->
-
-<!--                            <LinearLayout-->
-<!--                                android:id="@+id/achievement_2"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:gravity="center"-->
-<!--                                android:orientation="vertical"-->
-<!--                                android:paddingRight="24dp">-->
-
-<!--                                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                    android:layout_width="53dp"-->
-<!--                                    android:layout_height="60dp"-->
-<!--                                    android:src="@drawable/grad" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:layout_alignParentBottom="true"-->
-<!--                                    android:text="Graduate"-->
-<!--                                    android:textSize="12sp" />-->
-
-<!--                            </LinearLayout>-->
-
-<!--                            <LinearLayout-->
-<!--                                android:id="@+id/achievement_3"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:gravity="center"-->
-<!--                                android:orientation="vertical"-->
-<!--                                android:paddingRight="24dp">-->
-
-<!--                                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                    android:layout_width="60dp"-->
-<!--                                    android:layout_height="60dp"-->
-<!--                                    android:src="@drawable/cup" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:layout_alignParentBottom="true"-->
-<!--                                    android:text="Computer Master"-->
-<!--                                    android:textSize="12sp" />-->
-
-<!--                            </LinearLayout>-->
-
-
-<!--                            <LinearLayout-->
-<!--                                android:id="@+id/achievement_4"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:gravity="center"-->
-<!--                                android:orientation="vertical"-->
-<!--                                android:paddingRight="24dp">-->
-
-<!--                                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                    android:layout_width="60dp"-->
-<!--                                    android:layout_height="60dp"-->
-<!--                                    android:src="@drawable/badge" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:layout_alignParentBottom="true"-->
-<!--                                    android:text="Distinct Student"-->
-<!--                                    android:textSize="12sp" />-->
-
-<!--                            </LinearLayout>-->
-
-
-<!--                            <LinearLayout-->
-<!--                                android:id="@+id/achievement_5"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:gravity="center"-->
-<!--                                android:orientation="vertical"-->
-<!--                                android:paddingRight="24dp">-->
-
-<!--                                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                    android:layout_width="60dp"-->
-<!--                                    android:layout_height="60dp"-->
-<!--                                    android:src="@drawable/critic" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:layout_alignParentBottom="true"-->
-<!--                                    android:text="Critic"-->
-<!--                                    android:textSize="12sp" />-->
-
-<!--                            </LinearLayout>-->
-
-<!--                            <LinearLayout-->
-<!--                                android:id="@+id/achievement_6"-->
-<!--                                android:layout_width="wrap_content"-->
-<!--                                android:layout_height="match_parent"-->
-<!--                                android:gravity="center"-->
-<!--                                android:orientation="vertical"-->
-<!--                                android:paddingRight="24dp">-->
-
-<!--                                <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                                    android:layout_width="60dp"-->
-<!--                                    android:layout_height="60dp"-->
-<!--                                    android:src="@drawable/disc" />-->
-
-<!--                                <TextView-->
-<!--                                    android:layout_width="wrap_content"-->
-<!--                                    android:layout_height="wrap_content"-->
-<!--                                    android:layout_alignParentBottom="true"-->
-<!--                                    android:text="Disciplined"-->
-<!--                                    android:textSize="12sp" />-->
-
-<!--                            </LinearLayout>-->
-<!--                        </LinearLayout>-->
-<!--                    </HorizontalScrollView>-->
-
-<!--                </LinearLayout>-->
-<!--            </androidx.cardview.widget.CardView>-->
-
-<!--            <View-->
-<!--                android:id="@+id/settings_line_3"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="1dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:background="@android:color/darker_gray"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/cardView4" />-->
-
-<!--            <androidx.cardview.widget.CardView-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="380dp"-->
-<!--                android:layout_marginStart="16dp"-->
-<!--                android:layout_marginTop="16dp"-->
-<!--                android:layout_marginEnd="16dp"-->
-<!--                android:padding="16dp"-->
-<!--                app:cardBackgroundColor="@color/lightgrey"-->
-<!--                app:cardCornerRadius="6dp"-->
-<!--                app:layout_constraintEnd_toEndOf="parent"-->
-<!--                app:layout_constraintStart_toStartOf="parent"-->
-<!--                app:layout_constraintTop_toBottomOf="@+id/settings_line_3">-->
-
-<!--            </androidx.cardview.widget.CardView>-->
-
-<!--        </androidx.constraintlayout.widget.ConstraintLayout>-->
-
-<!--    </ScrollView>-->
