@@ -20,8 +20,13 @@
     <fragment
         android:id="@+id/navigation_profile"
         android:name="com.example.expensetracker.ui.profile.ProfileFragment"
-        android:label="Profile"
+        android:label="@string/title_profile"
         tools:layout="@layout/fragment_profile" />
 
+    <fragment
+        android:id="@+id/navigation_notifications"
+        android:name="com.example.expensetracker.ui.notifications.NotificationsFragment"
+        android:label="@string/title_notifications"
+        tools:layout="@layout/fragment_notifications" />
 
 </navigation>

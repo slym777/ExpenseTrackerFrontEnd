@@ -75,14 +75,17 @@ public class AddTripFragment extends Fragment implements OnClickRemoveSelectedUs
         );
 
         binding.fatTripNameText.setText(addTripViewModel.name);
-        binding.fatTripDescText.setText(addTripViewModel.name);
-        binding.fatTripLocationText.setText(addTripViewModel.name);
+        binding.fatTripDescText.setText(addTripViewModel.description);
+        binding.fatTripLocationText.setText(addTripViewModel.location);
         if (!TextUtils.isEmpty(addTripViewModel.avatarUri)) {
             Glide.with(BaseApp.context)
                     .load(addTripViewModel.avatarUri)
                     .centerCrop()
                     .placeholder(R.drawable.progress_animation)
                     .into(binding.tripAvatarImageView);
+        } else {
+            Glide.with(BaseApp.context).clear(binding.tripAvatarImageView);
+            binding.tripAvatarImageView.setImageResource(R.drawable.default_trip_back);
         }
 
         selectedUsersAdapter = new SelectedUsersAdapter(new ArrayList<>(), this);
@@ -131,7 +134,7 @@ public class AddTripFragment extends Fragment implements OnClickRemoveSelectedUs
         binding.buttonAddTrip.setOnClickListener(v -> {
             try {
                 addTripViewModel.createTrip(binding.fatTripNameText.getText().toString(),
-                        binding.fatTripDescText.getText().toString(), "",
+                        binding.fatTripDescText.getText().toString(), addTripViewModel.avatarUri,
                         binding.fatTripLocationText.getText().toString())
                         .subscribe(bool -> {
                             Timber.d("Added new friends");

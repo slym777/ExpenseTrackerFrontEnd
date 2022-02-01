@@ -3,6 +3,7 @@
     <string name="title_trips">Trips</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_profile">Profile</string>
+    <string name="title_notifications">Notifications</string>
     <string name="title_activity_authentication">AuthenticationActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>

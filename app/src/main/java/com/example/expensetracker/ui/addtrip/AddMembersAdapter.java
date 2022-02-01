@@ -76,6 +76,9 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Us
                         .centerCrop()
                         .placeholder(R.drawable.progress_animation)
                         .into(binding.vsuUserAvatar);
+            }  else {
+                Glide.with(BaseApp.context).clear(binding.vsuUserAvatar);
+                binding.vsuUserAvatar.setImageResource(R.drawable.default_user_avatar);
             }
 
             binding.vsuUserCard.setOnClickListener(v -> {

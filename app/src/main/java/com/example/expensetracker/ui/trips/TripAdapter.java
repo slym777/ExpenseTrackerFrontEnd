@@ -55,6 +55,9 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
                     .centerCrop()
                     .placeholder(R.drawable.progress_animation)
                     .into(holder.binding.vtTripAvatar);
+        } else {
+            Glide.with(BaseApp.context).clear(holder.binding.vtTripAvatar);
+            holder.binding.vtTripAvatar.setImageResource(R.drawable.default_trip_back);
         }
     }
 

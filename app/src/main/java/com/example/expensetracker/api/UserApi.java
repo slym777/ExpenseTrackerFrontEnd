@@ -12,6 +12,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.expensetracker.model.CreateTripRequest;
+import com.example.expensetracker.model.Notification;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.utils.BaseApp;
 import com.example.expensetracker.utils.RequestQueueHelper;
@@ -141,6 +142,41 @@ public class UserApi {
                 } catch (JSONException ex) {
                     ex.printStackTrace();
                 }
+            }
+        }, error -> behaviorSubject.onError(error)) {
+
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                return params;
+//            }
+        };
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonArrayRequest);
+        return behaviorSubject;
+    }
+
+    public static BehaviorSubject<List<Notification>> getListOfNotifications() {
+        String url = BaseApp.serverUrl + "/users/" + SharedPreferencesUtils.getUserId() + "/getNotifications";
+
+        final BehaviorSubject<List<Notification>> behaviorSubject = BehaviorSubject.create();
+
+        JsonArrayRequest jsonArrayRequest  = new JsonArrayRequest(Request.Method.GET, url, null, response -> {
+            Gson gson = new Gson();
+            List<Notification> notifications = new ArrayList<>();
+            try {
+                for (int index = 0; index < response.length(); index++) {
+                    Notification notification = gson.fromJson(response.getJSONObject(index).toString(), Notification.class);
+                    notifications.add(notification);
+                }
+                behaviorSubject.onNext(notifications);
+                Timber.d("Notifications retrieved successfully");
+
+            } catch (JSONException ex) {
+                ex.printStackTrace();
             }
         }, error -> behaviorSubject.onError(error)) {
 
