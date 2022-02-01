@@ -49,20 +49,18 @@ public class ViewExpenseFragment extends Fragment {
             binding.amountValue.setText(expense.getAmount() + "$");
             binding.typeValue.setText(expense.getType().name());
             binding.descValue.setText(expense.getDescription());
-//            if (!TextUtils.isEmpty(expense.getTrip.getAvatar)) {
-//                Glide.with(BaseApp.context)
-//                        .load(expense.getTrip.getAvatar)
-//                        .centerCrop()
-//                        .placeholder(R.drawable.progress_animation)
-//                        .into(binding.tripAvatar);
-//            }
+
             if (!TextUtils.isEmpty(expense.getDebtor().getAvatarUri())) {
                 Glide.with(BaseApp.context)
                         .load(expense.getDebtor().getAvatarUri())
                         .centerCrop()
                         .placeholder(R.drawable.progress_animation)
                         .into(binding.debtorAvatar);
+            } else {
+                Glide.with(BaseApp.context).clear(binding.debtorAvatar);
+                binding.debtorAvatar.setImageResource(R.drawable.default_user_avatar);
             }
+
             if (expense.getCreditors() != null && expense.getCreditors().size() != 0) {
                 binding.nrContributors.setText(expense.getCreditors().size());
             } else {

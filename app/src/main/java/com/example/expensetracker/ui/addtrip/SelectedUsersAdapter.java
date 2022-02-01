@@ -76,6 +76,9 @@ public class SelectedUsersAdapter extends RecyclerView.Adapter<SelectedUsersAdap
                         .centerCrop()
                         .placeholder(R.drawable.progress_animation)
                         .into(binding.userAvatar);
+            } else {
+                Glide.with(BaseApp.context).clear(binding.userAvatar);
+                binding.userAvatar.setImageResource(R.drawable.default_user_avatar);
             }
         }
     }

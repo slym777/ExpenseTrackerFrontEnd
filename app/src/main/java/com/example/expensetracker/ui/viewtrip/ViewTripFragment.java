@@ -68,6 +68,9 @@ public class ViewTripFragment extends Fragment {
                         .centerCrop()
                         .placeholder(R.drawable.progress_animation)
                         .into(binding.tripAvatar);
+            } else {
+                Glide.with(BaseApp.context).clear(binding.tripAvatar);
+                binding.tripAvatar.setImageResource(R.drawable.default_trip_back);
             }
         });
 

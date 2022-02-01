@@ -89,6 +89,9 @@ public class ProfileFragment extends Fragment {
                     .centerCrop()
                     .placeholder(R.drawable.progress_animation)
                     .into(binding.profileAvatarImageView);
+        } else {
+            Glide.with(BaseApp.context).clear(binding.profileAvatarImageView);
+            binding.profileAvatarImageView.setImageResource(R.drawable.default_user_avatar);
         }
 
         addTextChangedListener(binding.emailEditText);
