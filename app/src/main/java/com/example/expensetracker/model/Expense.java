@@ -1,6 +1,7 @@
 package com.example.expensetracker.model;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class Expense {
@@ -17,6 +18,8 @@ public class Expense {
     private List<User> creditors = new ArrayList<>();
 
     private Boolean isGroupExpense;
+
+    private Date createdDate;
 
     public Expense(Long id, String description, ExpenseType type, Double amount, User debtor, List<User> creditors, Boolean isGroupExpense) {
         this.id = id;
@@ -85,6 +88,22 @@ public class Expense {
 
     public void setIsGroupExpense(Boolean groupExpense) {
         isGroupExpense = groupExpense;
+    }
+
+    public Boolean getGroupExpense() {
+        return isGroupExpense;
+    }
+
+    public void setGroupExpense(Boolean groupExpense) {
+        isGroupExpense = groupExpense;
+    }
+
+    public Date getCreatedDate() {
+        return createdDate;
+    }
+
+    public void setCreatedDate(Date createdDate) {
+        this.createdDate = createdDate;
     }
 }
 

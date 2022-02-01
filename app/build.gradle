@@ -74,13 +74,16 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
     //Levenshtein
     implementation 'org.apache.commons:commons-lang3:3.7'
-//    //Circle Image View
+    //Circle Image View
     implementation 'de.hdodenhof:circleimageview:3.1.0'
-    //Firebase
+    //Firebase services
     implementation platform('com.google.firebase:firebase-bom:29.0.4')
     implementation 'com.google.firebase:firebase-auth'
     implementation 'com.google.firebase:firebase-storage'
     implementation 'com.google.firebase:firebase-messaging'
+    //WorkManager
     implementation "androidx.work:work-runtime:2.7.1"
+    //Charts
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
 
 }
