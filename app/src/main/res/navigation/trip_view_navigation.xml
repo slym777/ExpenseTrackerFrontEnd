@@ -29,7 +29,10 @@
             android:defaultValue="-1L" />
         <action
             android:id="@+id/action_navigation_expense_view_to_navigation_trip_view"
-            app:destination="@id/navigation_trip_view" />
+            app:destination="@id/navigation_trip_view"
+            app:launchSingleTop="false"
+            app:popUpTo="@id/navigation_trip_view"
+            app:popUpToInclusive="true" />
     </fragment>
 
     <fragment
@@ -39,7 +42,9 @@
         tools:layout="@layout/fragment_edit_trip" >
         <action
             android:id="@+id/action_navigation_edit_trip_view_to_navigation_trip_view"
-            app:destination="@id/navigation_trip_view" />
+            app:destination="@id/navigation_trip_view"
+            app:popUpTo="@id/navigation_trip_view"
+            app:popUpToInclusive="true" />
         <action
             android:id="@+id/action_navigation_edit_trip_view_to_navigation_add_member_view"
             app:destination="@id/navigation_add_member_view" />
@@ -52,7 +57,9 @@
         tools:layout="@layout/fragment_add_members" >
         <action
             android:id="@+id/action_navigation_add_member_view_to_navigation_edit_trip_view"
-            app:destination="@id/navigation_edit_trip_view" />
+            app:destination="@id/navigation_edit_trip_view"
+            app:popUpTo="@id/navigation_edit_trip_view"
+            app:popUpToInclusive="true" />
     </fragment>
 
 </navigation>

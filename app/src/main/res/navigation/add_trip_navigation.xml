@@ -12,7 +12,7 @@
         tools:layout="@layout/fragment_add_trip" >
         <action
             android:id="@+id/action_navigation_add_trip_to_navigation_add_members"
-            app:destination="@id/navigation_add_member_view" />
+            app:destination="@id/navigation_add_member_view"/>
     </fragment>
 
     <fragment
@@ -22,7 +22,9 @@
         tools:layout="@layout/fragment_add_members" >
         <action
             android:id="@+id/action_navigation_add_members_to_navigation_add_trip"
-            app:destination="@id/navigation_add_trip" />
+            app:destination="@id/navigation_add_trip"
+            app:popUpTo="@id/navigation_add_trip"
+            app:popUpToInclusive="true" />
     </fragment>
 
 

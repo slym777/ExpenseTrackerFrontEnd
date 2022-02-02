@@ -12,10 +12,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.expensetracker.databinding.FragmentPersonalExpenseBinding;
 import com.example.expensetracker.ui.viewtrip.OnClickExpenseListener;
+import com.example.expensetracker.ui.viewtrip.ViewTripFragmentDirections;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
@@ -85,7 +87,10 @@ public class PersonalExpensesFragment extends Fragment implements OnClickExpense
 
     @Override
     public void onGroupExpenseClick(Long expenseId) {
-
+        ViewTripFragmentDirections.ActionNavigationTripViewToNavigationExpenseView action =
+                ViewTripFragmentDirections.actionNavigationTripViewToNavigationExpenseView();
+        action.setExpenseId(expenseId);
+        Navigation.findNavController(getView()).navigate(action);
     }
 
 
