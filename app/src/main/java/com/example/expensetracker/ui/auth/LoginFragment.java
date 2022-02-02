@@ -17,7 +17,9 @@ import androidx.navigation.Navigation;
 import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentLoginBinding;
+import com.example.expensetracker.ui.IntroSlider;
 import com.example.expensetracker.utils.BaseApp;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 
 public class LoginFragment extends Fragment {
     private FragmentLoginBinding binding;
@@ -52,7 +54,10 @@ public class LoginFragment extends Fragment {
         loginViewModel.loginState.subscribe(bool -> {
             if (bool) {
                 Toast.makeText(BaseApp.context, "Authentication succeeded", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(getActivity(), MainActivity.class));
+                if (SharedPreferencesUtils.getFirstAccess())
+                    startActivity(new Intent(getActivity(), IntroSlider.class));
+                else
+                    startActivity(new Intent(getActivity(), MainActivity.class));
             } else {
                 Toast.makeText(BaseApp.context, "Authentication failed", Toast.LENGTH_SHORT).show();
             }

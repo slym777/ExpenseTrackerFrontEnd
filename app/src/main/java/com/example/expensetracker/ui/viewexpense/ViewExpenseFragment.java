@@ -12,13 +12,17 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.bumptech.glide.Glide;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentExpenseViewBinding;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.ui.viewtrip.tripinfo.TripMembersAdapter;
 import com.example.expensetracker.utils.BaseApp;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+
+import java.util.ArrayList;
 
 import timber.log.Timber;
 
@@ -26,6 +30,8 @@ public class ViewExpenseFragment extends Fragment {
 
     private FragmentExpenseViewBinding binding;
     private ExpenseViewModel expenseViewModel;
+    private ExpenseMembersAdapter expenseMembersAdapter;
+    private Boolean isMemberListExpanded;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -46,6 +52,25 @@ public class ViewExpenseFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        binding.membersRecyclerView.setHasFixedSize(true);
+        binding.membersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        expenseMembersAdapter = new ExpenseMembersAdapter(new ArrayList<>());
+        binding.membersRecyclerView.setAdapter(expenseMembersAdapter);
+
+        isMemberListExpanded = false;
+
+        binding.memberListExpand.setOnClickListener(v -> {
+            if (isMemberListExpanded) {
+                binding.membersRecyclerView.setVisibility(View.VISIBLE);
+                binding.imageExpand.setImageDrawable(getResources().getDrawable(R.drawable.expand2_icon));
+                isMemberListExpanded = false;
+            } else {
+                binding.membersRecyclerView.setVisibility(View.GONE);
+                binding.imageExpand.setImageDrawable(getResources().getDrawable(R.drawable.expand_icon));
+                isMemberListExpanded = true;
+            }
+        });
+
         expenseViewModel.expenseLive.observe(getViewLifecycleOwner(), expense -> {
 
             if (expense.getIsGroupExpense()) {
@@ -63,6 +88,8 @@ public class ViewExpenseFragment extends Fragment {
                     .show();
         });
 
+
+
     }
 
     private void setGroupExpBinding(Expense expense) {
@@ -75,11 +102,12 @@ public class ViewExpenseFragment extends Fragment {
         binding.debtorName.setVisibility(View.VISIBLE);
         binding.debtorText.setVisibility(View.VISIBLE);
 
-        binding.ftiMemberList.setVisibility(View.VISIBLE);
+        binding.memberListExpand.setVisibility(View.VISIBLE);
 
-        binding.totalAmountValue.setText(expense.getAmount() + "$");
+        binding.totalAmountText.setText("Total Amount");
+        binding.totalAmountValue.setText(String.format("%.2f $", expense.getAmount()));
         Double perEachAmount = expense.getAmount() / (expense.getCreditors().size() == 0 ? 1d : (double) expense.getCreditors().size());
-        binding.eachAmountValue.setText(perEachAmount.toString() + "$");
+        binding.eachAmountValue.setText(String.format("%.2f $", perEachAmount));
         binding.typeValue.setText(expense.getType().name());
         binding.descValue.setText(expense.getDescription());
 
@@ -95,10 +123,12 @@ public class ViewExpenseFragment extends Fragment {
         }
 
         if (expense.getCreditors() != null && expense.getCreditors().size() != 0) {
-            binding.nrContributors.setText(expense.getCreditors().size());
+            binding.nrContributors.setText(String.format("%d", expense.getCreditors().size()));
         } else {
             binding.nrContributors.setText("0");
         }
+
+        expenseMembersAdapter.updateRecyclerView(expense.getCreditors());
 
     }
 
@@ -112,7 +142,7 @@ public class ViewExpenseFragment extends Fragment {
         binding.debtorName.setVisibility(View.GONE);
         binding.debtorText.setVisibility(View.GONE);
 
-        binding.ftiMemberList.setVisibility(View.GONE);
+        binding.memberListExpand.setVisibility(View.GONE);
 
         binding.totalAmountText.setText("You paid");
         binding.totalAmountValue.setText(expense.getAmount() + "$");

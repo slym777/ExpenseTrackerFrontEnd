@@ -92,9 +92,6 @@ public class SignUpFragment extends Fragment {
         binding.fsSignupGalleryButton.setOnClickListener(l -> {
             showGalleryPreview();
         });
-
-
-        // TODO: deal with avatar (select photo & save in firebase database)
     }
 
     @Override

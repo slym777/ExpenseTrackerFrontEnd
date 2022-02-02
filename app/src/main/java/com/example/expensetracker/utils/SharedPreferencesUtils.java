@@ -112,4 +112,15 @@ public class SharedPreferencesUtils {
         editor.apply();
         Timber.d("Profile details has been removed from shared preferences.");
     }
+
+    public static void setFirstAccess(){
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean(context.getResources().getString(R.string.firstAccess_sharedPref), false);
+        editor.commit();
+    }
+
+    public static Boolean getFirstAccess(){
+        boolean firstAccess = sharedPref.getBoolean(context.getResources().getString(R.string.firstAccess_sharedPref), true);
+        return firstAccess;
+    }
 }

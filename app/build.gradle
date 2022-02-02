@@ -85,5 +85,7 @@ dependencies {
     implementation "androidx.work:work-runtime:2.7.1"
     //Charts
     implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    //AppIntro
+    implementation 'com.github.AppIntro:AppIntro:5.1.0'
 
 }
