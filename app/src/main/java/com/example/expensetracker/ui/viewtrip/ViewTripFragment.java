@@ -63,7 +63,8 @@ public class ViewTripFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        pagerAdapter = new ViewTripPagerAdapter(getActivity().getSupportFragmentManager(), tripInfoViewModel.tripId);
+        pagerAdapter = new ViewTripPagerAdapter(getChildFragmentManager()
+                , tripInfoViewModel.tripId);
         binding.viewpager.setAdapter(pagerAdapter);
         binding.tabLayout.setupWithViewPager(binding.viewpager);
         binding.viewpager.setCurrentItem(0);
@@ -108,7 +109,7 @@ public class ViewTripFragment extends Fragment {
         private List<Fragment> fragments = new ArrayList<>();
 
         public ViewTripPagerAdapter(@NonNull FragmentManager fm, Long tripId) {
-            super(fm);
+            super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             fragments.add(new GroupExpensesFragment(tripId));
             fragments.add(new PersonalExpensesFragment(tripId));
             fragments.add(new TripInfoFragment(tripId));
@@ -132,7 +133,7 @@ public class ViewTripFragment extends Fragment {
                 case 0: return "Group Expenses";
                 case 1: return "Personal Expenses";
                 case 2: return "Trip Info";
-                default: return "Group Expenses";
+                default: throw new IllegalArgumentException("Exception");
             }
         }
     }

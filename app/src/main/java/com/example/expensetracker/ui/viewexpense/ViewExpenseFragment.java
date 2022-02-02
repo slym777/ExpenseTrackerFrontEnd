@@ -16,6 +16,7 @@ import androidx.lifecycle.ViewModelProvider;
 import com.bumptech.glide.Glide;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentExpenseViewBinding;
+import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.utils.BaseApp;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -46,25 +47,11 @@ public class ViewExpenseFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         expenseViewModel.expenseLive.observe(getViewLifecycleOwner(), expense -> {
-            binding.amountValue.setText(expense.getAmount() + "$");
-            binding.typeValue.setText(expense.getType().name());
-            binding.descValue.setText(expense.getDescription());
 
-            if (!TextUtils.isEmpty(expense.getDebtor().getAvatarUri())) {
-                Glide.with(BaseApp.context)
-                        .load(expense.getDebtor().getAvatarUri())
-                        .centerCrop()
-                        .placeholder(R.drawable.progress_animation)
-                        .into(binding.debtorAvatar);
+            if (expense.getIsGroupExpense()) {
+                setGroupExpBinding(expense);
             } else {
-                Glide.with(BaseApp.context).clear(binding.debtorAvatar);
-                binding.debtorAvatar.setImageResource(R.drawable.default_user_avatar);
-            }
-
-            if (expense.getCreditors() != null && expense.getCreditors().size() != 0) {
-                binding.nrContributors.setText(expense.getCreditors().size());
-            } else {
-                binding.nrContributors.setText("0");
+                setPersonalExpBinding(expense);
             }
         });
 
@@ -75,6 +62,62 @@ public class ViewExpenseFragment extends Fragment {
                     .setPositiveButton("Got it", (dialog, which) -> dialog.dismiss())
                     .show();
         });
+
+    }
+
+    private void setGroupExpBinding(Expense expense) {
+
+        binding.eachAmountText.setVisibility(View.VISIBLE);
+        binding.eachAmountValue.setVisibility(View.VISIBLE);
+        binding.view.setVisibility(View.VISIBLE);
+
+        binding.debtorAvatar.setVisibility(View.VISIBLE);
+        binding.debtorName.setVisibility(View.VISIBLE);
+        binding.debtorText.setVisibility(View.VISIBLE);
+
+        binding.ftiMemberList.setVisibility(View.VISIBLE);
+
+        binding.totalAmountValue.setText(expense.getAmount() + "$");
+        Double perEachAmount = expense.getAmount() / (expense.getCreditors().size() == 0 ? 1d : (double) expense.getCreditors().size());
+        binding.eachAmountValue.setText(perEachAmount.toString() + "$");
+        binding.typeValue.setText(expense.getType().name());
+        binding.descValue.setText(expense.getDescription());
+
+        if (!TextUtils.isEmpty(expense.getDebtor().getAvatarUri())) {
+            Glide.with(BaseApp.context)
+                    .load(expense.getDebtor().getAvatarUri())
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .into(binding.debtorAvatar);
+        } else {
+            Glide.with(BaseApp.context).clear(binding.debtorAvatar);
+            binding.debtorAvatar.setImageResource(R.drawable.default_user_avatar);
+        }
+
+        if (expense.getCreditors() != null && expense.getCreditors().size() != 0) {
+            binding.nrContributors.setText(expense.getCreditors().size());
+        } else {
+            binding.nrContributors.setText("0");
+        }
+
+    }
+
+    private void setPersonalExpBinding(Expense expense) {
+
+        binding.eachAmountText.setVisibility(View.GONE);
+        binding.eachAmountValue.setVisibility(View.GONE);
+        binding.view.setVisibility(View.GONE);
+
+        binding.debtorAvatar.setVisibility(View.GONE);
+        binding.debtorName.setVisibility(View.GONE);
+        binding.debtorText.setVisibility(View.GONE);
+
+        binding.ftiMemberList.setVisibility(View.GONE);
+
+        binding.totalAmountText.setText("You paid");
+        binding.totalAmountValue.setText(expense.getAmount() + "$");
+        binding.typeValue.setText(expense.getType().name());
+        binding.descValue.setText(expense.getDescription());
 
     }
 

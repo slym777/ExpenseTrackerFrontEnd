@@ -81,7 +81,7 @@
 
     <View
         android:id="@+id/view"
-        style="@style/LineSeparator"
+        style="@style/HorizontalLineSeparator"
         android:layout_width="0dp"
         android:layout_height="1dp"
         android:layout_marginTop="8dp"

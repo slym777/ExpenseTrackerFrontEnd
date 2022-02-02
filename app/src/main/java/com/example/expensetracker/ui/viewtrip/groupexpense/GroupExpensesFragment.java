@@ -89,9 +89,4 @@ public class GroupExpensesFragment extends Fragment implements OnClickExpenseLis
         Navigation.findNavController(getView()).navigate(action);
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-        groupExpenseViewModel.getGroupExpenses();
-    }
 }
