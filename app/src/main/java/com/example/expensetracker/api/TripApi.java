@@ -14,6 +14,7 @@ import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.expensetracker.model.CreateTripRequest;
+import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.model.UpdateTripRequest;
 import com.example.expensetracker.utils.BaseApp;
@@ -235,4 +236,50 @@ public class TripApi {
         return behaviorSubject;
     }
 
+    public static BehaviorSubject<Boolean> createExpense(Long tripId, Expense expense) throws JSONException {
+        String url = BaseApp.serverUrl + "/trips/addExpense/" + tripId;
+
+        final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
+
+        JsonObjectRequest jsonObjectRequest  = new JsonObjectRequest(
+                Request.Method.POST,
+                url,
+                new JSONObject(new Gson().toJson(expense, Expense.class)),
+                response -> behaviorSubject.onNext(true),
+                behaviorSubject::onError
+        ) {
+
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                return params;
+//            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String json = new String(
+                            response.data,
+                            "UTF-8"
+                    );
+                    if (json.length() == 0) {
+                        return Response.success(
+                                null,
+                                HttpHeaderParser.parseCacheHeaders(response)
+                        );
+                    } else {
+                        return super.parseNetworkResponse(response);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                }
+            }
+        };
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
+        return behaviorSubject;
+    }
 }
