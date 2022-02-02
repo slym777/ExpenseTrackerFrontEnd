@@ -23,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentTripViewBinding;
+import com.example.expensetracker.ui.viewtrip.addexpense.AddExpenseDialog;
 import com.example.expensetracker.ui.viewtrip.groupexpense.GroupExpenseViewModel;
 import com.example.expensetracker.ui.viewtrip.groupexpense.GroupExpensesFragment;
 import com.example.expensetracker.ui.viewtrip.personalexpense.PersonalExpenseViewModel;
@@ -49,7 +50,7 @@ public class ViewTripFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        tripInfoViewModel = new ViewModelProvider(getActivity()).get(TripInfoViewModel.class);
+        tripInfoViewModel = new ViewModelProvider(requireActivity()).get(TripInfoViewModel.class);
 
         Long tripId = getActivity().getIntent().getLongExtra(TRIP_ID_EXTRA, -1);
         tripInfoViewModel.tripId = tripId;
@@ -68,6 +69,8 @@ public class ViewTripFragment extends Fragment {
         binding.viewpager.setAdapter(pagerAdapter);
         binding.tabLayout.setupWithViewPager(binding.viewpager);
         binding.viewpager.setCurrentItem(0);
+
+        binding.addExpenseButton.setOnClickListener(l -> showAddExpenseDialog());
 
         binding.deleteImageView.setOnClickListener(l -> {
             tripInfoViewModel.deleteTripById().subscribe(
@@ -138,10 +141,16 @@ public class ViewTripFragment extends Fragment {
         }
     }
 
+    private void showAddExpenseDialog() {
+        AddExpenseDialog dialog = new AddExpenseDialog(tripInfoViewModel.tripLive.getValue());
+        dialog.show(getChildFragmentManager(), "AddExpenseDialog");
+    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResume() {
         super.onResume();
         tripInfoViewModel.getTripById();
     }
+
 }

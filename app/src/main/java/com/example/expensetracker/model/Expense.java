@@ -31,6 +31,15 @@ public class Expense {
         this.isGroupExpense = isGroupExpense;
     }
 
+    public Expense(String description, ExpenseType type, Double amount, User debtor, List<User> creditors, Boolean isGroupExpense) {
+        this.description = description;
+        this.type = type;
+        this.amount = amount;
+        this.debtor = debtor;
+        this.creditors = creditors;
+        this.isGroupExpense = isGroupExpense;
+    }
+
     public Expense() {
     }
 
