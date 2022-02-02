@@ -27,7 +27,7 @@
 
         <EditText
             android:id="@+id/fam_search_text"
-            android:hint="Search..."
+            android:hint="Search users"
             android:layout_marginLeft="8dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>
@@ -56,140 +56,18 @@
             app:layout_constraintTop_toBottomOf="@+id/cardView3">
 
             <TextView
-                android:id="@+id/achievements"
-                style="@style/default_text"
-                android:layout_width="wrap_content"
+                android:id="@+id/select_users_title"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Selected Users"
+                android:text="Select users"
+                android:fontFamily="@font/calibri"
+                android:textStyle="bold"
+                android:textAlignment="center"
                 android:textSize="24sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/initialsCircleImageView"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <HorizontalScrollView
-                android:id="@+id/fam_recycler_selectied_users"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:fillViewport="true"
-                android:measureAllChildren="false"
-                android:scrollbars="none">
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/achievement_2"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:gravity="center"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:paddingRight="24dp">-->
-
-<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                            android:layout_width="53dp"-->
-<!--                            android:layout_height="60dp"-->
-<!--                            android:src="@drawable/grad" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_alignParentBottom="true"-->
-<!--                            android:text="Graduate"-->
-<!--                            android:textSize="12sp" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/achievement_3"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:gravity="center"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:paddingRight="24dp">-->
-
-<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                            android:layout_width="60dp"-->
-<!--                            android:layout_height="60dp"-->
-<!--                            android:src="@drawable/cup" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_alignParentBottom="true"-->
-<!--                            android:text="Computer Master"-->
-<!--                            android:textSize="12sp" />-->
-
-<!--                    </LinearLayout>-->
-
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/achievement_4"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:gravity="center"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:paddingRight="24dp">-->
-
-<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                            android:layout_width="60dp"-->
-<!--                            android:layout_height="60dp"-->
-<!--                            android:src="@drawable/badge" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_alignParentBottom="true"-->
-<!--                            android:text="Distinct Student"-->
-<!--                            android:textSize="12sp" />-->
-
-<!--                    </LinearLayout>-->
-
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/achievement_5"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:gravity="center"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:paddingRight="24dp">-->
-
-<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                            android:layout_width="60dp"-->
-<!--                            android:layout_height="60dp"-->
-<!--                            android:src="@drawable/critic" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_alignParentBottom="true"-->
-<!--                            android:text="Critic"-->
-<!--                            android:textSize="12sp" />-->
-
-<!--                    </LinearLayout>-->
-
-<!--                    <LinearLayout-->
-<!--                        android:id="@+id/achievement_6"-->
-<!--                        android:layout_width="wrap_content"-->
-<!--                        android:layout_height="match_parent"-->
-<!--                        android:gravity="center"-->
-<!--                        android:orientation="vertical"-->
-<!--                        android:paddingRight="24dp">-->
-
-<!--                        <de.hdodenhof.circleimageview.CircleImageView-->
-<!--                            android:layout_width="60dp"-->
-<!--                            android:layout_height="60dp"-->
-<!--                            android:src="@drawable/disc" />-->
-
-<!--                        <TextView-->
-<!--                            android:layout_width="wrap_content"-->
-<!--                            android:layout_height="wrap_content"-->
-<!--                            android:layout_alignParentBottom="true"-->
-<!--                            android:text="Disciplined"-->
-<!--                            android:textSize="12sp" />-->
-
-<!--                    </LinearLayout>-->
-<!--                </LinearLayout>-->
-            </HorizontalScrollView>
-
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

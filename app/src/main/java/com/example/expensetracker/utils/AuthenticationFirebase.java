@@ -5,7 +5,6 @@ import android.widget.Toast;
 import com.example.expensetracker.model.User;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.EmailAuthCredential;
 import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -14,8 +13,6 @@ import com.google.firebase.auth.GetTokenResult;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 
 public class AuthenticationFirebase {
-
-
     public static BehaviorSubject<String> loginRequest(final String email, final String password) {
         final BehaviorSubject<String> behaviorSubject = BehaviorSubject.create();
 

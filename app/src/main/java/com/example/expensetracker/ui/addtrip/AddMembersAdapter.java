@@ -86,7 +86,6 @@ public class AddMembersAdapter extends RecyclerView.Adapter<AddMembersAdapter.Us
                 binding.vsuUserCard.toggle();
             });
         }
-
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

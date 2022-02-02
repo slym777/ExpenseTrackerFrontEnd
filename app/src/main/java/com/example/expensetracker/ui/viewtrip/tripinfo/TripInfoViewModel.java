@@ -12,6 +12,7 @@ import com.example.expensetracker.model.Trip;
 import java.util.LinkedList;
 
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class TripInfoViewModel extends ViewModel {
@@ -27,6 +28,10 @@ public class TripInfoViewModel extends ViewModel {
             Timber.e(error);
             errorLiveMsg.postValue(error.getLocalizedMessage());
         }));
+    }
+
+    public BehaviorSubject<Boolean> deleteTripById() {
+        return TripApi.deleteTripById(tripId);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

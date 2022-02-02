@@ -1,15 +1,13 @@
-package com.example.expensetracker.ui.addtrip;
+package com.example.expensetracker.ui.viewtrip.editTrip;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.AlertDialog;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.expensetracker.api.TripApi;
 import com.example.expensetracker.api.UserApi;
-import com.example.expensetracker.model.CreateTripRequest;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.model.UpdateTripRequest;
 import com.example.expensetracker.model.User;
@@ -17,23 +15,20 @@ import com.example.expensetracker.model.User;
 import org.json.JSONException;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
-import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
-
-import javax.xml.parsers.FactoryConfigurationError;
 
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
-public class AddTripViewModel extends ViewModel {
+public class EditTripViewModel extends ViewModel {
+    Long tripId;
     public List<User> allUserList = new ArrayList<>();
     public String name, description, location, avatarUri;
 
+    public MutableLiveData<Trip> tripLive = new MutableLiveData<>();
     public MutableLiveData<List<User>> selectedUserList = new MutableLiveData<>();
     public MutableLiveData<List<User>> searchUserLiveList = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveMsg = new MutableLiveData<>();
@@ -64,6 +59,11 @@ public class AddTripViewModel extends ViewModel {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
+    public void setSelectedUsers(List<User> users) {
+        selectedUserList.postValue(users);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void addMembers() {
         List<User> selectedUsers = allUserList.stream()
                 .filter(f -> f.isSelected())
@@ -71,9 +71,18 @@ public class AddTripViewModel extends ViewModel {
         selectedUserList.postValue(selectedUsers);
     }
 
-    public BehaviorSubject<Boolean> createTrip(String name, String description, String avatarUri, String location) throws JSONException {
-        CreateTripRequest createTripRequest = new CreateTripRequest(name, description, avatarUri, location, selectedUserList.getValue());
-        return TripApi.createTrip(createTripRequest);
+    public void getTripById(){
+        disposableLinkedList.add(TripApi.getTripByTripId(tripId).subscribe(trip -> {
+            tripLive.postValue(trip);
+        }, error -> {
+            Timber.e(error);
+            errorLiveMsg.postValue(error.getLocalizedMessage());
+        }));
+    }
+
+    public BehaviorSubject<Trip> updateTrip(String name, String description, String avatarUri, String location) throws JSONException {
+        UpdateTripRequest updateTripRequest = new UpdateTripRequest(name, description, avatarUri, location, selectedUserList.getValue());
+        return TripApi.updateTrip(tripId, updateTripRequest);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

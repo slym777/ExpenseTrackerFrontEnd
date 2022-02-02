@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_navigation_trip_view_to_navigation_expense_view"
             app:destination="@id/navigation_expense_view" />
+        <action
+            android:id="@+id/action_navigation_trip_view_to_navigation_edit_trip_view"
+            app:destination="@id/navigation_edit_trip_view" />
     </fragment>
 
     <fragment
@@ -29,5 +32,27 @@
             app:destination="@id/navigation_trip_view" />
     </fragment>
 
+    <fragment
+        android:id="@+id/navigation_edit_trip_view"
+        android:name="com.example.expensetracker.ui.viewtrip.editTrip.EditTripFragment"
+        android:label="Trip Edit View"
+        tools:layout="@layout/fragment_edit_trip" >
+        <action
+            android:id="@+id/action_navigation_edit_trip_view_to_navigation_trip_view"
+            app:destination="@id/navigation_trip_view" />
+        <action
+            android:id="@+id/action_navigation_edit_trip_view_to_navigation_add_member_view"
+            app:destination="@id/navigation_add_member_view" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_add_member_view"
+        android:name="com.example.expensetracker.ui.viewtrip.editTrip.EditMembersFragment"
+        android:label="Add Members"
+        tools:layout="@layout/fragment_add_members" >
+        <action
+            android:id="@+id/action_navigation_add_member_view_to_navigation_edit_trip_view"
+            app:destination="@id/navigation_edit_trip_view" />
+    </fragment>
 
 </navigation>

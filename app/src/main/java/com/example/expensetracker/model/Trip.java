@@ -1,5 +1,8 @@
 package com.example.expensetracker.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Trip {
 
     private Long id;
@@ -8,6 +11,7 @@ public class Trip {
     protected String avatarUri;
     protected String location;
     private Integer groupSize;
+    protected List<User> users = new ArrayList<>();
 
     public Trip() {
     }
@@ -74,5 +78,13 @@ public class Trip {
 
     public void setGroupSize(Integer groupSize) {
         this.groupSize = groupSize;
+    }
+
+    public List<User> getUsers() {
+        return users;
+    }
+
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
