@@ -35,6 +35,14 @@ public class AddExpenseViewModel extends ViewModel {
     public MutableLiveData<String> errorLiveMsg = new MutableLiveData<>();
     private LinkedList<Disposable> disposableLinkedList = new LinkedList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void resetValues() {
+        expenseType = null;
+        isGroupExpense = null;
+        selectedUserList.setValue(new ArrayList<>());
+        allUserList.forEach(user -> user.setSelected(false));
+    }
+
     public void setTripUsers(List<User> users) {
         allUserList.clear();
         allUserList.addAll(users);
@@ -56,8 +64,12 @@ public class AddExpenseViewModel extends ViewModel {
 
     public BehaviorSubject<Boolean> createExpenseInTrip(String description, ExpenseType expenseType, Double amount, List<User> creditors, Boolean isGroupExpense) throws JSONException {
         User debtor = SharedPreferencesUtils.getProfileDetails();
-        Expense expenseRequest = new Expense(description, expenseType, amount, debtor, creditors, isGroupExpense);
+        if (isGroupExpense == null || !isGroupExpense) {
+            isGroupExpense = false;
+            creditors.clear();
+        }
 
+        Expense expenseRequest = new Expense(description, expenseType, amount, debtor, creditors, isGroupExpense);
         return TripApi.createExpense(tripId, expenseRequest);
     }
 

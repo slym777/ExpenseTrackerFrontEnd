@@ -1,5 +1,6 @@
 package com.example.expensetracker.ui.viewtrip;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -72,20 +73,7 @@ public class ViewTripFragment extends Fragment {
 
         binding.addExpenseButton.setOnClickListener(l -> showAddExpenseDialog());
 
-        binding.deleteImageView.setOnClickListener(l -> {
-            tripInfoViewModel.deleteTripById().subscribe(
-                    bool -> {
-                        if (bool) {
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-
-                            Toast.makeText(getContext(), "Trip deleted successfully!", Toast.LENGTH_SHORT).show();
-                        } else {
-                            Toast.makeText(getContext(), "Could not delete trip", Toast.LENGTH_SHORT).show();
-                        }
-                    }, err -> Toast.makeText(getContext(), err.getMessage(), Toast.LENGTH_SHORT).show()
-            );
-        });
+        binding.deleteImageView.setOnClickListener(l -> handleDeleteTrip());
 
         binding.editImageView.setOnClickListener(l -> Navigation.findNavController(view).navigate(R.id.action_navigation_trip_view_to_navigation_edit_trip_view));
 
@@ -141,6 +129,26 @@ public class ViewTripFragment extends Fragment {
         }
     }
 
+    private void handleDeleteTrip() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Delete trip \"" + tripInfoViewModel.tripLive.getValue().getName() + "\"")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", (dialog, which) -> tripInfoViewModel.deleteTripById().subscribe(
+                        bool -> {
+                            if (bool) {
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+
+                                Toast.makeText(getContext(), "Trip deleted successfully!", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "Could not delete trip", Toast.LENGTH_SHORT).show();
+                            }
+                        }, err -> Toast.makeText(getContext(), err.getMessage(), Toast.LENGTH_SHORT).show()
+                ))
+                .setNegativeButton("No", null)
+                .show();
+    }
+
     private void showAddExpenseDialog() {
         AddExpenseDialog dialog = new AddExpenseDialog(tripInfoViewModel.tripLive.getValue());
         dialog.show(getChildFragmentManager(), "AddExpenseDialog");
@@ -152,5 +160,4 @@ public class ViewTripFragment extends Fragment {
         super.onResume();
         tripInfoViewModel.getTripById();
     }
-
 }

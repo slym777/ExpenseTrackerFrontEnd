@@ -7,11 +7,15 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.expensetracker.api.ExpenseApi;
+import com.example.expensetracker.api.TripApi;
 import com.example.expensetracker.model.Expense;
+
+import org.json.JSONException;
 
 import java.util.LinkedList;
 
 import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.subjects.BehaviorSubject;
 import timber.log.Timber;
 
 public class ExpenseViewModel extends ViewModel {
@@ -27,6 +31,10 @@ public class ExpenseViewModel extends ViewModel {
             Timber.e(error);
             errorLiveMsg.postValue(error.getLocalizedMessage());
         }));
+    }
+
+    public BehaviorSubject<Boolean> deleteExpenseById() throws JSONException {
+        return ExpenseApi.deleteExpenseInTrip(expenseId);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

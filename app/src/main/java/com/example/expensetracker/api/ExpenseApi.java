@@ -1,18 +1,24 @@
 package com.example.expensetracker.api;
 
 import com.android.volley.AuthFailureError;
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.example.expensetracker.model.CreateTripRequest;
 import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.utils.BaseApp;
 import com.example.expensetracker.utils.RequestQueueHelper;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -131,4 +137,48 @@ public class ExpenseApi {
         return behaviorSubject;
     }
 
+    public static BehaviorSubject<Boolean> deleteExpenseInTrip(Long expenseId) throws JSONException {
+        String url = BaseApp.serverUrl + "/expenses/delete/" + expenseId;
+
+        final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
+                Request.Method.DELETE,
+                url,
+                new JSONObject(new Gson().toJson(new Expense(expenseId), Expense.class)),
+                response -> behaviorSubject.onNext(true),
+                error -> behaviorSubject.onError(error)) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                return params;
+//            }
+
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+                try {
+                    String json = new String(
+                            response.data,
+                            "UTF-8"
+                    );
+                    if (json.length() == 0) {
+                        return Response.success(
+                                null,
+                                HttpHeaderParser.parseCacheHeaders(response)
+                        );
+                    } else {
+                        return super.parseNetworkResponse(response);
+                    }
+                } catch (UnsupportedEncodingException e) {
+                    return Response.error(new ParseError(e));
+                }
+            }
+        };
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
+        return behaviorSubject;
+    }
 }
