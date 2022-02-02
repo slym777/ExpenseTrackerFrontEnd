@@ -40,6 +40,10 @@ public class Expense {
         this.isGroupExpense = isGroupExpense;
     }
 
+    public Expense(Long id) {
+        this.id = id;
+    }
+
     public Expense() {
     }
 

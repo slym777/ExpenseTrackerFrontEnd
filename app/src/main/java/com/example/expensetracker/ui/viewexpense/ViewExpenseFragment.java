@@ -1,20 +1,25 @@
 package com.example.expensetracker.ui.viewexpense;
 
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
+import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentExpenseViewBinding;
 import com.example.expensetracker.model.Expense;
@@ -24,10 +29,11 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import java.util.ArrayList;
 
+import org.json.JSONException;
+
 import timber.log.Timber;
 
 public class ViewExpenseFragment extends Fragment {
-
     private FragmentExpenseViewBinding binding;
     private ExpenseViewModel expenseViewModel;
     private ExpenseMembersAdapter expenseMembersAdapter;
@@ -88,8 +94,31 @@ public class ViewExpenseFragment extends Fragment {
                     .show();
         });
 
+        binding.deleteImageView.setOnClickListener(l -> handleDeleteExpense());
+    }
 
-
+    private void handleDeleteExpense() {
+        new AlertDialog.Builder(getContext())
+                .setTitle("Deleting expense of amount \"" + expenseViewModel.expenseLive.getValue().getAmount() + "\"")
+                .setMessage("Are you sure?")
+                .setPositiveButton("Yes", (dialog, which) -> {
+                    try {
+                        expenseViewModel.deleteExpenseById().subscribe(
+                            bool -> {
+                                if (bool) {
+                                    Toast.makeText(getContext(), "Expense deleted successfully!", Toast.LENGTH_SHORT).show();
+                                } else {
+                                    Toast.makeText(getContext(), "Could not delete expense...", Toast.LENGTH_SHORT).show();
+                                }
+                                Navigation.findNavController(getView()).navigate(ViewExpenseFragmentDirections.actionNavigationExpenseViewToNavigationTripView());
+                            }, err -> Toast.makeText(getContext(), err.getMessage(), Toast.LENGTH_SHORT).show()
+                        );
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                })
+                .setNegativeButton("No", null)
+                .show();
     }
 
     private void setGroupExpBinding(Expense expense) {
@@ -162,7 +191,4 @@ public class ViewExpenseFragment extends Fragment {
         super.onResume();
         expenseViewModel.getExpense();
     }
-
-
-
 }

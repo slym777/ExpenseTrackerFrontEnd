@@ -2,6 +2,7 @@ package com.example.expensetracker.ui.viewtrip.addexpense;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
@@ -25,16 +27,23 @@ public class AddExpenseDialog extends DialogFragment {
     private Trip trip;
     DialogAddExpenseBinding binding;
     AddExpenseViewModel addExpenseViewModel;
+    private boolean comesFromTripView;
 
     public AddExpenseDialog(Trip trip) {
         super();
         this.trip = trip;
+        comesFromTripView = true;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         addExpenseViewModel = new ViewModelProvider(requireActivity()).get(AddExpenseViewModel.class);
+        if (comesFromTripView) {
+            addExpenseViewModel.resetValues();
+            comesFromTripView = false;
+        }
         binding = DialogAddExpenseBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
@@ -60,24 +69,21 @@ public class AddExpenseDialog extends DialogFragment {
         });
 
         binding.expenseTypeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            switch (checkedId) {
-                case 0: {
+            switch ((checkedId - 1) % 4 + 1) {
+                case 1: {
                     addExpenseViewModel.expenseType = ExpenseType.STAY;
                     break;
                 }
-                case 1: {
+                case 2: {
                     addExpenseViewModel.expenseType = ExpenseType.TRANSPORT;
                     break;
                 }
-                case 2: {
+                case 3: {
                     addExpenseViewModel.expenseType = ExpenseType.MEAL;
                     break;
                 }
-                case 3: {
-                    addExpenseViewModel.expenseType = ExpenseType.OTHER;
-                    break;
-                }
                 default: {
+                    addExpenseViewModel.expenseType = ExpenseType.OTHER;
                     break;
                 }
             }
@@ -107,6 +113,7 @@ public class AddExpenseDialog extends DialogFragment {
         });
 
         binding.buttonCancelExpense.setOnClickListener(l -> {
+            // TODO after dismiss trigger load data in tripview
             dismiss();
         });
     }
