@@ -24,8 +24,7 @@
     <string name="is_auth_remembered_shared_pref">IsAuthRemembered</string>
     <string name="is_account_enabled_shared_pref">IsAccountEnabled</string>
     <string name="notif_token_shared_pref">NotificationToken</string>
-
-
+    <string name="firstAccess_sharedPref">FirstAccess</string>
 
     <string name="camera_access_required">Camera access is required to display the camera preview.</string>
     <string name="gallery_access_required">Read external storage is required to display the gallery.</string>
@@ -39,6 +38,16 @@
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
+
+    <string name="intro_page1_title">Add friends</string>
+    <string name="intro_page1_description">Add your friends by their username or by using their specific QR codes </string>
+    <string name="intro_page2_title">Create Hubs</string>
+    <string name="intro_page2_description">Create Hubs and add your friends into order to add new expenses</string>
+    <string name="intro_page3_title">Manage your debts</string>
+    <string name="intro_page3_description">You are able to create new debts or settle up the existing ones</string>
+    <string name="intro_page4_title">Simplify debts</string>
+    <string name="intro_page4_description">Use simplify function to minimise the number of transaction in a hub</string>
+
 
 
 </resources>
