@@ -61,8 +61,6 @@ public class LoginFragment extends Fragment {
             } else {
                 Toast.makeText(BaseApp.context, "Authentication failed", Toast.LENGTH_SHORT).show();
             }
-        }, err -> {
-            Toast.makeText(BaseApp.context, err.getMessage(), Toast.LENGTH_SHORT).show();
-        });
+        }, err -> Toast.makeText(BaseApp.context, err.getMessage(), Toast.LENGTH_SHORT).show());
     }
 }

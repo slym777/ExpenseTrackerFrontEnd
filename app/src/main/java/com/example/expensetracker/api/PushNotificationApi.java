@@ -6,6 +6,7 @@ import com.android.volley.Response;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.expensetracker.utils.BaseApp;
 import com.example.expensetracker.utils.RequestQueueHelper;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 
 import org.json.JSONObject;
 
@@ -23,16 +24,14 @@ public class PushNotificationApi {
                 response -> {
             Timber.d("Notification Token updated successfully");
         }, error -> Timber.e(error.getMessage())) {
-
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                return params;
-//            }
-
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
+                return params;
+            }
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
@@ -42,19 +41,17 @@ public class PushNotificationApi {
         String url = BaseApp.serverUrl + "/pushNotification/insertToken/" + token + "/" + userId;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, null,
-                response -> {
-                    Timber.d("Notification Token inserted successfully");
-                }, error -> Timber.e(error.getMessage())) {
+                response -> Timber.d("Notification Token inserted successfully"),
+                Timber::e) {
 
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                return params;
-//            }
-
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
+                return params;
+            }
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);

@@ -6,24 +6,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <com.google.android.material.card.MaterialCardView
         android:id="@+id/vh_card_view"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
         android:theme="@style/Theme.MaterialComponents.Light"
         app:cardCornerRadius="8dp"
         app:cardElevation="8dp"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toBottomOf="@+id/card_view_action">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@color/grey"
-            android:paddingLeft="10dp"
+            android:paddingStart="10dp"
             android:paddingRight="18dp">
 
             <ImageView
@@ -54,7 +53,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/montserrat"
-                android:text="30 $"
+                android:text="30$"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/total_amount_text"
                 app:layout_constraintStart_toStartOf="@+id/total_amount_text"
@@ -88,7 +87,7 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginBottom="8dp"
                 android:fontFamily="@font/montserrat"
-                android:text="3 $"
+                android:text="30$"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="@+id/each_amount_text"
                 app:layout_constraintStart_toStartOf="@+id/each_amount_text"
@@ -99,10 +98,11 @@
 
     <ImageView
         android:id="@+id/type_image_view"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/icon_dimensions_info"
+        android:layout_height="@dimen/icon_dimensions_info"
         android:layout_marginStart="8dp"
         android:layout_marginTop="32dp"
+        android:padding="8dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/vh_card_view"
         app:srcCompat="@drawable/circleyellowfil" />
@@ -113,6 +113,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_bold"
         android:text="Expense Type"
         app:layout_constraintStart_toEndOf="@+id/type_image_view"
         app:layout_constraintTop_toTopOf="@+id/type_image_view" />
@@ -121,20 +122,21 @@
         android:id="@+id/type_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
         android:text="Stay"
+        app:layout_constraintBottom_toBottomOf="@+id/type_image_view"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/type_text"
         app:layout_constraintTop_toBottomOf="@+id/type_text" />
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/icon_dimensions_info"
+        android:layout_height="@dimen/icon_dimensions_info"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
+        android:padding="2dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/type_value"
         app:srcCompat="@drawable/ic_info_outline_black_24dp" />
@@ -145,6 +147,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_bold"
         android:text="Description"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
@@ -153,19 +156,21 @@
         android:id="@+id/desc_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
         android:text="Pay for stay"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/fci_about_header"
         app:layout_constraintTop_toBottomOf="@+id/fci_about_header" />
 
     <ImageView
         android:id="@+id/imageView6"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="@dimen/icon_dimensions_info"
+        android:layout_height="@dimen/icon_dimensions_info"
         android:layout_marginTop="16dp"
+        app:tint="@color/black"
+        android:padding="4dp"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/desc_value"
         app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
@@ -176,9 +181,56 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_bold"
         android:text="Date"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/imageView6" />
+
+    <TextView
+        android:id="@+id/date_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/montserrat"
+        android:text="12.02.2022"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView6"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/fci_about_header"
+        app:layout_constraintTop_toBottomOf="@+id/textView16" />
+
+    <ImageView
+        android:id="@+id/time_imageView"
+        android:layout_width="@dimen/icon_dimensions_info"
+        android:layout_height="@dimen/icon_dimensions_info"
+        android:layout_marginTop="16dp"
+        app:tint="@color/black"
+        android:padding="4dp"
+        app:layout_constraintStart_toStartOf="@+id/imageView5"
+        app:layout_constraintTop_toBottomOf="@+id/date_editText"
+        app:srcCompat="@drawable/ic_baseline_access_time_24" />
+
+    <TextView
+        android:id="@+id/time_title"
+        style="@style/default_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Time"
+        app:layout_constraintStart_toEndOf="@+id/imageView6"
+        app:layout_constraintTop_toTopOf="@+id/time_imageView" />
+
+    <TextView
+        android:id="@+id/time_editText"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="16dp"
+        android:fontFamily="@font/montserrat"
+        android:text="00:00"
+        app:layout_constraintBottom_toBottomOf="@+id/time_imageView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@+id/time_title"
+        app:layout_constraintTop_toBottomOf="@+id/time_title" />
 
     <TextView
         android:id="@+id/textView18"
@@ -186,49 +238,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/montserrat_bold"
         android:text="Trip"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/trip_avatar" />
 
     <TextView
-        android:id="@+id/textView17"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/montserrat"
-        android:text="12.02.2022"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/fci_about_header"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-    <TextView
         android:id="@+id/trip_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
         android:text="Munte 2022"
+        app:layout_constraintBottom_toBottomOf="@+id/trip_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/fci_about_header"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <ImageView
         android:id="@+id/trip_avatar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/icon_dimensions_info"
+        android:layout_height="@dimen/icon_dimensions_info"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/time_imageView"
         app:srcCompat="@drawable/default_trip_back" />
 
     <ImageView
         android:id="@+id/debtor_avatar"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="@dimen/icon_dimensions_info"
+        android:layout_height="@dimen/icon_dimensions_info"
+        android:layout_marginTop="16dp"
+        android:padding="4dp"
         app:layout_constraintStart_toStartOf="@+id/trip_avatar"
         app:layout_constraintTop_toBottomOf="@+id/trip_name"
         app:srcCompat="@drawable/default_user_avatar" />
@@ -239,7 +280,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:text="Debtor"
+        android:fontFamily="@font/montserrat_bold"
+        android:text="Payer"
         app:layout_constraintStart_toEndOf="@+id/debtor_avatar"
         app:layout_constraintTop_toTopOf="@+id/debtor_avatar" />
 
@@ -247,10 +289,10 @@
         android:id="@+id/debtor_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/montserrat"
         android:text="Darii Dan"
+        app:layout_constraintBottom_toBottomOf="@+id/debtor_avatar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/debtor_text"
         app:layout_constraintTop_toBottomOf="@+id/debtor_text" />
@@ -260,7 +302,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
@@ -268,19 +310,22 @@
 
         <ImageView
             android:id="@+id/imageView8"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="@dimen/icon_dimensions_info"
+            android:layout_height="@dimen/icon_dimensions_info"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:tint="@color/black"
+            android:padding="4dp"
             app:srcCompat="@drawable/ic_baseline_group_24" />
 
         <TextView
             android:id="@+id/nr_contributors"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:fontFamily="@font/montserrat"
             android:text="12"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
+            app:layout_constraintEnd_toStartOf="@+id/imageExpand"
             app:layout_constraintStart_toStartOf="@+id/textView21"
             app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
@@ -290,6 +335,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:fontFamily="@font/montserrat_bold"
             android:text="Contributors"
             app:layout_constraintStart_toEndOf="@+id/imageView8"
             app:layout_constraintTop_toTopOf="@+id/imageView8" />
@@ -312,7 +358,9 @@
         android:layout_height="0dp"
         android:overScrollMode="never"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/member_list_expand">
+        app:layout_constraintTop_toBottomOf="@+id/member_list_expand"
+        app:layout_constraintVertical_bias="0.0"
+        tools:layout_editor_absoluteX="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -329,14 +377,15 @@
     </androidx.core.widget.NestedScrollView>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/card_view_action"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:alpha="0.9"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginEnd="16dp"
+        android:layout_marginTop="16dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/trip_name">
-        
+        app:layout_constraintTop_toTopOf="parent">
+
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

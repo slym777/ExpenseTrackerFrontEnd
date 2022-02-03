@@ -77,11 +77,11 @@ public class SharedPreferencesUtils {
     public static void setProfileDetails(Long userId, String fullName, String email, String phoneNumber, String avatarUri, String idToken) {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putLong(context.getString(R.string.user_id_shared_pref), userId);
-        editor.putString(context.getString(R.string.email_shared_pref), email);
         editor.putString(context.getString(R.string.fullname_shared_pref), fullName);
+        editor.putString(context.getString(R.string.email_shared_pref), email);
         editor.putString(context.getString(R.string.phonenumber_shared_pref), phoneNumber);
-        editor.putString(context.getString(R.string.id_token_shared_pref), idToken);
         editor.putString(context.getString(R.string.avatar_uri_shared_pref), avatarUri);
+        editor.putString(context.getString(R.string.id_token_shared_pref), idToken);
 
         editor.apply();
         Timber.d("Profile details has been written to shared preferences");
