@@ -13,6 +13,7 @@ import com.example.expensetracker.model.CreateTripRequest;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.model.UpdateTripRequest;
 import com.example.expensetracker.model.User;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 
 import org.json.JSONException;
 
@@ -23,6 +24,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.function.BooleanSupplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 import javax.xml.parsers.FactoryConfigurationError;
 
@@ -39,12 +41,17 @@ public class AddTripViewModel extends ViewModel {
     public MutableLiveData<String> errorLiveMsg = new MutableLiveData<>();
     private LinkedList<Disposable> disposableLinkedList = new LinkedList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void getAllUsers(){
         disposableLinkedList.add(UserApi.getListOfUsers().subscribe(list -> {
-            allUserList.clear();
-            allUserList.addAll(list);
+            // remove myself
+            String myEmail = SharedPreferencesUtils.getEmail();
+            List<User> filtered = list.stream().filter(u -> !u.getEmail().equals(myEmail)).collect(Collectors.toList());
 
-            for (User user: list) {
+            allUserList.clear();
+            allUserList.addAll(filtered);
+
+            for (User user: filtered) {
                 if (selectedUserList.getValue() == null || selectedUserList.getValue().isEmpty()) {
                     break;
                 }
@@ -56,7 +63,7 @@ public class AddTripViewModel extends ViewModel {
                 }
             }
 
-            searchUserLiveList.setValue(list);
+            searchUserLiveList.setValue(filtered);
         }, error -> {
             Timber.e(error.getMessage());
             errorLiveMsg.postValue(error.getLocalizedMessage());
@@ -72,7 +79,13 @@ public class AddTripViewModel extends ViewModel {
     }
 
     public BehaviorSubject<Boolean> createTrip(String name, String description, String avatarUri, String location) throws JSONException {
-        CreateTripRequest createTripRequest = new CreateTripRequest(name, description, avatarUri, location, selectedUserList.getValue());
+        List<User> users = new ArrayList<>();
+        users.add(SharedPreferencesUtils.getProfileDetails());
+        if (selectedUserList.getValue() != null) {
+            users.addAll(selectedUserList.getValue());
+        }
+
+        CreateTripRequest createTripRequest = new CreateTripRequest(name, description, avatarUri, location, users);
         return TripApi.createTrip(createTripRequest);
     }
 

@@ -7,10 +7,13 @@
 
     <ImageView
         android:id="@+id/imageView5"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
+        app:tint="@color/black"
+        android:padding="4dp"
+        android:background="@drawable/circular_button_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_info_outline_black_24dp" />
@@ -21,6 +24,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/calibri"
+        android:textStyle="bold"
+        android:textSize="18dp"
         android:text="About"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/imageView5" />
@@ -29,32 +35,14 @@
         android:id="@+id/desc_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/montserrat"
-        android:text="My first trip in 2020."
+        android:fontFamily="@font/calibri"
+        android:textSize="20dp"
+        android:text="My first trip in 2022"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/fci_about_header"
         app:layout_constraintTop_toBottomOf="@+id/fci_about_header" />
-
-    <ImageView
-        android:id="@+id/imageView6"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/desc_value"
-        app:srcCompat="@drawable/ic_baseline_calendar_today_24" />
-
-    <TextView
-        android:id="@+id/textView16"
-        style="@style/default_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:text="Period"
-        app:layout_constraintStart_toEndOf="@+id/imageView5"
-        app:layout_constraintTop_toTopOf="@+id/imageView6" />
 
     <TextView
         android:id="@+id/textView18"
@@ -62,41 +50,37 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
+        android:fontFamily="@font/calibri"
+        android:textStyle="bold"
+        android:textSize="18dp"
         android:text="Location"
         app:layout_constraintStart_toEndOf="@+id/imageView5"
         app:layout_constraintTop_toTopOf="@+id/imageView7" />
 
     <TextView
-        android:id="@+id/textView17"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:fontFamily="@font/montserrat"
-        android:text="12.02.2022 - 18.02.2022"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@+id/fci_about_header"
-        app:layout_constraintTop_toBottomOf="@+id/textView16" />
-
-    <TextView
         android:id="@+id/location_value"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:fontFamily="@font/montserrat"
-        android:text="Straja, Petrosani, Romania"
+        android:fontFamily="@font/calibri"
+        android:textSize="20dp"
+        android:text="Straja, Romania"
+        app:layout_constraintBottom_toBottomOf="@+id/imageView7"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="@+id/fci_about_header"
         app:layout_constraintTop_toBottomOf="@+id/textView18" />
 
     <ImageView
         android:id="@+id/imageView7"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
+        android:layout_width="54dp"
+        android:layout_height="54dp"
+        android:layout_marginTop="32dp"
+        app:tint="@color/black"
+        android:padding="4dp"
+        android:background="@drawable/circular_button_black"
+        app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
-        app:layout_constraintTop_toBottomOf="@+id/textView17"
+        app:layout_constraintTop_toBottomOf="@+id/desc_value"
         app:srcCompat="@drawable/ic_baseline_location_on_24" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -104,26 +88,32 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="32dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/location_value">
 
         <ImageView
             android:id="@+id/imageView8"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
+            android:layout_width="54dp"
+            android:layout_height="54dp"
+            android:layout_marginBottom="8dp"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/ic_baseline_group_24" />
+            app:srcCompat="@drawable/ic_baseline_group_24"
+            android:padding="4dp"
+            android:background="@drawable/circular_button_black"
+            app:tint="@color/black" />
 
         <TextView
             android:id="@+id/nr_contributors"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:fontFamily="@font/montserrat"
+            android:fontFamily="@font/calibri"
+            android:textSize="20dp"
             android:text="12"
+            app:layout_constraintBottom_toBottomOf="@+id/imageView8"
             app:layout_constraintStart_toStartOf="@+id/textView21"
             app:layout_constraintTop_toBottomOf="@+id/textView21" />
 
@@ -133,6 +123,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
+            android:fontFamily="@font/calibri"
+            android:textStyle="bold"
+            android:textSize="18dp"
             android:text="Members"
             app:layout_constraintStart_toEndOf="@+id/imageView8"
             app:layout_constraintTop_toTopOf="@+id/imageView8" />
@@ -151,6 +144,8 @@
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/members_scroll"
+        android:paddingStart="24dp"
+        android:paddingEnd="24dp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:overScrollMode="never"
