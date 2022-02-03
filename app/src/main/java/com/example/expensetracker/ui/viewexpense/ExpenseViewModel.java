@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModel;
 import com.example.expensetracker.api.ExpenseApi;
 import com.example.expensetracker.api.TripApi;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.model.Trip;
 
 import org.json.JSONException;
 
@@ -25,12 +26,13 @@ public class ExpenseViewModel extends ViewModel {
     private final LinkedList<Disposable> disposableLinkedList = new LinkedList<>();
 
     public void getExpense(){
-        disposableLinkedList.add(ExpenseApi.getExpenseByExpenseId(expenseId).subscribe(list -> {
-            expenseLive.postValue(list);
-        }, error -> {
-            Timber.e(error);
-            errorLiveMsg.postValue(error.getLocalizedMessage());
-        }));
+        disposableLinkedList.add(ExpenseApi.getExpenseByExpenseId(expenseId).subscribe(
+                expense -> expenseLive.postValue(expense),
+                error -> {
+                    Timber.e(error);
+                    errorLiveMsg.postValue(error.getLocalizedMessage());
+                })
+        );
     }
 
     public BehaviorSubject<Boolean> deleteExpenseById() throws JSONException {

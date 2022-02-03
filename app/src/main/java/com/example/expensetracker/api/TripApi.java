@@ -1,15 +1,9 @@
 package com.example.expensetracker.api;
 
-import android.os.Build;
-
-import androidx.annotation.RequiresApi;
-
-import com.android.volley.AuthFailureError;
 import com.android.volley.NetworkResponse;
 import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.HttpHeaderParser;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
@@ -19,6 +13,7 @@ import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.model.UpdateTripRequest;
 import com.example.expensetracker.utils.BaseApp;
 import com.example.expensetracker.utils.RequestQueueHelper;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 import com.google.gson.Gson;
 
 import org.json.JSONException;
@@ -40,39 +35,35 @@ public class TripApi {
 
         final BehaviorSubject<List<Trip>> behaviorSubject = BehaviorSubject.create();
 
-        JsonArrayRequest jsonArrayRequest  = new JsonArrayRequest(Request.Method.GET, url, null, response -> {
-            Gson gson = new Gson();
-            List<Trip> trips = new ArrayList<>();
-            try {
-                for (int index = 0; index < response.length(); index++) {
-                    Trip trip = gson.fromJson(response.getJSONObject(index).toString(), Trip.class);
-                    trips.add(trip);
-                }
-                behaviorSubject.onNext(trips);
-                Timber.d("Trips retrieved successfully");
+        JsonArrayRequest jsonArrayRequest  = new JsonArrayRequest(Request.Method.GET, url, null,
+                response -> {
+                    Gson gson = new Gson();
+                    List<Trip> trips = new ArrayList<>();
+                    try {
+                        for (int index = 0; index < response.length(); index++) {
+                            Trip trip = gson.fromJson(response.getJSONObject(index).toString(), Trip.class);
+                            trips.add(trip);
+                        }
+                        behaviorSubject.onNext(trips);
+                        Timber.d("Trips retrieved successfully");
 
-            } catch (JSONException ex) {
-                ex.printStackTrace();
-            }
-        }, new Response.ErrorListener(){
+                    } catch (JSONException ex) {
+                        ex.printStackTrace();
+                    }
+                },
+                error -> behaviorSubject.onError(error)
+        ) {
             @Override
-            public void onErrorResponse(VolleyError error) {
-                behaviorSubject.onError(error);
-            }
-        }) {
-
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<>();
                 params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
                 return params;
             }
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonArrayRequest);
-
         return behaviorSubject;
     }
 
@@ -81,34 +72,25 @@ public class TripApi {
 
         final BehaviorSubject<Trip> behaviorSubject = BehaviorSubject.create();
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null,
+                response -> {
+                    Gson gson = new Gson();
+                    Trip trip = gson.fromJson(response.toString(), Trip.class);
+                    behaviorSubject.onNext(trip);
+                },
+                error -> behaviorSubject.onError(error)
+        ) {
             @Override
-            public void onResponse(JSONObject response) {
-                Gson gson = new Gson();
-                Trip trip = gson.fromJson(response.toString(), Trip.class);
-                behaviorSubject.onNext(trip);
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
+                return params;
             }
-        }, new Response.ErrorListener(){
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                behaviorSubject.onError(error);
-            }
-        }) {
-
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                return params;
-//            }
-
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
-
         return behaviorSubject;
     }
 
@@ -118,22 +100,17 @@ public class TripApi {
         final BehaviorSubject<Boolean> behaviorSubject = BehaviorSubject.create();
 
         JsonObjectRequest jsonObjectRequest  = new JsonObjectRequest(Request.Method.POST, url,
-                new JSONObject(new Gson().toJson(createTripRequest, CreateTripRequest.class)), new Response.Listener<JSONObject>() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
+                new JSONObject(new Gson().toJson(createTripRequest, CreateTripRequest.class)),
+                response -> behaviorSubject.onNext(true),
+                behaviorSubject::onError) {
             @Override
-            public void onResponse(JSONObject response) {
-                behaviorSubject.onNext(true);
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
+                return params;
             }
-        }, (Response.ErrorListener) behaviorSubject::onError) {
-
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                return params;
-//            }
 
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
@@ -157,7 +134,6 @@ public class TripApi {
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
-
         return behaviorSubject;
     }
 
@@ -177,15 +153,16 @@ public class TripApi {
                     Trip trip = gson.fromJson(response.toString(), Trip.class);
                     behaviorSubject.onNext(trip);
                 },
-                behaviorSubject::onError) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                return params;
-//            }
+                behaviorSubject::onError
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
+                return params;
+            }
         };
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
@@ -200,15 +177,16 @@ public class TripApi {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(
                 Request.Method.DELETE, url, null,
                 response -> behaviorSubject.onNext(true),
-                error -> behaviorSubject.onError(error)) {
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                return params;
-//            }
+                error -> behaviorSubject.onError(error)
+        ) {
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
+                return params;
+            }
 
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
@@ -248,15 +226,14 @@ public class TripApi {
                 response -> behaviorSubject.onNext(true),
                 behaviorSubject::onError
         ) {
-
-//            @Override
-//            public Map<String, String> getHeaders() throws AuthFailureError {
-//                Map<String, String> params = new HashMap<>();
-//                params.put("Content-Type", "application/json; charset=UTF-8");
-//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
-//                return params;
-//            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<>();
+                params.put("Content-Type", "application/json; charset=UTF-8");
+                params.put("Authorization", "Bearer " + SharedPreferencesUtils.getIdToken());
+                Timber.d("retrieved token is " + SharedPreferencesUtils.getIdToken());
+                return params;
+            }
 
             @Override
             protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {

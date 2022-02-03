@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.ViewTripMembersBinding;
+import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.utils.BaseApp;
 
@@ -20,6 +22,7 @@ import java.util.stream.Collectors;
 
 public class TripMembersAdapter extends RecyclerView.Adapter<TripMembersAdapter.UserViewHolder> {
     private List<User> mUsers;
+    private Trip trip;
 
     public TripMembersAdapter(List<User> mUsers) {
         this.mUsers = mUsers;
@@ -29,9 +32,10 @@ public class TripMembersAdapter extends RecyclerView.Adapter<TripMembersAdapter.
         return mUsers;
     }
 
-    public void updateRecyclerView(List<User> userList){
+    public void updateRecyclerView(Trip trip){
         mUsers.clear();
-        mUsers.addAll(userList);
+        mUsers.addAll(trip.getUsers());
+        this.trip = trip;
         notifyDataSetChanged();
     }
 
@@ -61,12 +65,16 @@ public class TripMembersAdapter extends RecyclerView.Adapter<TripMembersAdapter.
             this.binding = binding;
         }
 
+        @RequiresApi(api = Build.VERSION_CODES.N)
         public void bind(final User user) {
-            if (user.isSelected()) {
-                binding.vsuUserCard.setChecked(true);
-            } else {
-                binding.vsuUserCard.setChecked(false);
-            }
+            Double amount = trip.getExpenses()
+                    .stream()
+                    .filter(Expense::getIsGroupExpense)
+                    .filter(e -> e.getCreditors().contains(user))
+                    .map(e -> e.getAmount())
+                    .reduce(0.0, Double::sum);
+
+            binding.amount.setText(amount.toString());
 
             binding.vsuUserName.setText(user.getFullName());
 
@@ -80,11 +88,6 @@ public class TripMembersAdapter extends RecyclerView.Adapter<TripMembersAdapter.
                 Glide.with(BaseApp.context).clear(binding.vsuUserAvatar);
                 binding.vsuUserAvatar.setImageResource(R.drawable.default_user_avatar);
             }
-
-            binding.vsuUserCard.setOnClickListener(v -> {
-                user.changeSelectedState();
-                binding.vsuUserCard.toggle();
-            });
         }
     }
 

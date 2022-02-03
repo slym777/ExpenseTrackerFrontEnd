@@ -26,7 +26,12 @@ import com.example.expensetracker.ui.viewtrip.OnAddEditExpenseListener;
 import com.example.expensetracker.utils.BaseApp;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
+import java.text.SimpleDateFormat;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import org.json.JSONException;
 
@@ -52,7 +57,7 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
         return binding.getRoot();
     }
 
-    @RequiresApi(api = Build.VERSION_CODES.N)
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -77,7 +82,6 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
         });
 
         expenseViewModel.expenseLive.observe(getViewLifecycleOwner(), expense -> {
-
             if (expense.getIsGroupExpense()) {
                 setGroupExpBinding(expense);
             } else {
@@ -129,6 +133,7 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
                 .show();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setGroupExpBinding(Expense expense) {
 
         binding.eachAmountText.setVisibility(View.VISIBLE);
@@ -147,6 +152,21 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
         binding.eachAmountValue.setText(String.format("%.2f $", perEachAmount));
         binding.typeValue.setText(expense.getType().name());
         binding.descValue.setText(expense.getDescription());
+
+        ZonedDateTime zdt = ZonedDateTime.ofInstant(expense.getCreatedDate().toInstant(), ZoneId.systemDefault());
+        Calendar calendar = GregorianCalendar.from(zdt);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String month = new SimpleDateFormat("MMM").format(calendar.getTime());
+        int year = calendar.get(Calendar.YEAR);
+        String timeStr = String.format("%02d:%02d", hour, minute);
+        String dateStr = day + " " + month + " " + year;
+
+        binding.dateEditText.setText(dateStr);
+        binding.timeEditText.setText(timeStr);
+
+        binding.debtorName.setText(expense.getDebtor().getFullName());
 
         if (!TextUtils.isEmpty(expense.getDebtor().getAvatarUri())) {
             Glide.with(BaseApp.context)
@@ -169,6 +189,7 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setPersonalExpBinding(Expense expense) {
 
         binding.eachAmountText.setVisibility(View.GONE);
@@ -180,6 +201,19 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
         binding.debtorText.setVisibility(View.GONE);
 
         binding.memberListExpand.setVisibility(View.GONE);
+
+        ZonedDateTime zdt = ZonedDateTime.ofInstant(expense.getCreatedDate().toInstant(), ZoneId.systemDefault());
+        Calendar calendar = GregorianCalendar.from(zdt);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        String month = new SimpleDateFormat("MMM").format(calendar.getTime());
+        int year = calendar.get(Calendar.YEAR);
+        String timeStr = String.format("%02d:%02d", hour, minute);
+        String dateStr = day + " " + month + " " + year;
+
+        binding.dateEditText.setText(dateStr);
+        binding.timeEditText.setText(timeStr);
 
         binding.totalAmountText.setText("You paid");
         binding.totalAmountValue.setText(expense.getAmount() + "$");

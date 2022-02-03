@@ -58,7 +58,7 @@ public class TripInfoFragment extends Fragment {
             binding.descValue.setText(trip.getDescription());
             binding.locationValue.setText(trip.getLocation());
             binding.nrContributors.setText(trip.getGroupSize().toString());
-            tripMembersAdapter.updateRecyclerView(trip.getUsers());
+            tripMembersAdapter.updateRecyclerView(trip);
         });
 
         binding.memberListExpand.setOnClickListener(v -> {

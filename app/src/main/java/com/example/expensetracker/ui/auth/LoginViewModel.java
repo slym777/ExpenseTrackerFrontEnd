@@ -24,6 +24,8 @@ public class LoginViewModel extends ViewModel {
             if (TextUtils.equals(token, "error")) {
                 loginState.onNext(false);
             } else {
+                SharedPreferencesUtils.setToken(token, true);
+
                 UserApi.getUserByUserEmail(email, token).subscribe( user -> {
                     SharedPreferencesUtils.setProfileDetails(
                             user.getId(),
@@ -33,8 +35,6 @@ public class LoginViewModel extends ViewModel {
                             user.getAvatarUri(),
                             SharedPreferencesUtils.getIdToken()
                     );
-
-                    SharedPreferencesUtils.setToken(token, true);
                     loginState.onNext(true);
                 }, err -> loginState.onError(new Throwable("Unable to reach login service")));
             }
