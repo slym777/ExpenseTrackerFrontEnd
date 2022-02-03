@@ -5,13 +5,14 @@ import java.util.List;
 
 public class Trip {
 
-    private Long id;
+    protected Long id;
     protected String name;
     protected String description;
     protected String avatarUri;
     protected String location;
-    private Integer groupSize;
+    protected Integer groupSize;
     protected List<User> users = new ArrayList<>();
+    protected List<Expense> expenses = new ArrayList<>();
 
     public Trip() {
     }
@@ -30,6 +31,17 @@ public class Trip {
         this.description = description;
         this.avatarUri = avatarUri;
         this.location = location;
+    }
+
+    public Trip(Long id, String name, String description, String avatarUri, String location, Integer groupSize, List<User> users, List<Expense> expenses) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.avatarUri = avatarUri;
+        this.location = location;
+        this.groupSize = groupSize;
+        this.users = users;
+        this.expenses = expenses;
     }
 
     public Long getId() {
@@ -86,5 +98,13 @@ public class Trip {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    public List<Expense> getExpenses() {
+        return expenses;
+    }
+
+    public void setExpenses(List<Expense> expenses) {
+        this.expenses = expenses;
     }
 }

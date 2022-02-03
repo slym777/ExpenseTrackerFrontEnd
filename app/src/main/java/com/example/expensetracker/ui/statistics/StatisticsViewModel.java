@@ -1,9 +1,8 @@
-package com.example.expensetracker.ui.dashboard;
+package com.example.expensetracker.ui.statistics;
 
 import android.os.Build;
 
 import androidx.annotation.RequiresApi;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
@@ -41,6 +40,11 @@ public class StatisticsViewModel extends ViewModel {
             Timber.e(error);
             errorLiveMsg.postValue(error.getMessage());
         }));
+    }
+
+    public void setExpenseList(List<Expense> expenseList) {
+        this.expenseList.clear();
+        this.expenseList.addAll(expenseList);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)

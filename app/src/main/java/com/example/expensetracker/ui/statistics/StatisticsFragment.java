@@ -1,29 +1,29 @@
-package com.example.expensetracker.ui.dashboard;
+package com.example.expensetracker.ui.statistics;
 
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 import android.widget.PopupMenu;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.bumptech.glide.Glide;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentStatisticsBinding;
-import com.example.expensetracker.databinding.FragmentTripsBinding;
-import com.example.expensetracker.utils.SharedPreferencesUtils;
+import com.example.expensetracker.model.Trip;
+import com.example.expensetracker.utils.BaseApp;
 import com.github.mikephil.charting.animation.Easing;
 import com.github.mikephil.charting.components.Legend;
 import com.github.mikephil.charting.data.PieData;
@@ -38,7 +38,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StatisticsFragment extends Fragment {
+public class StatisticsFragment extends Fragment implements OnSelectTripListener {
 
     private StatisticsViewModel statisticsViewModel;
     private FragmentStatisticsBinding binding;
@@ -86,24 +86,7 @@ public class StatisticsFragment extends Fragment {
         l.setYOffset(0f);
         l.getCalculatedLineSizes();
 
-
-//        l.setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
-//        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
-//        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-//        l.setDrawInside(false);
-//        l.setForm(Legend.LegendForm.CIRCLE);
-//        l.setXEntrySpace(7f);
-//        l.setYEntrySpace(0f);
-//        l.setYOffset(0f);
-//        l.setWordWrapEnabled(true);
-//        l.setDrawInside(false);
-//        l.getCalculatedLineSizes();
-
         binding.pieChart.setCenterText("");
-
-        statisticsViewModel.allExpenseLiveList.observe(getViewLifecycleOwner(), creditList -> {
-            plotPieChart();
-        });
 
         Calendar calendar = Calendar.getInstance();
         Date weekFinish = calendar.getTime();
@@ -111,7 +94,30 @@ public class StatisticsFragment extends Fragment {
         Date weekStart = calendar.getTime();
         min = weekStart;
         max = weekFinish;
-        binding.time.setText("Week");
+
+        binding.switch1.setChecked(true);
+
+        statisticsViewModel.allExpenseLiveList.observe(getViewLifecycleOwner(), creditList -> {
+            plotPieChart();
+        });
+
+        binding.selectTrip.setOnClickListener(v -> {
+            ChooseTripDialog dialog = new ChooseTripDialog(this);
+            dialog.show(getChildFragmentManager(), "Choose Trip");
+        });
+
+        binding.tripInfo.setOnClickListener(v -> {
+            ChooseTripDialog dialog = new ChooseTripDialog(this);
+            dialog.show(getChildFragmentManager(), "Choose Trip");
+        });
+
+        binding.switch1.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                statisticsViewModel.loadExpensesPieChart(min, max);
+                plotPieChart();
+            }
+        });
+
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -119,7 +125,6 @@ public class StatisticsFragment extends Fragment {
     public void onResume() {
         super.onResume();
         statisticsViewModel.loadExpensesPieChart(min, max);
-
     }
 
     @Override
@@ -231,10 +236,6 @@ public class StatisticsFragment extends Fragment {
             filterDate(menuItemView);
         }
 
-        if (item.getItemId() == R.id.filter_button) {
-            View menuItemView = requireActivity().findViewById(R.id.filter_button);
-            filterType(menuItemView);
-        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -263,17 +264,17 @@ public class StatisticsFragment extends Fragment {
             if (item.getTitle().equals("Week")){
                 min = weekStart;
                 statisticsViewModel.loadExpensesPieChart(min, max);
-                binding.time.setText("Week");
+                popupMenu.getMenu().getItem(0).setChecked(true);
 //                Toast.makeText(getContext(), "Week was selected", Toast.LENGTH_SHORT).show();
             } else if (item.getTitle().equals("Month")){
                 min = monthStart;
                 statisticsViewModel.loadExpensesPieChart(min, max);
-                binding.time.setText("Month");
+                popupMenu.getMenu().getItem(1).setChecked(true);
 //                Toast.makeText(getContext(), "Month was selected", Toast.LENGTH_SHORT).show();
             } else {
                 min = yearStart;
                 statisticsViewModel.loadExpensesPieChart(min, max);
-                binding.time.setText("Year");
+                popupMenu.getMenu().getItem(2).setChecked(true);
 //                Toast.makeText(getContext(), "Year was selected", Toast.LENGTH_SHORT).show();
             }
             return true;
@@ -282,31 +283,50 @@ public class StatisticsFragment extends Fragment {
         popupMenu.show();
     }
 
+//    @RequiresApi(api = Build.VERSION_CODES.N)
+//    public void filterType(View v){
+//        PopupMenu popupMenu = new PopupMenu(getContext(), v);
+//        popupMenu.getMenu().add("ByType");
+//        popupMenu.getMenu().add("ByTrips");
+//
+//        popupMenu.setOnMenuItemClickListener(item -> {
+//            if (item.getTitle().equals("ByType")){
+//                typeFilter = item.getTitle().toString();
+//                plotPieChart();
+//                popupMenu.getMenu().getItem(0).setChecked(true);
+//                popupMenu.getMenu().getItem(0).setIcon(R.drawable.circleyellowfil);
+//            } else if (item.getTitle().equals("ByTrips")){
+//                typeFilter = item.getTitle().toString();
+//                plotPieChart();
+//                popupMenu.getMenu().getItem(1).setChecked(true);
+//            } else {
+//                typeFilter = item.getTitle().toString();
+//                plotPieChart();
+//            }
+//            return true;
+//        });
+//
+//        popupMenu.show();
+//    }
+
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void filterType(View v){
-        PopupMenu popupMenu = new PopupMenu(getContext(), v);
-        popupMenu.getMenu().add("Currency");
-        popupMenu.getMenu().add("Users");
-        popupMenu.getMenu().add("Hubs");
+    @Override
+    public void onSelectTrip(Trip trip) {
+        binding.selectTrip.setVisibility(View.GONE);
+        binding.tripInfo.setVisibility(View.VISIBLE);
+        binding.switch1.setChecked(false);
+        binding.tripName.setText(trip.getName());
 
-        popupMenu.setOnMenuItemClickListener(item -> {
-            if (item.getTitle().equals("Currency")){
-                typeFilter = item.getTitle().toString();
-                plotPieChart();
-                binding.filter.setText("Currency");
-            } else if (item.getTitle().equals("Users")){
-                typeFilter = item.getTitle().toString();
-                plotPieChart();
-                binding.filter.setText("Users");
-            } else {
-                typeFilter = item.getTitle().toString();
-                plotPieChart();
-            }
-            return true;
-        });
+        if (!TextUtils.isEmpty(trip.getAvatarUri())) {
+            Glide.with(BaseApp.context)
+                    .load(trip.getAvatarUri())
+                    .centerCrop()
+                    .placeholder(R.drawable.progress_animation)
+                    .into(binding.tripAvatar);
+        }
 
-        popupMenu.show();
+        statisticsViewModel.setExpenseList(trip.getExpenses());
+        plotPieChart();
     }
-
 }
 
