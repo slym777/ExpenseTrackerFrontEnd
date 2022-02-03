@@ -1,6 +1,5 @@
 package com.example.expensetracker.ui.viewexpense;
 
-import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -19,13 +18,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.navigation.Navigation;
 
 import com.bumptech.glide.Glide;
-import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentExpenseViewBinding;
 import com.example.expensetracker.model.Expense;
 import com.example.expensetracker.ui.viewexpense.editExpense.EditExpenseDialog;
-import com.example.expensetracker.ui.viewtrip.addexpense.AddExpenseDialog;
-import com.example.expensetracker.ui.viewtrip.tripinfo.TripMembersAdapter;
+import com.example.expensetracker.ui.viewtrip.OnAddEditExpenseListener;
 import com.example.expensetracker.utils.BaseApp;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
@@ -35,7 +32,7 @@ import org.json.JSONException;
 
 import timber.log.Timber;
 
-public class ViewExpenseFragment extends Fragment {
+public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseListener {
     private FragmentExpenseViewBinding binding;
     private ExpenseViewModel expenseViewModel;
     private ExpenseMembersAdapter expenseMembersAdapter;
@@ -104,7 +101,7 @@ public class ViewExpenseFragment extends Fragment {
     }
 
     private void showEditExpenseDialog() {
-        EditExpenseDialog dialog = new EditExpenseDialog(expenseViewModel.expenseId);
+        EditExpenseDialog dialog = new EditExpenseDialog(expenseViewModel.expenseId, this);
         dialog.show(getChildFragmentManager(), "EditExpenseDialog");
     }
 
@@ -119,7 +116,7 @@ public class ViewExpenseFragment extends Fragment {
                                 if (bool) {
                                     Toast.makeText(getContext(), "Expense deleted successfully!", Toast.LENGTH_SHORT).show();
                                 } else {
-                                    Toast.makeText(getContext(), "Could not delete expense...", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(getContext(), "Error while deleting expense", Toast.LENGTH_SHORT).show();
                                 }
                                 Navigation.findNavController(getView()).navigate(ViewExpenseFragmentDirections.actionNavigationExpenseViewToNavigationTripView());
                             }, err -> Toast.makeText(getContext(), err.getMessage(), Toast.LENGTH_SHORT).show()
@@ -199,6 +196,11 @@ public class ViewExpenseFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        expenseViewModel.getExpense();
+    }
+
+    @Override
+    public void onAcceptClick() {
         expenseViewModel.getExpense();
     }
 }

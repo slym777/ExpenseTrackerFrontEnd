@@ -42,7 +42,7 @@ import org.json.JSONException;
 
 import timber.log.Timber;
 
-public class ViewTripFragment extends Fragment {
+public class ViewTripFragment extends Fragment implements OnAddEditExpenseListener {
 
     private FragmentTripViewBinding binding;
     private ViewTripPagerAdapter pagerAdapter;
@@ -99,6 +99,10 @@ public class ViewTripFragment extends Fragment {
 
         private List<Fragment> fragments = new ArrayList<>();
 
+        public List<Fragment> getFragments() {
+            return fragments;
+        }
+
         public ViewTripPagerAdapter(@NonNull FragmentManager fm, Long tripId) {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
             fragments.add(new GroupExpensesFragment(tripId));
@@ -150,7 +154,7 @@ public class ViewTripFragment extends Fragment {
     }
 
     private void showAddExpenseDialog() {
-        AddExpenseDialog dialog = new AddExpenseDialog(tripInfoViewModel.tripLive.getValue());
+        AddExpenseDialog dialog = new AddExpenseDialog(tripInfoViewModel.tripLive.getValue(), this);
         dialog.show(getChildFragmentManager(), "AddExpenseDialog");
     }
 
@@ -159,5 +163,12 @@ public class ViewTripFragment extends Fragment {
     public void onResume() {
         super.onResume();
         tripInfoViewModel.getTripById();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public void onAcceptClick() {
+        pagerAdapter.getFragments().get(0).onResume();
+        pagerAdapter.getFragments().get(1).onResume();
     }
 }

@@ -17,17 +17,20 @@ import androidx.lifecycle.ViewModelProvider;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.DialogEditExpenseBinding;
 import com.example.expensetracker.model.ExpenseType;
+import com.example.expensetracker.ui.viewtrip.OnAddEditExpenseListener;
 
 import org.json.JSONException;
 
-public class EditExpenseDialog extends DialogFragment {
+public class EditExpenseDialog extends DialogFragment  {
     Long expenseId;
     DialogEditExpenseBinding binding;
     EditExpenseViewModel editExpenseViewModel;
+    private OnAddEditExpenseListener onAddEditExpenseListener;
 
-    public EditExpenseDialog(Long expenseId) {
+    public EditExpenseDialog(Long expenseId, OnAddEditExpenseListener onAddEditExpenseListener) {
         super();
         this.expenseId = expenseId;
+        this.onAddEditExpenseListener = onAddEditExpenseListener;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -87,6 +90,7 @@ public class EditExpenseDialog extends DialogFragment {
                         amount).subscribe(expense1 -> {
                             if (expense1 != null) {
                                 Toast.makeText(getContext(), "Expense successfully updated", Toast.LENGTH_SHORT).show();
+                                onAddEditExpenseListener.onAcceptClick();
                                 dismiss();
                             } else {
                                 Toast.makeText(getContext(), "Error while updating expense", Toast.LENGTH_SHORT).show();

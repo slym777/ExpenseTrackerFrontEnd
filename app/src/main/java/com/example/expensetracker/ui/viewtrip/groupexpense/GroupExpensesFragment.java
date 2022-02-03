@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.example.expensetracker.databinding.FragmentGroupExpenseBinding;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.ui.viewtrip.OnAddEditExpenseListener;
 import com.example.expensetracker.ui.viewtrip.OnClickExpenseListener;
 import com.example.expensetracker.ui.viewtrip.ViewTripFragmentDirections;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -88,5 +89,4 @@ public class GroupExpensesFragment extends Fragment implements OnClickExpenseLis
         action.setExpenseId(expenseId);
         Navigation.findNavController(getView()).navigate(action);
     }
-
 }

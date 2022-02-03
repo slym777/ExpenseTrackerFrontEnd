@@ -20,6 +20,7 @@ import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.DialogAddExpenseBinding;
 import com.example.expensetracker.model.ExpenseType;
 import com.example.expensetracker.model.Trip;
+import com.example.expensetracker.ui.viewtrip.OnAddEditExpenseListener;
 
 import org.json.JSONException;
 
@@ -30,10 +31,12 @@ public class AddExpenseDialog extends DialogFragment {
     DialogAddExpenseBinding binding;
     AddExpenseViewModel addExpenseViewModel;
     private boolean comesFromTripView;
+    private OnAddEditExpenseListener onAddEditExpenseListener;
 
-    public AddExpenseDialog(Trip trip) {
+    public AddExpenseDialog(Trip trip, OnAddEditExpenseListener onAddEditExpenseListener) {
         super();
         this.trip = trip;
+        this.onAddEditExpenseListener = onAddEditExpenseListener;
         comesFromTripView = true;
     }
 
@@ -107,13 +110,15 @@ public class AddExpenseDialog extends DialogFragment {
                         addExpenseViewModel.selectedUserList.getValue() == null
                                 ? new ArrayList<>()
                                 : addExpenseViewModel.selectedUserList.getValue(),
-                        addExpenseViewModel.isGroupExpense).subscribe(bool -> {
-                            if (bool) {
-                                Toast.makeText(getContext(), "Expense successfully created", Toast.LENGTH_SHORT).show();
-                                dismiss();
-                            } else {
-                                Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show();
-                            }
+                        addExpenseViewModel.isGroupExpense
+                ).subscribe(bool -> {
+                    if (bool) {
+                        Toast.makeText(getContext(), "Expense successfully created", Toast.LENGTH_SHORT).show();
+                        onAddEditExpenseListener.onAcceptClick();
+                        dismiss();
+                    } else {
+                        Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show();
+                    }
                 }, error -> Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show());
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -121,7 +126,6 @@ public class AddExpenseDialog extends DialogFragment {
         });
 
         binding.buttonCancelExpense.setOnClickListener(l -> {
-            // TODO after dismiss trigger load data in tripview
             dismiss();
         });
     }

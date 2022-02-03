@@ -92,6 +92,4 @@ public class PersonalExpensesFragment extends Fragment implements OnClickExpense
         action.setExpenseId(expenseId);
         Navigation.findNavController(getView()).navigate(action);
     }
-
-
 }
