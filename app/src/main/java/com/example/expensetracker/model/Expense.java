@@ -47,6 +47,12 @@ public class Expense {
     public Expense() {
     }
 
+    public Expense(String description, ExpenseType expenseType, Double amount) {
+        this.description = description;
+        this.type = expenseType;
+        this.amount = amount;
+    }
+
     public Long getId() {
         return id;
     }

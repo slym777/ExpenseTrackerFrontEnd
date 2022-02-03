@@ -23,6 +23,8 @@ import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentExpenseViewBinding;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.ui.viewexpense.editExpense.EditExpenseDialog;
+import com.example.expensetracker.ui.viewtrip.addexpense.AddExpenseDialog;
 import com.example.expensetracker.ui.viewtrip.tripinfo.TripMembersAdapter;
 import com.example.expensetracker.utils.BaseApp;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -94,7 +96,16 @@ public class ViewExpenseFragment extends Fragment {
                     .show();
         });
 
+        binding.editImageView.setOnClickListener(l -> {
+            showEditExpenseDialog();
+        });
+
         binding.deleteImageView.setOnClickListener(l -> handleDeleteExpense());
+    }
+
+    private void showEditExpenseDialog() {
+        EditExpenseDialog dialog = new EditExpenseDialog(expenseViewModel.expenseId);
+        dialog.show(getChildFragmentManager(), "EditExpenseDialog");
     }
 
     private void handleDeleteExpense() {
@@ -177,7 +188,6 @@ public class ViewExpenseFragment extends Fragment {
         binding.totalAmountValue.setText(expense.getAmount() + "$");
         binding.typeValue.setText(expense.getType().name());
         binding.descValue.setText(expense.getDescription());
-
     }
 
     @Override

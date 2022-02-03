@@ -8,6 +8,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -15,6 +16,7 @@ import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
 
+import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.DialogAddExpenseBinding;
 import com.example.expensetracker.model.ExpenseType;
 import com.example.expensetracker.model.Trip;
@@ -24,7 +26,7 @@ import org.json.JSONException;
 import java.util.ArrayList;
 
 public class AddExpenseDialog extends DialogFragment {
-    private Trip trip;
+    private final Trip trip;
     DialogAddExpenseBinding binding;
     AddExpenseViewModel addExpenseViewModel;
     private boolean comesFromTripView;
@@ -69,16 +71,16 @@ public class AddExpenseDialog extends DialogFragment {
         });
 
         binding.expenseTypeRadioGroup.setOnCheckedChangeListener((group, checkedId) -> {
-            switch ((checkedId - 1) % 4 + 1) {
-                case 1: {
+            switch (checkedId) {
+                case R.id.stay_option: {
                     addExpenseViewModel.expenseType = ExpenseType.STAY;
                     break;
                 }
-                case 2: {
+                case R.id.transport_option: {
                     addExpenseViewModel.expenseType = ExpenseType.TRANSPORT;
                     break;
                 }
-                case 3: {
+                case R.id.meal_option: {
                     addExpenseViewModel.expenseType = ExpenseType.MEAL;
                     break;
                 }
@@ -104,12 +106,18 @@ public class AddExpenseDialog extends DialogFragment {
                         amount,
                         addExpenseViewModel.selectedUserList.getValue() == null
                                 ? new ArrayList<>()
-                                : addExpenseViewModel.selectedUserList.getValue()
-                        , addExpenseViewModel.isGroupExpense);
+                                : addExpenseViewModel.selectedUserList.getValue(),
+                        addExpenseViewModel.isGroupExpense).subscribe(bool -> {
+                            if (bool) {
+                                Toast.makeText(getContext(), "Expense successfully created", Toast.LENGTH_SHORT).show();
+                                dismiss();
+                            } else {
+                                Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show();
+                            }
+                }, error -> Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show());
             } catch (JSONException e) {
                 e.printStackTrace();
             }
-            dismiss();
         });
 
         binding.buttonCancelExpense.setOnClickListener(l -> {
