@@ -11,6 +11,8 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.example.expensetracker.model.CreateTripRequest;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.model.Trip;
+import com.example.expensetracker.model.UpdateTripRequest;
 import com.example.expensetracker.utils.BaseApp;
 import com.example.expensetracker.utils.RequestQueueHelper;
 import com.google.gson.Gson;
@@ -134,6 +136,37 @@ public class ExpenseApi {
 
         RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonArrayRequest);
 
+        return behaviorSubject;
+    }
+
+    public static BehaviorSubject<Expense> editExpense(Long expenseId, Expense expense) throws JSONException {
+        String url = BaseApp.serverUrl + "/expenses/editExpense/" + expenseId;
+
+        final BehaviorSubject<Expense> behaviorSubject = BehaviorSubject.create();
+
+        JsonObjectRequest jsonObjectRequest  = new JsonObjectRequest(
+                Request.Method.PUT,
+                url,
+                new JSONObject(
+                        new Gson().toJson(expense, Expense.class)
+                ),
+                response -> {
+                    Gson gson = new Gson();
+                    Expense expenseResponse = gson.fromJson(response.toString(), Expense.class);
+                    behaviorSubject.onNext(expenseResponse);
+                },
+                behaviorSubject::onError) {
+//            @Override
+//            public Map<String, String> getHeaders() throws AuthFailureError {
+//                Map<String, String> params = new HashMap<>();
+//                params.put("Content-Type", "application/json; charset=UTF-8");
+//                params.put("Authorization", "Bearer " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                Timber.d("retrieved token is " + SharedPreferencesUtils.retrieveTokenFromSharedPref());
+//                return params;
+//            }
+        };
+
+        RequestQueueHelper.getRequestQueueHelperInstance(BaseApp.context).addToRequestQueue(jsonObjectRequest);
         return behaviorSubject;
     }
 
