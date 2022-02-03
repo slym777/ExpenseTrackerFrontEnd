@@ -1,12 +1,5 @@
 package com.example.expensetracker.ui.auth;
 
-import static android.app.Activity.RESULT_OK;
-
-import static com.example.expensetracker.utils.ConstantsUtils.CAMERA_REQUEST_CODE;
-import static com.example.expensetracker.utils.ConstantsUtils.GALLERY_REQUEST_CODE;
-import static com.example.expensetracker.utils.ConstantsUtils.PERMISSION_REQUEST_CAMERA;
-import static com.example.expensetracker.utils.ConstantsUtils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE;
-
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -18,8 +11,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,8 +21,6 @@ import androidx.navigation.Navigation;
 
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentSignupBinding;
-import com.google.android.gms.tasks.Continuation;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.storage.FirebaseStorage;
@@ -43,6 +32,12 @@ import java.io.ByteArrayOutputStream;
 import java.util.UUID;
 
 import timber.log.Timber;
+
+import static android.app.Activity.RESULT_OK;
+import static com.example.expensetracker.utils.ConstantsUtils.CAMERA_REQUEST_CODE;
+import static com.example.expensetracker.utils.ConstantsUtils.GALLERY_REQUEST_CODE;
+import static com.example.expensetracker.utils.ConstantsUtils.PERMISSION_REQUEST_CAMERA;
+import static com.example.expensetracker.utils.ConstantsUtils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE;
 
 public class SignUpFragment extends Fragment {
     SignUpViewModel signUpViewModel;

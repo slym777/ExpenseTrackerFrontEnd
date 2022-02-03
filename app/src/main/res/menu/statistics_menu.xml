@@ -3,12 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/filter_button"
-        android:icon="@drawable/ic_baseline_filter_list_24"
-        android:title="Filter"
-        app:showAsAction="always" />
-
-    <item
         android:id="@+id/calendar_button"
         android:icon="@drawable/ic_baseline_calendar_today_24"
         android:title="Time"
