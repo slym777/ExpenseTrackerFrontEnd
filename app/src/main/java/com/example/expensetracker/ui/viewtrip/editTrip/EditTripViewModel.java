@@ -11,6 +11,7 @@ import com.example.expensetracker.api.UserApi;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.model.UpdateTripRequest;
 import com.example.expensetracker.model.User;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 
 import org.json.JSONException;
 
@@ -27,6 +28,7 @@ public class EditTripViewModel extends ViewModel {
     Long tripId;
     public List<User> allUserList = new ArrayList<>();
     public String name, description, location, avatarUri;
+    public Boolean enableSaveButton = false;
 
     public MutableLiveData<Trip> tripLive = new MutableLiveData<>();
     public MutableLiveData<List<User>> selectedUserList = new MutableLiveData<>();
@@ -34,12 +36,17 @@ public class EditTripViewModel extends ViewModel {
     public MutableLiveData<String> errorLiveMsg = new MutableLiveData<>();
     private LinkedList<Disposable> disposableLinkedList = new LinkedList<>();
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     public void getAllUsers(){
         disposableLinkedList.add(UserApi.getListOfUsers().subscribe(list -> {
-            allUserList.clear();
-            allUserList.addAll(list);
+            // remove myself
+            String myEmail = SharedPreferencesUtils.getEmail();
+            List<User> filtered = list.stream().filter(u -> !u.getEmail().equals(myEmail)).collect(Collectors.toList());
 
-            for (User user: list) {
+            allUserList.clear();
+            allUserList.addAll(filtered);
+
+            for (User user: filtered) {
                 if (selectedUserList.getValue() == null || selectedUserList.getValue().isEmpty()) {
                     break;
                 }
@@ -51,22 +58,25 @@ public class EditTripViewModel extends ViewModel {
                 }
             }
 
-            searchUserLiveList.setValue(list);
+            searchUserLiveList.setValue(filtered);
         }, error -> {
-            Timber.e(error.getMessage());
+            Timber.e(error);
             errorLiveMsg.postValue(error.getLocalizedMessage());
         }));
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void setSelectedUsers(List<User> users) {
-        selectedUserList.postValue(users);
+        String myEmail = SharedPreferencesUtils.getEmail();
+        List<User> filtered = users.stream().filter(u -> !u.getEmail().equals(myEmail)).collect(Collectors.toList());
+
+        selectedUserList.postValue(filtered);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void addMembers() {
         List<User> selectedUsers = allUserList.stream()
-                .filter(f -> f.isSelected())
+                .filter(User::isSelected)
                 .collect(Collectors.toList());
         selectedUserList.postValue(selectedUsers);
     }
@@ -80,8 +90,8 @@ public class EditTripViewModel extends ViewModel {
         }));
     }
 
-    public BehaviorSubject<Trip> updateTrip(String name, String description, String avatarUri, String location) throws JSONException {
-        UpdateTripRequest updateTripRequest = new UpdateTripRequest(name, description, avatarUri, location, selectedUserList.getValue());
+    public BehaviorSubject<Trip> updateTrip(String name, String description, String avatarUri, String location, List<User> users) throws JSONException {
+        UpdateTripRequest updateTripRequest = new UpdateTripRequest(name, description, avatarUri, location, users);
         return TripApi.updateTrip(tripId, updateTripRequest);
     }
 

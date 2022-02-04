@@ -47,6 +47,7 @@ import com.example.expensetracker.model.User;
 import com.example.expensetracker.ui.addtrip.SelectedUsersAdapter;
 import com.example.expensetracker.ui.trips.OnClickRemoveSelectedUserListener;
 import com.example.expensetracker.utils.BaseApp;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -70,7 +71,6 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
     EditTripViewModel editTripViewModel;
     private FirebaseStorage storage;
     private SelectedUsersAdapter selectedUsersAdapter;
-    private Boolean enableSaveButton = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -104,6 +104,7 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
                 editTripViewModel.location = trip.getLocation();
                 editTripViewModel.avatarUri = trip.getAvatarUri();
 
+                setEnableSaveButton(false);
                 editTripViewModel.setSelectedUsers(trip.getUsers());
                 setBinding();
             }
@@ -170,7 +171,7 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
     public void onPrepareOptionsMenu(@NonNull Menu menu) {
         super.onPrepareOptionsMenu(menu);
         MenuItem item = menu.findItem(R.id.edit_trip_save_button);
-        if (enableSaveButton) {
+        if (editTripViewModel.enableSaveButton) {
             item.setEnabled(true);
             item.getIcon().setAlpha(255);
         } else {
@@ -190,17 +191,28 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
     }
 
     private void setEnableSaveButton(boolean value) {
-        enableSaveButton = value;
+        editTripViewModel.enableSaveButton = value;
         requireActivity().invalidateOptionsMenu();
     }
 
     private void saveChanges() {
+        if (editTripViewModel.selectedUserList.getValue() == null || editTripViewModel.selectedUserList.getValue().isEmpty()) {
+            Toast.makeText(getContext(), "Cannot have a trip with no members", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        List<User> users = new ArrayList<>();
+        users.add(SharedPreferencesUtils.getProfileDetails());
+        users.addAll(editTripViewModel.selectedUserList.getValue());
+
         try {
             editTripViewModel.updateTrip(
                     binding.tripNameText.getText().toString(),
-                    binding.tripDescText.getText().toString(), editTripViewModel.avatarUri,
-                    binding.tripLocationText.getText().toString())
-                    .subscribe(bool -> {
+                    binding.tripDescText.getText().toString(),
+                    editTripViewModel.avatarUri,
+                    binding.tripLocationText.getText().toString(),
+                    users
+            ).subscribe(bool -> {
                                 editTripViewModel.name = binding.tripNameText.getText().toString();
                                 editTripViewModel.description = binding.tripDescText.getText().toString();
                                 editTripViewModel.location = binding.tripLocationText.getText().toString();

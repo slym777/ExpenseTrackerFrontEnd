@@ -76,7 +76,7 @@ public class AddExpenseViewModel extends ViewModel {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void addMembers() {
         List<User> selectedUsers = allUserList.stream()
-                .filter(f -> f.isSelected())
+                .filter(User::isSelected)
                 .collect(Collectors.toList());
         selectedUserList.postValue(selectedUsers);
     }

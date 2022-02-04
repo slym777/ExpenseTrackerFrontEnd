@@ -3,6 +3,7 @@ package com.example.expensetracker.ui.addtrip;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -13,6 +14,7 @@ import com.example.expensetracker.databinding.ViewTripSelectedUserBinding;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.ui.trips.OnClickRemoveSelectedUserListener;
 import com.example.expensetracker.utils.BaseApp;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 
 import java.util.List;
 
@@ -67,7 +69,11 @@ public class SelectedUsersAdapter extends RecyclerView.Adapter<SelectedUsersAdap
             binding.userName.setText(user.getFullName());
 
             binding.closeImageView.setOnClickListener(l -> {
-                onClickRemoveSelectedUserListener.removeUser(user);
+                if (user.getEmail().equals(SharedPreferencesUtils.getEmail())) {
+                    Toast.makeText(l.getContext(), "Cannot remove yourself from a trip", Toast.LENGTH_SHORT).show();
+                } else {
+                    onClickRemoveSelectedUserListener.removeUser(user);
+                }
             });
 
             if (!TextUtils.isEmpty(user.getAvatarUri())) {
