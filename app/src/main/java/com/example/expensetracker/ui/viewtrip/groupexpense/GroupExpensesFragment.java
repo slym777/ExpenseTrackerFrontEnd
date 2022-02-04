@@ -56,7 +56,14 @@ public class GroupExpensesFragment extends Fragment implements OnClickExpenseLis
         binding.recycler.setAdapter(groupExpensesAdapter);
 
         groupExpenseViewModel.expensesLiveList.observe(getViewLifecycleOwner(), expenses -> {
-            groupExpensesAdapter.updateRecyclerView(expenses);
+            if (expenses.isEmpty()) {
+                binding.recycler.setVisibility(View.GONE);
+                binding.emptyView.setVisibility(View.VISIBLE);
+            } else {
+                binding.recycler.setVisibility(View.VISIBLE);
+                binding.emptyView.setVisibility(View.GONE);
+                groupExpensesAdapter.updateRecyclerView(expenses);
+            }
         });
 
         groupExpenseViewModel.errorLiveMsg.observe(getViewLifecycleOwner(), str -> {

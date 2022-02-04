@@ -37,7 +37,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/calibri"
             android:hint="First Name"
-            android:text="user"
             android:inputType="textPersonName"
             android:maxLines="1"
             android:textSize="16sp" />
@@ -61,7 +60,6 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/calibri"
             android:hint="Last Name"
-            android:text="user"
             android:inputType="textPersonName"
             android:maxLines="1"
             android:textSize="16sp" />

@@ -44,7 +44,7 @@ public class GroupExpensesAdapter extends RecyclerView.Adapter<GroupExpensesAdap
         Expense expense = mExpenses.get(position);
         holder.binding.typeText.setText(expense.getType().name());
         holder.binding.nrContributors.setText(expense.getCreditors().size() + " contributors");
-        holder.binding.amount.setText(expense.getAmount().toString());
+        holder.binding.amount.setText(String.format("%.2f$", expense.getAmount()));
     }
 
     @Override

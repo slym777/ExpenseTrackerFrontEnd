@@ -1,6 +1,7 @@
 package com.example.expensetracker.ui.trips;
 
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -34,6 +36,7 @@ public class TripsFragment extends Fragment implements TripAdapter.OnClickTripLi
         return binding.getRoot();
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -49,12 +52,19 @@ public class TripsFragment extends Fragment implements TripAdapter.OnClickTripLi
         });
 
         tripViewModel.tripLiveList.observe(getViewLifecycleOwner(), trips -> {
-            tripAdapter.updateRecyclerView(trips);
+            if (trips.isEmpty()) {
+                binding.ftTripsRecyclerView.setVisibility(View.GONE);
+                binding.emptyView.setVisibility(View.VISIBLE);
+            } else {
+                binding.ftTripsRecyclerView.setVisibility(View.VISIBLE);
+                binding.emptyView.setVisibility(View.GONE);
+                tripAdapter.updateRecyclerView(trips);
+            }
         });
 
         tripViewModel.errorLiveMsg.observe(getViewLifecycleOwner(), str -> {
             new MaterialAlertDialogBuilder(getContext())
-                    .setTitle("No connection")
+                    .setTitle("Check connection or retry lo login")
                     .setMessage(str)
                     .setPositiveButton("Got it", (dialog, which) -> dialog.dismiss())
                     .show();
@@ -88,6 +98,7 @@ public class TripsFragment extends Fragment implements TripAdapter.OnClickTripLi
         binding = null;
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onResume() {
         super.onResume();
