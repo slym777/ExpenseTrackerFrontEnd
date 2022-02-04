@@ -54,7 +54,14 @@ public class PersonalExpensesFragment extends Fragment implements OnClickExpense
         binding.recycler.setAdapter(personalExpensesAdapter);
 
         personalExpenseViewModel.expensesLiveList.observe(getViewLifecycleOwner(), expenses -> {
-            personalExpensesAdapter.updateRecyclerView(expenses);
+            if (expenses.isEmpty()) {
+                binding.recycler.setVisibility(View.GONE);
+                binding.emptyView.setVisibility(View.VISIBLE);
+            } else {
+                binding.recycler.setVisibility(View.VISIBLE);
+                binding.emptyView.setVisibility(View.GONE);
+                personalExpensesAdapter.updateRecyclerView(expenses);
+            }
         });
 
         personalExpenseViewModel.errorLiveMsg.observe(getViewLifecycleOwner(), str -> {

@@ -47,7 +47,7 @@
     <string name="intro_page3_description">You are able to create new debts or settle up the existing ones</string>
     <string name="intro_page4_title">Simplify debts</string>
     <string name="intro_page4_description">Use simplify function to minimise the number of transaction in a hub</string>
-
+    <string name="no_data_available">No data</string>
 
 
 </resources>

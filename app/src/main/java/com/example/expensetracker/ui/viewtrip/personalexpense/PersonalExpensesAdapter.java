@@ -43,7 +43,7 @@ public class PersonalExpensesAdapter extends RecyclerView.Adapter<PersonalExpens
     public void onBindViewHolder(@NonNull PersonalExpensesHolder holder, int position) {
         Expense expense = mExpenses.get(position);
         holder.binding.typeText.setText(expense.getType().name());
-        holder.binding.amount.setText(expense.getAmount().toString());
+        holder.binding.amount.setText(String.format("%.2f$", expense.getAmount()));
     }
 
     @Override

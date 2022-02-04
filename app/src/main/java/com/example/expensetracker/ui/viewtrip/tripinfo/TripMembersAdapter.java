@@ -72,10 +72,10 @@ public class TripMembersAdapter extends RecyclerView.Adapter<TripMembersAdapter.
                     .stream()
                     .filter(Expense::getIsGroupExpense)
                     .filter(e -> e.getCreditors().contains(user))
-                    .map(e -> e.getAmount())
+                    .map(e -> e.getAmount() / e.getCreditors().size())
                     .reduce(0.0, Double::sum);
 
-            binding.amount.setText(amount.toString());
+            binding.amount.setText(String.format("%.2f$", amount));
 
             binding.vsuUserName.setText(user.getFullName());
 

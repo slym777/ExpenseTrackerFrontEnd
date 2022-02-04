@@ -22,18 +22,18 @@ public class TripAdapter extends RecyclerView.Adapter<TripAdapter.TripViewHolder
     private List<Trip> mTrips;
     private OnClickTripListener onClickTripListener;
 
-    public TripAdapter(List<Trip> mTrips, OnClickTripListener onClickHubListener) {
+    public TripAdapter(List<Trip> mTrips, OnClickTripListener onClickTripListener) {
         this.mTrips = mTrips;
-        this.onClickTripListener = onClickHubListener;
+        this.onClickTripListener = onClickTripListener;
     }
 
     public List<Trip> getTrips() {
         return mTrips;
     }
 
-    public void updateRecyclerView(List<Trip> hubList){
+    public void updateRecyclerView(List<Trip> tripList){
         mTrips.clear();
-        mTrips.addAll(hubList);
+        mTrips.addAll(tripList);
         notifyDataSetChanged();
     }
 
