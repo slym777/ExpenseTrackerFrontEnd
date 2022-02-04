@@ -316,7 +316,11 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
                     .centerCrop()
                     .placeholder(R.drawable.progress_animation)
                     .into(binding.tripAvatar);
+        } else {
+            Glide.with(BaseApp.context).clear(binding.tripAvatar);
+            binding.tripAvatar.setImageResource(R.drawable.default_trip_back);
         }
+
 
 //        statisticsViewModel.loadExpenseFromTrip(trip.getId());
         statisticsViewModel.loadExpenseFromTrip(trip.getId());

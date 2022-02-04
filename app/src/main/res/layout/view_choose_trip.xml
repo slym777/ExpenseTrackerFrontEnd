@@ -7,9 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
     android:checkable="true"
-    app:cardElevation="5dp"
-    app:strokeWidth="2dp"
-    app:strokeColor="@color/secondaryDarkColor">
+    app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -29,8 +27,9 @@
 
             <ImageView
                 android:id="@+id/trip_avatar"
-                android:layout_width="45dp"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:scaleType="centerCrop"
                 android:src="@drawable/default_trip_back" />
 
         </androidx.cardview.widget.CardView>
@@ -54,7 +53,6 @@
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginEnd="12dp"
-            android:background="@drawable/circular_grey_bordersolid"
             android:checked="false"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
