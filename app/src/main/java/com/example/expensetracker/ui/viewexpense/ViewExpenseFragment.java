@@ -176,15 +176,11 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
         binding.typeValue.setText(expense.getType().name());
         binding.descValue.setText(expense.getDescription());
 
-        ZonedDateTime zdt = ZonedDateTime.ofInstant(expense.getCreatedDate().toInstant(), ZoneId.systemDefault());
-        Calendar calendar = GregorianCalendar.from(zdt);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        String month = new SimpleDateFormat("MMM").format(calendar.getTime());
-        int year = calendar.get(Calendar.YEAR);
-        String timeStr = String.format("%02d:%02d", hour, minute);
-        String dateStr = day + " " + month + " " + year;
+        SimpleDateFormat formatterDate = new SimpleDateFormat("dd/MM/yyyy");
+        String dateStr = formatterDate.format(expense.getCreatedDate());
+
+        SimpleDateFormat formatterTime = new SimpleDateFormat("hh:mm");
+        String timeStr = formatterTime.format(expense.getCreatedDate());
 
         binding.dateEditText.setText(dateStr);
         binding.timeEditText.setText(timeStr);
