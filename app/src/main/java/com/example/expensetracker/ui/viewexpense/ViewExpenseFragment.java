@@ -1,9 +1,13 @@
 package com.example.expensetracker.ui.viewexpense;
 
+import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -61,6 +65,7 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
 
         binding.membersRecyclerView.setHasFixedSize(true);
         binding.membersRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -97,11 +102,31 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
                     .show();
         });
 
-        binding.editImageView.setOnClickListener(l -> {
-            showEditExpenseDialog();
-        });
 
-        binding.deleteImageView.setOnClickListener(l -> handleDeleteExpense());
+    }
+
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.trip_view_menu, menu);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.delete_button:
+                handleDeleteExpense();
+                return true;
+            case R.id.edit_button:
+                showEditExpenseDialog();
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void showEditExpenseDialog() {

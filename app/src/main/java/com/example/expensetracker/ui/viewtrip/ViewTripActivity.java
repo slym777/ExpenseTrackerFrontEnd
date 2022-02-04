@@ -41,5 +41,8 @@ public class ViewTripActivity extends AppCompatActivity {
         }
     }
 
+    public void setActionBarTitle(String title) {
+        getSupportActionBar().setTitle(title);
+    }
 
 }

@@ -11,15 +11,21 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.PopupMenu;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
@@ -47,8 +53,10 @@ import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 import timber.log.Timber;
 
@@ -68,6 +76,8 @@ public class AddTripFragment extends Fragment implements OnClickRemoveSelectedUs
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
+
         storage = FirebaseStorage.getInstance();
         binding.recyclerSelectedUsers.setHasFixedSize(true);
         binding.recyclerSelectedUsers.setLayoutManager(
@@ -131,29 +141,46 @@ public class AddTripFragment extends Fragment implements OnClickRemoveSelectedUs
             Navigation.findNavController(view).navigate(R.id.action_navigation_add_trip_to_navigation_add_members);
         });
 
-        binding.buttonAddTrip.setOnClickListener(v -> {
-            try {
-                addTripViewModel.createTrip(binding.fatTripNameText.getText().toString(),
-                        binding.fatTripDescText.getText().toString(), addTripViewModel.avatarUri,
-                        binding.fatTripLocationText.getText().toString())
-                        .subscribe(bool -> {
-                            Timber.d("Added new friends");
-                            Intent intent = new Intent(getActivity(), MainActivity.class);
-                            startActivity(intent);
-                        }, error -> new AlertDialog.Builder(getActivity())
-                                .setTitle("Error")
-                                .setMessage(error.getLocalizedMessage())
-                                .show()
-                        );
-            } catch (JSONException e) {
-                Timber.d(e.getMessage());
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Error")
-                        .setMessage(e.getMessage())
-                        .show();
-            }
-        });
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.add_trip_menu, menu);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.save_button) {
+            addTrip();
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    public void addTrip() {
+        try {
+            addTripViewModel.createTrip(binding.fatTripNameText.getText().toString(),
+                    binding.fatTripDescText.getText().toString(), addTripViewModel.avatarUri,
+                    binding.fatTripLocationText.getText().toString())
+                    .subscribe(bool -> {
+                                Timber.d("Added new friends");
+                                Intent intent = new Intent(getActivity(), MainActivity.class);
+                                startActivity(intent);
+                            }, error -> new AlertDialog.Builder(getActivity())
+                                    .setTitle("Error")
+                                    .setMessage(error.getLocalizedMessage())
+                                    .show()
+                    );
+        } catch (JSONException e) {
+            Timber.d(e.getMessage());
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Error")
+                    .setMessage(e.getMessage())
+                    .show();
+        }
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
