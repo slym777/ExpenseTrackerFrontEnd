@@ -112,14 +112,15 @@ public class AddExpenseDialog extends DialogFragment {
                                 : addExpenseViewModel.selectedUserList.getValue(),
                         addExpenseViewModel.isGroupExpense
                 ).subscribe(bool -> {
-                    if (bool) {
-                        Toast.makeText(getContext(), "Expense successfully created", Toast.LENGTH_SHORT).show();
-                        onAddEditExpenseListener.onAcceptClick();
-                        dismiss();
-                    } else {
-                        Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show();
-                    }
-                }, error -> Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show());
+                            if (bool) {
+                                Toast.makeText(getContext(), "Expense successfully created", Toast.LENGTH_SHORT).show();
+                                onAddEditExpenseListener.onAcceptClick();
+                                dismiss();
+                            } else {
+                                Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show();
+                            }
+                        },
+                        error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show());
             } catch (JSONException e) {
                 e.printStackTrace();
             }

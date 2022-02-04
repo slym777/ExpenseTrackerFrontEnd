@@ -7,7 +7,9 @@ import static com.example.expensetracker.utils.ConstantsUtils.PERMISSION_REQUEST
 import static com.example.expensetracker.utils.ConstantsUtils.PERMISSION_REQUEST_READ_EXTERNAL_STORAGE;
 
 import android.Manifest;
+import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -18,21 +20,24 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.bumptech.glide.Glide;
+import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentProfileBinding;
 import com.example.expensetracker.model.User;
@@ -58,12 +63,12 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private ProfileViewModel profileViewModel;
     private FirebaseStorage storage;
-    private Boolean validInputs;
+    private Boolean enableSaveButton;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         profileViewModel = new ViewModelProvider(requireActivity()).get(ProfileViewModel.class);
-
+        enableSaveButton = false;
         // initialize with old values
         profileViewModel.buildUser(SharedPreferencesUtils.getProfileDetails());
 
@@ -74,6 +79,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
         storage = FirebaseStorage.getInstance();
 
         User user = SharedPreferencesUtils.getProfileDetails();
@@ -138,38 +144,78 @@ public class ProfileFragment extends Fragment {
         binding.settingsChangePasswordButton.setOnClickListener(l -> {
             changePasswordDialog();
         });
+    }
 
-        binding.fpSaveButton.setOnClickListener(l -> {
-            validInputs = true;
-            String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
-            String phoneNumberPattern = "(^$|[0-9]{10})";
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.profile_view_menu, menu);
+    }
 
-            if (TextUtils.isEmpty(binding.emailEditText.getText())) {
-                binding.emailEditText.setError("Email is required!");
-                validInputs = false;
-            } else if (!binding.emailEditText.getText().toString().trim().matches(emailPattern)) {
-                binding.emailEditText.setError("Invalid email address: wrong format.");
-                validInputs = false;
-            } else if (!TextUtils.equals(binding.emailEditText.getText(), SharedPreferencesUtils.getEmail())) {
-                profileViewModel.setNewEmail(binding.emailEditText.getText().toString());
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem item = menu.findItem(R.id.save_button);
+        if (enableSaveButton) {
+            item.setEnabled(true);
+            item.getIcon().setAlpha(255);
+        } else {
+            item.setEnabled(false);
+            item.getIcon().setAlpha(220);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.save_button) {
+            boolean state = saveChanges();
+            if (state) {
+                enableSaveButton = false;
+                requireActivity().invalidateOptionsMenu();
+                clearFocusAndCloseKeyboard();
             }
+        }
 
-            if (TextUtils.isEmpty(binding.phonenumberEditText.getText())) {
-                binding.phonenumberEditText.setError("Phone number is required!");
-                validInputs = false;
-            } else if (!binding.phonenumberEditText.getText().toString().matches(phoneNumberPattern)) {
-                binding.phonenumberEditText.setError("Invalid phone number: wrong format.");
-                validInputs = false;
-            } else if (!TextUtils.equals(binding.phonenumberEditText.getText(), SharedPreferencesUtils.getPhoneNumber())){
-                profileViewModel.setNewPhoneNumber(binding.phonenumberEditText.getText().toString());
-            }
+        return super.onOptionsItemSelected(item);
+    }
 
-            if (validInputs) {
-                
-                profileViewModel.update();
-                binding.fpSaveButton.setEnabled(false);
-            }
-        });
+    private boolean saveChanges() {
+        boolean validInputs = true;
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+        String phoneNumberPattern = "(^$|[0-9]{10})";
+
+        if (TextUtils.isEmpty(binding.emailEditText.getText())) {
+            binding.emailEditText.setError("Email is required!");
+            validInputs = false;
+        } else if (!binding.emailEditText.getText().toString().trim().matches(emailPattern)) {
+            binding.emailEditText.setError("Invalid email address: wrong format.");
+            validInputs = false;
+        } else if (!TextUtils.equals(binding.emailEditText.getText(), SharedPreferencesUtils.getEmail())) {
+            profileViewModel.setNewEmail(binding.emailEditText.getText().toString());
+        }
+
+        if (TextUtils.isEmpty(binding.phonenumberEditText.getText())) {
+            binding.phonenumberEditText.setError("Phone number is required!");
+            validInputs = false;
+        } else if (!binding.phonenumberEditText.getText().toString().matches(phoneNumberPattern)) {
+            binding.phonenumberEditText.setError("Invalid phone number: wrong format.");
+            validInputs = false;
+        } else if (!TextUtils.equals(binding.phonenumberEditText.getText(), SharedPreferencesUtils.getPhoneNumber())){
+            profileViewModel.setNewPhoneNumber(binding.phonenumberEditText.getText().toString());
+        }
+
+        if (validInputs) {
+            profileViewModel.updateProfile();
+        }
+
+        return validInputs;
+    }
+
+    public void clearFocusAndCloseKeyboard () {
+        InputMethodManager imm = (InputMethodManager)requireActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(requireView().getApplicationWindowToken(), 0);
+        binding.emailEditText.clearFocus();
+        binding.phonenumberEditText.clearFocus();
     }
 
     private void addTextChangedListener(TextInputEditText editText) {
@@ -186,7 +232,8 @@ public class ProfileFragment extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                binding.fpSaveButton.setEnabled(true);
+                enableSaveButton = true;
+                requireActivity().invalidateOptionsMenu();
             }
         });
     }
@@ -370,8 +417,9 @@ public class ProfileFragment extends Fragment {
         getDownloadUriTask.addOnCompleteListener(getActivity(), task -> {
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
-                binding.fpSaveButton.setEnabled(true);
                 profileViewModel.setNewAvatarUri(downloadUri);
+                enableSaveButton = true;
+                requireActivity().invalidateOptionsMenu();
             }
 
             binding.loadingProgressBar.setVisibility(View.GONE);

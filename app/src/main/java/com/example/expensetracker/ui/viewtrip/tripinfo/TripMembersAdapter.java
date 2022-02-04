@@ -46,6 +46,7 @@ public class TripMembersAdapter extends RecyclerView.Adapter<TripMembersAdapter.
         return new UserViewHolder(binding);
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onBindViewHolder(@NonNull UserViewHolder holder, int position) {
         User user = mUsers.get(position);

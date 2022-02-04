@@ -62,12 +62,6 @@ public class ExpenseMembersAdapter extends RecyclerView.Adapter<ExpenseMembersAd
         }
 
         public void bind(final User user) {
-            if (user.isSelected()) {
-                binding.vsuUserCard.setChecked(true);
-            } else {
-                binding.vsuUserCard.setChecked(false);
-            }
-
             binding.vsuUserName.setText(user.getFullName());
 
             if (!TextUtils.isEmpty(user.getAvatarUri())) {
@@ -80,11 +74,6 @@ public class ExpenseMembersAdapter extends RecyclerView.Adapter<ExpenseMembersAd
                 Glide.with(BaseApp.context).clear(binding.vsuUserAvatar);
                 binding.vsuUserAvatar.setImageResource(R.drawable.default_user_avatar);
             }
-
-            binding.vsuUserCard.setOnClickListener(v -> {
-                user.changeSelectedState();
-                binding.vsuUserCard.toggle();
-            });
         }
     }
 
