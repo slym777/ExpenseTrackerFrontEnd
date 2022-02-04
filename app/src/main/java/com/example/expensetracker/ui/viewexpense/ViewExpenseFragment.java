@@ -101,8 +101,6 @@ public class ViewExpenseFragment extends Fragment implements OnAddEditExpenseLis
                     .setPositiveButton("Got it", (dialog, which) -> dialog.dismiss())
                     .show();
         });
-
-
     }
 
 

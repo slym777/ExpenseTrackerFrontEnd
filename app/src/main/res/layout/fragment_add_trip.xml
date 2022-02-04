@@ -115,15 +115,17 @@
     <Button
         android:id="@+id/button_add_members"
         style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
+        android:layout_marginStart="48dp"
+        android:layout_marginEnd="48dp"
         android:text="Add members"
-        android:drawableLeft="@drawable/ic_member_add_purple_24dp"
+        android:textColor="@color/white"
+        android:backgroundTint="@color/teal_200"
+        android:drawableLeft="@drawable/ic_member_add_white_24dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/recycler_selected_users"
-        app:strokeColor="@color/purple_700"
-        app:strokeWidth="1sp" />
+        app:layout_constraintTop_toBottomOf="@+id/recycler_selected_users" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

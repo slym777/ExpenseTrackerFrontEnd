@@ -7,9 +7,7 @@
     android:layout_height="wrap_content"
     android:layout_margin="3dp"
     android:checkable="true"
-    app:cardElevation="5dp"
-    app:strokeWidth="2dp"
-    app:strokeColor="@color/secondaryDarkColor">
+    app:cardElevation="5dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -37,12 +35,13 @@
 
         <TextView
             android:id="@+id/vsu_user_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:fontFamily="@font/montserrat_bold"
-            android:text="Soltan Gheorghe"
+            android:text="Petrasco Sandu"
             app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/cardView2"
             app:layout_constraintTop_toTopOf="parent" />
 

@@ -20,8 +20,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
@@ -66,6 +70,7 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
     EditTripViewModel editTripViewModel;
     private FirebaseStorage storage;
     private SelectedUsersAdapter selectedUsersAdapter;
+    private Boolean enableSaveButton = false;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -83,6 +88,8 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        setHasOptionsMenu(true);
 
         storage = FirebaseStorage.getInstance();
         binding.recyclerSelectedUsers.setHasFixedSize(true);
@@ -147,38 +154,72 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
             editTripViewModel.name = binding.tripNameText.getText().toString();
             editTripViewModel.description = binding.tripDescText.getText().toString();
             editTripViewModel.location = binding.tripLocationText.getText().toString();
-            binding.buttonEditTrip.setEnabled(true);
+            setEnableSaveButton(true);
 
             Navigation.findNavController(view).navigate(R.id.action_navigation_edit_trip_view_to_navigation_add_member_view);
         });
+    }
 
-        binding.buttonEditTrip.setOnClickListener(v -> {
-            try {
-                editTripViewModel.updateTrip(
-                        binding.tripNameText.getText().toString(),
-                        binding.tripDescText.getText().toString(), editTripViewModel.avatarUri,
-                        binding.tripLocationText.getText().toString())
-                        .subscribe(bool -> {
-                            editTripViewModel.name = binding.tripNameText.getText().toString();
-                            editTripViewModel.description = binding.tripDescText.getText().toString();
-                            editTripViewModel.location = binding.tripLocationText.getText().toString();
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.edit_trip_menu, menu);
+    }
 
-                                    Timber.d("Trip was updated");
-                                    Navigation.findNavController(view).navigate(R.id.action_navigation_edit_trip_view_to_navigation_trip_view);
-                                    Toast.makeText(getContext(), "Trip successfully updated", Toast.LENGTH_SHORT).show();
-                                }, error -> new AlertDialog.Builder(getActivity())
-                                        .setTitle("Error while updating trip")
-                                        .setMessage(error.getLocalizedMessage())
-                                        .show()
-                        );
-            } catch (JSONException e) {
-                Timber.d(e.getMessage());
-                new AlertDialog.Builder(getActivity())
-                        .setTitle("Error while updating trip")
-                        .setMessage(e.getMessage())
-                        .show();
-            }
-        });
+    @Override
+    public void onPrepareOptionsMenu(@NonNull Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        MenuItem item = menu.findItem(R.id.edit_trip_save_button);
+        if (enableSaveButton) {
+            item.setEnabled(true);
+            item.getIcon().setAlpha(255);
+        } else {
+            item.setEnabled(false);
+            item.getIcon().setAlpha(220);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == R.id.edit_trip_save_button) {
+            saveChanges();
+            setEnableSaveButton(false);
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setEnableSaveButton(boolean value) {
+        enableSaveButton = value;
+        requireActivity().invalidateOptionsMenu();
+    }
+
+    private void saveChanges() {
+        try {
+            editTripViewModel.updateTrip(
+                    binding.tripNameText.getText().toString(),
+                    binding.tripDescText.getText().toString(), editTripViewModel.avatarUri,
+                    binding.tripLocationText.getText().toString())
+                    .subscribe(bool -> {
+                                editTripViewModel.name = binding.tripNameText.getText().toString();
+                                editTripViewModel.description = binding.tripDescText.getText().toString();
+                                editTripViewModel.location = binding.tripLocationText.getText().toString();
+
+                                Timber.d("Trip was updated");
+                                Navigation.findNavController(requireView()).navigate(R.id.action_navigation_edit_trip_view_to_navigation_trip_view);
+                                Toast.makeText(getContext(), "Trip successfully updated", Toast.LENGTH_SHORT).show();
+                            }, error -> new AlertDialog.Builder(getActivity())
+                                    .setTitle("Error while updating trip")
+                                    .setMessage(error.getLocalizedMessage())
+                                    .show()
+                    );
+        } catch (JSONException e) {
+            Timber.d(e.getMessage());
+            new AlertDialog.Builder(getActivity())
+                    .setTitle("Error while updating trip")
+                    .setMessage(e.getMessage())
+                    .show();
+        }
     }
 
     private void addTextChangedListener(TextInputEditText editText) {
@@ -195,7 +236,7 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
 
             @Override
             public void afterTextChanged(Editable s) {
-                binding.buttonEditTrip.setEnabled(true);
+                setEnableSaveButton(true);
             }
         });
     }
@@ -362,7 +403,7 @@ public class EditTripFragment extends Fragment implements OnClickRemoveSelectedU
             if (task.isSuccessful()) {
                 Uri downloadUri = task.getResult();
                 editTripViewModel.avatarUri = downloadUri.toString();
-                binding.buttonEditTrip.setEnabled(true);
+                setEnableSaveButton(true);
             }
 
             binding.loadingProgressBar.setVisibility(View.GONE);

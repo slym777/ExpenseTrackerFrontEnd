@@ -52,7 +52,7 @@ public class ProfileViewModel extends ViewModel {
         this.newAvatarUri = uri.toString();
     }
 
-    public void update() {
+    public void updateProfile() {
         Long id = SharedPreferencesUtils.getUserId();
         User user = new User(id, fullName, newEmail, newPhoneNumber, newAvatarUri);
 
