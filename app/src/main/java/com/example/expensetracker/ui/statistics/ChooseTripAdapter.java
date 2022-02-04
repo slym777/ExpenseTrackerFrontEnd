@@ -75,6 +75,9 @@ public class ChooseTripAdapter extends RecyclerView.Adapter<ChooseTripAdapter.Tr
                     .centerCrop()
                     .placeholder(R.drawable.progress_animation)
                     .into(holder.binding.tripAvatar);
+        } else {
+            Glide.with(BaseApp.context).clear(holder.binding.tripAvatar);
+            holder.binding.tripAvatar.setImageResource(R.drawable.default_trip_back);
         }
 
         holder.binding.radioButton.setChecked(trip.getChecked());
