@@ -65,7 +65,7 @@ public class AddTripViewModel extends ViewModel {
 
             searchUserLiveList.setValue(filtered);
         }, error -> {
-            Timber.e(error.getMessage());
+            Timber.e(error);
             errorLiveMsg.postValue(error.getLocalizedMessage());
         }));
     }
@@ -73,18 +73,12 @@ public class AddTripViewModel extends ViewModel {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void addMembers() {
         List<User> selectedUsers = allUserList.stream()
-                .filter(f -> f.isSelected())
+                .filter(User::isSelected)
                 .collect(Collectors.toList());
         selectedUserList.postValue(selectedUsers);
     }
 
-    public BehaviorSubject<Boolean> createTrip(String name, String description, String avatarUri, String location) throws JSONException {
-        List<User> users = new ArrayList<>();
-        users.add(SharedPreferencesUtils.getProfileDetails());
-        if (selectedUserList.getValue() != null) {
-            users.addAll(selectedUserList.getValue());
-        }
-
+    public BehaviorSubject<Boolean> createTrip(String name, String description, String avatarUri, String location, List<User> users) throws JSONException {
         CreateTripRequest createTripRequest = new CreateTripRequest(name, description, avatarUri, location, users);
         return TripApi.createTrip(createTripRequest);
     }

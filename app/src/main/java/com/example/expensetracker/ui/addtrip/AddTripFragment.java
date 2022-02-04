@@ -21,7 +21,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.PopupMenu;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +41,7 @@ import com.example.expensetracker.databinding.FragmentAddTripBinding;
 import com.example.expensetracker.model.User;
 import com.example.expensetracker.ui.trips.OnClickRemoveSelectedUserListener;
 import com.example.expensetracker.utils.BaseApp;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
@@ -53,10 +54,8 @@ import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 import timber.log.Timber;
 
@@ -159,12 +158,21 @@ public class AddTripFragment extends Fragment implements OnClickRemoveSelectedUs
     }
 
     public void addTrip() {
+        if (addTripViewModel.selectedUserList.getValue() == null || addTripViewModel.selectedUserList.getValue().isEmpty()) {
+            Toast.makeText(getContext(), "Cannot create a trip with no members", Toast.LENGTH_SHORT).show();
+            return ;
+        }
+
+        List<User> users = new ArrayList<>();
+        users.add(SharedPreferencesUtils.getProfileDetails());
+        users.addAll(addTripViewModel.selectedUserList.getValue());
+
         try {
             addTripViewModel.createTrip(binding.fatTripNameText.getText().toString(),
                     binding.fatTripDescText.getText().toString(), addTripViewModel.avatarUri,
-                    binding.fatTripLocationText.getText().toString())
+                    binding.fatTripLocationText.getText().toString(), users)
                     .subscribe(bool -> {
-                                Timber.d("Added new friends");
+                                Timber.d("Created a new trip");
                                 Intent intent = new Intent(getActivity(), MainActivity.class);
                                 startActivity(intent);
                             }, error -> new AlertDialog.Builder(getActivity())

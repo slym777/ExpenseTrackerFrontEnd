@@ -21,6 +21,7 @@ import com.example.expensetracker.databinding.DialogAddExpenseBinding;
 import com.example.expensetracker.model.ExpenseType;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.ui.viewtrip.OnAddEditExpenseListener;
+import com.example.expensetracker.utils.SharedPreferencesUtils;
 
 import org.json.JSONException;
 
@@ -96,39 +97,51 @@ public class AddExpenseDialog extends DialogFragment {
 
         binding.members.setOnClickListener(l -> showAddMembersDialog());
 
-        binding.buttonAddExpense.setOnClickListener(l -> {
-            String expense = TextUtils.isEmpty(binding.addExpenseEditText.getText())
-                    ? "0"
-                    : binding.addExpenseEditText.getText().toString();
-            double amount = Double.parseDouble(expense);
-            String description = binding.expenseDescriptionEditText.getText().toString();
-            try {
-                addExpenseViewModel.createExpenseInTrip(
-                        description,
-                        addExpenseViewModel.expenseType,
-                        amount,
-                        addExpenseViewModel.selectedUserList.getValue() == null
-                                ? new ArrayList<>()
-                                : addExpenseViewModel.selectedUserList.getValue(),
-                        addExpenseViewModel.isGroupExpense
-                ).subscribe(bool -> {
-                            if (bool) {
-                                Toast.makeText(getContext(), "Expense successfully created", Toast.LENGTH_SHORT).show();
-                                onAddEditExpenseListener.onAcceptClick();
-                                dismiss();
-                            } else {
-                                Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show();
-                            }
-                        },
-                        error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show());
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-        });
+        binding.buttonAddExpense.setOnClickListener(l -> createExpense());
 
-        binding.buttonCancelExpense.setOnClickListener(l -> {
-            dismiss();
-        });
+        binding.buttonCancelExpense.setOnClickListener(l -> dismiss());
+    }
+
+    private void createExpense() {
+        if (addExpenseViewModel.isGroupExpense != null && addExpenseViewModel.isGroupExpense) {
+            if ( addExpenseViewModel.selectedUserList.getValue() == null ||
+                    addExpenseViewModel.selectedUserList.getValue().isEmpty()) {
+                Toast.makeText(getContext(), "Cannot add a group expense with no members", Toast.LENGTH_SHORT).show();
+                return ;
+            }
+
+            if (addExpenseViewModel.selectedUserList.getValue().size() == 1 &&
+                addExpenseViewModel.selectedUserList.getValue().get(0).equals(SharedPreferencesUtils.getProfileDetails())) {
+                Toast.makeText(getContext(), "Did you mean to create a personal payment?", Toast.LENGTH_SHORT).show();
+                return ;
+            }
+        }
+
+        String expense = TextUtils.isEmpty(binding.addExpenseEditText.getText())
+                ? "0"
+                : binding.addExpenseEditText.getText().toString();
+        double amount = Double.parseDouble(expense);
+        String description = binding.expenseDescriptionEditText.getText().toString();
+        try {
+            addExpenseViewModel.createExpenseInTrip(
+                    description,
+                    addExpenseViewModel.expenseType,
+                    amount,
+                    addExpenseViewModel.selectedUserList.getValue(),
+                    addExpenseViewModel.isGroupExpense
+            ).subscribe(bool -> {
+                        if (bool) {
+                            Toast.makeText(getContext(), "Expense successfully created", Toast.LENGTH_SHORT).show();
+                            onAddEditExpenseListener.onAcceptClick();
+                            dismiss();
+                        } else {
+                            Toast.makeText(getContext(), "Error while creating expense", Toast.LENGTH_SHORT).show();
+                        }
+                    },
+                    error -> Toast.makeText(getContext(), error.getMessage(), Toast.LENGTH_SHORT).show());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void showAddMembersDialog() {
