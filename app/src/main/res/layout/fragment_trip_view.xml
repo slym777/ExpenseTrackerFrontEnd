@@ -22,44 +22,7 @@
         android:layout_marginEnd="18dp"
         android:alpha="0.9"
         app:layout_constraintEnd_toEndOf="@+id/trip_avatar"
-        app:layout_constraintTop_toTopOf="@+id/trip_avatar">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <ImageView
-                android:id="@+id/edit_imageView"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginStart="4dp"
-                android:layout_marginEnd="10dp"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/delete_imageView"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_edit_24" />
-
-            <ImageView
-                android:id="@+id/delete_imageView"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="4dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginEnd="4dp"
-                android:focusable="true"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:srcCompat="@drawable/ic_baseline_delete_24" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
-    </androidx.cardview.widget.CardView>
+        app:layout_constraintTop_toTopOf="@+id/trip_avatar"/>
 
     <TextView
         android:id="@+id/trip_name"

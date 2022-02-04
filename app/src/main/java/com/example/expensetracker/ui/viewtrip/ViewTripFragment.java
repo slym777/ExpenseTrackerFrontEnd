@@ -1,11 +1,15 @@
 package com.example.expensetracker.ui.viewtrip;
 
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
@@ -24,6 +28,7 @@ import com.bumptech.glide.Glide;
 import com.example.expensetracker.MainActivity;
 import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.FragmentTripViewBinding;
+import com.example.expensetracker.ui.addtrip.AddTripActivity;
 import com.example.expensetracker.ui.viewtrip.addexpense.AddExpenseDialog;
 import com.example.expensetracker.ui.viewtrip.groupexpense.GroupExpenseViewModel;
 import com.example.expensetracker.ui.viewtrip.groupexpense.GroupExpensesFragment;
@@ -64,6 +69,7 @@ public class ViewTripFragment extends Fragment implements OnAddEditExpenseListen
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        setHasOptionsMenu(true);
 
         pagerAdapter = new ViewTripPagerAdapter(getChildFragmentManager()
                 , tripInfoViewModel.tripId);
@@ -73,11 +79,9 @@ public class ViewTripFragment extends Fragment implements OnAddEditExpenseListen
 
         binding.addExpenseButton.setOnClickListener(l -> showAddExpenseDialog());
 
-        binding.deleteImageView.setOnClickListener(l -> handleDeleteTrip());
-
-        binding.editImageView.setOnClickListener(l -> Navigation.findNavController(view).navigate(R.id.action_navigation_trip_view_to_navigation_edit_trip_view));
-
         tripInfoViewModel.tripLive.observe(getViewLifecycleOwner(), trip -> {
+            ((ViewTripActivity) getActivity()).setActionBarTitle(trip.getName());
+
             binding.tripName.setText(trip.getName());
             binding.nrMembers.setText(trip.getGroupSize().toString() + " members");
 
@@ -94,6 +98,30 @@ public class ViewTripFragment extends Fragment implements OnAddEditExpenseListen
         });
 
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.trip_view_menu, menu);
+    }
+
+    @SuppressLint("NonConstantResourceId")
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.delete_button:
+                handleDeleteTrip();
+                return true;
+            case R.id.edit_button:
+                Navigation.findNavController(getView()).navigate(R.id.action_navigation_trip_view_to_navigation_edit_trip_view);
+                return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
 
     class ViewTripPagerAdapter extends FragmentStatePagerAdapter {
 

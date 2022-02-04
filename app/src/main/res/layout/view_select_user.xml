@@ -40,7 +40,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
-            android:layout_marginEnd="211dp"
+            android:layout_marginEnd="64dp"
             android:fontFamily="@font/montserrat_bold"
             android:text="Soltan Gheorghe"
             app:layout_constraintBottom_toBottomOf="parent"

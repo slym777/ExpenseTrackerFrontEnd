@@ -13,7 +13,6 @@
         android:layout_marginTop="32dp"
         app:tint="@color/black"
         android:padding="4dp"
-        android:background="@drawable/circular_button_black"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_info_outline_black_24dp" />
@@ -70,7 +69,6 @@
         android:layout_marginTop="24dp"
         app:tint="@color/black"
         android:padding="4dp"
-        android:background="@drawable/circular_button_black"
         app:layout_constraintEnd_toEndOf="@+id/imageView5"
         app:layout_constraintStart_toStartOf="@+id/imageView5"
         app:layout_constraintTop_toBottomOf="@+id/desc_value"
@@ -96,7 +94,6 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/ic_baseline_group_24"
             android:padding="4dp"
-            android:background="@drawable/circular_button_black"
             app:tint="@color/black" />
 
         <TextView

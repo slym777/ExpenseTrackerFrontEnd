@@ -53,12 +53,10 @@ See README(https://goo.gl/l4GJaQ) for more.
         </activity>
 
         <activity
-            android:name=".ui.addtrip.AddTripActivity"
-            android:theme="@style/Theme.ExpenseTracker.NoActionBar" />
+            android:name=".ui.addtrip.AddTripActivity" />
 
         <activity
-            android:name=".ui.viewtrip.ViewTripActivity"
-            android:theme="@style/Theme.ExpenseTracker.NoActionBar" />
+            android:name=".ui.viewtrip.ViewTripActivity" />
 
         <activity
             android:name=".ui.IntroSlider"

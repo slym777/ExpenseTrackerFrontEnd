@@ -42,7 +42,6 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
 
     private StatisticsViewModel statisticsViewModel;
     private FragmentStatisticsBinding binding;
-    private Date min, max;
     private String typeFilter = "ByType";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -92,8 +91,8 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
         Date weekFinish = calendar.getTime();
         calendar.add(Calendar.DAY_OF_YEAR, -7);
         Date weekStart = calendar.getTime();
-        min = weekStart;
-        max = weekFinish;
+        statisticsViewModel.min = weekStart;
+        statisticsViewModel.max = weekFinish;
 
         binding.switch1.setChecked(true);
 
@@ -113,10 +112,11 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
 
         binding.switch1.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
-                statisticsViewModel.loadExpensesPieChart(min, max);
-                plotPieChart();
+                statisticsViewModel.loadExpensesPieChart();
             }
         });
+
+        statisticsViewModel.loadExpensesPieChart();
 
     }
 
@@ -124,7 +124,6 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
     @Override
     public void onResume() {
         super.onResume();
-        statisticsViewModel.loadExpensesPieChart(min, max);
     }
 
     @Override
@@ -151,63 +150,9 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
 
         });
 
-        for (Map.Entry<String,Double> entry : pond.entrySet())
-        yValues.add(new PieEntry(entry.getValue().floatValue(), entry.getKey()));
-//
-
-//        }
-
-//        } else if (typeFilter.equals("Hubs")) {
-//
-//            Map<String, Double> pond = new HashMap<>();
-//
-//            graphicViewModel.creditList.forEach(d -> {
-//                if (!pond.containsKey(d.getHub().getName()))
-//                    pond.put(d.getHub().getName(), d.getAmount());
-//                else {
-//                    Double sumAmount = pond.get(d.getHub().getName());
-//                    pond.replace(d.getHub().getName(), sumAmount + d.getAmount());
-//                }
-//            });
-//
-//            graphicViewModel.debitList.forEach(d -> {
-//                if (!pond.containsKey(d.getHub().getName()))
-//                    pond.put(d.getHub().getName(), d.getAmount());
-//                else {
-//                    Double sumAmount = pond.get(d.getHub().getName());
-//                    pond.replace(d.getHub().getName(), sumAmount + d.getAmount());
-//                }
-//            });
-//
-//            for (Map.Entry<String,Double> entry : pond.entrySet())
-//                yValues.add(new PieEntry(entry.getValue().floatValue(), entry.getKey()));
-//
-//        } else {
-//
-//            Map<String, Double> pond = new HashMap<>();
-//
-//            graphicViewModel.creditList.forEach(d -> {
-//                if (!pond.containsKey(d.getCurrency()))
-//                    pond.put(d.getCurrency(), d.getAmount());
-//                else {
-//                    Double sumAmount = pond.get(d.getCurrency());
-//                    pond.replace(d.getCurrency(), sumAmount + d.getAmount());
-//                }
-//            });
-//
-//            graphicViewModel.debitList.forEach(d -> {
-//                if (!pond.containsKey(d.getCurrency()))
-//                    pond.put(d.getCurrency(), d.getAmount());
-//                else {
-//                    Double sumAmount = pond.get(d.getCurrency());
-//                    pond.replace(d.getCurrency(), sumAmount + d.getAmount());
-//                }
-//            });
-//
-//            for (Map.Entry<String, Double> entry : pond.entrySet())
-//                yValues.add(new PieEntry(entry.getValue().floatValue(), entry.getKey()));
-//
-//        }
+         for (Map.Entry<String,Double> entry : pond.entrySet()) {
+            yValues.add(new PieEntry(entry.getValue().floatValue(), entry.getKey()));
+        }
 
         binding.pieChart.animateY(1000, Easing.EaseInOutCubic);
 
@@ -244,7 +189,7 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
         PopupMenu popupMenu = new PopupMenu(getContext(), v);
         Calendar calendar = Calendar.getInstance();
         Date today = calendar.getTime();
-        max = today;
+        statisticsViewModel.max = today;
         calendar.add(Calendar.DAY_OF_YEAR, -7);
         Date weekStart = calendar.getTime();
         calendar.add(Calendar.DAY_OF_YEAR, 7);
@@ -262,18 +207,18 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
 
         popupMenu.setOnMenuItemClickListener(item -> {
             if (item.getTitle().equals("Week")){
-                min = weekStart;
-                statisticsViewModel.loadExpensesPieChart(min, max);
+                statisticsViewModel.min = weekStart;
+                statisticsViewModel.loadExpensesPieChart();
                 popupMenu.getMenu().getItem(0).setChecked(true);
 //                Toast.makeText(getContext(), "Week was selected", Toast.LENGTH_SHORT).show();
             } else if (item.getTitle().equals("Month")){
-                min = monthStart;
-                statisticsViewModel.loadExpensesPieChart(min, max);
+                statisticsViewModel.min = monthStart;
+                statisticsViewModel.loadExpensesPieChart();
                 popupMenu.getMenu().getItem(1).setChecked(true);
 //                Toast.makeText(getContext(), "Month was selected", Toast.LENGTH_SHORT).show();
             } else {
-                min = yearStart;
-                statisticsViewModel.loadExpensesPieChart(min, max);
+                statisticsViewModel.min = yearStart;
+                statisticsViewModel.loadExpensesPieChart();
                 popupMenu.getMenu().getItem(2).setChecked(true);
 //                Toast.makeText(getContext(), "Year was selected", Toast.LENGTH_SHORT).show();
             }
@@ -325,8 +270,7 @@ public class StatisticsFragment extends Fragment implements OnSelectTripListener
                     .into(binding.tripAvatar);
         }
 
-        statisticsViewModel.setExpenseList(trip.getExpenses());
-        plotPieChart();
+        statisticsViewModel.loadExpenseFromTrip(trip.getId());
     }
 }
 

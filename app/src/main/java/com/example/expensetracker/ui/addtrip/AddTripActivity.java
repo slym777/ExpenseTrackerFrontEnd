@@ -16,6 +16,7 @@ public class AddTripActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_trip);
+        getSupportActionBar().setTitle("Add Trip");
     }
 
     @Override
@@ -25,4 +26,5 @@ public class AddTripActivity extends AppCompatActivity {
             super.onBackPressed();
         }
     }
+
 }

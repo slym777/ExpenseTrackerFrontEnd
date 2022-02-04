@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.expensetracker.api.ExpenseApi;
+import com.example.expensetracker.api.TripApi;
 import com.example.expensetracker.model.Expense;
+import com.example.expensetracker.ui.viewtrip.tripinfo.TripInfoViewModel;
 import com.example.expensetracker.utils.SharedPreferencesUtils;
 
 import java.util.ArrayList;
@@ -25,21 +27,41 @@ public class StatisticsViewModel extends ViewModel {
     public MutableLiveData<List<Expense>> allExpenseLiveList = new MutableLiveData<>();
     public MutableLiveData<String> errorLiveMsg = new MutableLiveData<>();
     private LinkedList<Disposable> disposableLinkedList = new LinkedList<>();
+    public Date min, max;
 
     @RequiresApi(api = Build.VERSION_CODES.N)
-    public void loadExpensesPieChart(Date weekStart, Date weekFinish){
+    public void loadExpensesPieChart(){
         disposableLinkedList.add(ExpenseApi.getCreditorExpensesByUserId(SharedPreferencesUtils.getUserId()).subscribe(list -> {
 
             allExpenseLiveList.postValue(list);
 
-            expenseList = list.stream()
-                    .filter(e -> !weekStart.after(e.getCreatedDate()) && !weekFinish.before(e.getCreatedDate()))
-                    .collect(Collectors.toList());
+            expenseList = filterByDate(list);
 
         }, error -> {
             Timber.e(error);
             errorLiveMsg.postValue(error.getMessage());
         }));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void loadExpenseFromTrip(Long tripId) {
+        disposableLinkedList.add(TripApi.getTripByTripId(tripId).subscribe(trip -> {
+
+            allExpenseLiveList.postValue(trip.getExpenses());
+//            expenseList = filterByDate(trip.getExpenses());
+            expenseList = trip.getExpenses();
+
+        }, error -> {
+            Timber.e(error);
+            errorLiveMsg.postValue(error.getMessage());
+        }));
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private List<Expense> filterByDate(List<Expense> list) {
+        return list.stream()
+                .filter(e -> !min.after(e.getCreatedDate()) && !max.before(e.getCreatedDate()))
+                .collect(Collectors.toList());
     }
 
     public void setExpenseList(List<Expense> expenseList) {

@@ -14,16 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.DialogFragment;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.expensetracker.R;
 import com.example.expensetracker.databinding.DialogAddMembersExpenseBinding;
-import com.example.expensetracker.databinding.FragmentAddMembersBinding;
 import com.example.expensetracker.model.Trip;
 import com.example.expensetracker.model.User;
-import com.example.expensetracker.ui.addtrip.AddMembersAdapter;
-import com.example.expensetracker.ui.addtrip.AddTripViewModel;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 
 import org.apache.commons.lang3.StringUtils;
@@ -35,7 +30,7 @@ public class ChooseMembersExpenseDialog extends DialogFragment {
     private Trip trip;
     private DialogAddMembersExpenseBinding binding;
     private AddExpenseViewModel addExpenseViewModel;
-    private AddMembersAdapter addMembersAdapter;
+    private ChooseMembersExpenseAdapter addMembersAdapter;
 
     public ChooseMembersExpenseDialog(Trip trip) {
         this.trip = trip;
@@ -55,7 +50,7 @@ public class ChooseMembersExpenseDialog extends DialogFragment {
         binding.famRecyclerForSelection.setHasFixedSize(true);
         binding.famRecyclerForSelection.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        addMembersAdapter = new AddMembersAdapter(new ArrayList<>());
+        addMembersAdapter = new ChooseMembersExpenseAdapter(new ArrayList<>());
         binding.famRecyclerForSelection.setAdapter(addMembersAdapter);
 
         binding.famButtonSubmit.setOnClickListener(v -> {
